@@ -1,0 +1,436 @@
+/* =========================
+   VARIÁVEIS E RESET
+========================= */
+:root {
+  --cor-fundo: #1f1f1f;
+  --cor-primaria: #6c5ce7;
+  --cor-destaque: #ffd84d;
+  --cor-texto: #ffffff;
+  --cor-cinza: #f2f2f2;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--cor-cinza);
+  color: var(--cor-texto);
+}
+
+h1, h2, h3 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2 {
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+h3 {
+  font-weight: 500;
+}
+
+input:focus {
+  box-shadow: 0 0 0 0;
+  outline: 0;
+}
+
+/* =========================
+   LINKS
+========================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--cor-destaque);
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  align-items: center;
+  padding: 0 30px;
+  display: flex;
+}
+
+.header-logo {
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  padding: 15px;
+}
+
+.header-pesquisa {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  background-color: var(--cor-cinza);
+  border: 3px solid var(--cor-primaria);
+  margin: auto;
+  padding: 5px;
+}
+
+.header-pesquisa-input {
+  width: 100%;
+  max-width: 455px;
+  height: 30px;
+  border-radius: 15px;
+  display: inline-flex;
+  border: 0px transparent;
+  margin: auto;
+}
+
+header button {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  margin: auto;
+  border: 1px solid var(--cor-primaria);
+  background: var(--cor-primaria);
+}
+
+button img {
+  width: 15px;
+  height: 15px;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background: var(--cor-destaque);
+  border-color: var(--cor-destaque);
+  color: #000;
+  cursor: pointer;
+}
+
+header ul {
+  margin: auto;
+}
+
+header li {
+  text-decoration: none;
+  list-style: none;
+  display: inline-block;
+  margin: 20px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+header li:hover {
+  transform: translateY(-2px);
+  color: var(--cor-destaque);
+}
+
+header li h3 {
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+header li img {
+  width: 30px;
+  height: 30px;
+  margin: 3px;
+}
+
+.header-icone-perfil {
+  position: relative;
+  top: 10px;
+}
+
+.header-icone-pedidos {
+  position: relative;
+  top: 10px;
+}
+
+.header-icone-carrinho {
+  position: relative;
+  top: 10px;
+}
+
+/* =========================
+   NAV
+========================= */
+
+nav {
+  background: var(--cor-fundo);
+  display: flex;
+  font-family: 'Montserrat';
+}
+
+nav ul {
+  display: inline-flex;
+  margin: auto;
+}
+
+nav ul li {
+  margin: 10px 45px;
+  list-style: none;
+  color: var(--cor-texto);
+  text-shadow: 0.5px 0.5px 0.5px black;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+nav ul li:hover {
+  transform: scale(1.1);
+  color: var(--cor-destaque);
+  cursor: pointer;
+}
+
+nav ul li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: var(--cor-primaria);
+  transition: 0.3s;
+}
+
+nav ul li:hover::after {
+  width: 65%;
+  left: 15%;
+}
+
+nav img {
+  margin-right: 7px;
+}
+
+.nav-icone {
+  width: 30px;
+  height: 30px;
+}
+
+.nav-icone-marvel {
+  width: 70px;
+  height: 30px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+  width: 100%;
+  display: block;
+}
+
+footer h1 {
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+footer h2 {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.footer-pagamentos {
+  background: linear-gradient(
+    to right,
+    var(--cor-primaria),
+    #8a7bff
+  );
+  border-top: 3px solid var(--cor-destaque);
+  color: white;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.footer-pagamentos h2 {
+  font-weight: normal;
+  font-size: 16px;
+  text-align: center;
+  color: var(--cor-texto);
+}
+
+.footer-pagamentos h3 {
+  font-weight: normal;
+  font-size: 14px;
+  text-align: center;
+  color: var(--cor-texto);
+}
+
+.footer-pagamentos ul {
+  margin: auto;
+  text-decoration: none;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.footer-pagamentos li {
+  display: block;
+  margin: 15px 75px;
+  padding: 0;
+}
+
+.footer-pagamentos img {
+  margin: auto;
+}
+
+.icone-entrega {
+  height: 30px;
+  width: 40px;
+}
+
+.footer-icone {
+  height: 30px;
+  width: 30px;
+}
+
+.footer-sobre {
+  display: flex;
+  margin: auto;
+}
+
+.footer-colunas {
+  margin: auto;
+  display: flex;
+}
+
+.footer-sobre ul {
+  text-decoration: none;
+  list-style: none;
+  margin: 15px 50px;
+}
+
+.footer-logo {
+  width: 200px;
+  height: 100px;
+  margin: auto;
+}
+
+.footer-sobre li h1 {
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.footer-sobre li h1::after {
+  content: "";
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--cor-primaria),
+    var(--cor-destaque)
+  );
+  display: block;
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.footer-sobre li h2 {
+  font-size: 15px;
+}
+
+.footer-sobre li h2:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.footer-sociais {
+  display: flex;
+  text-align: center;
+  height: 100px;
+}
+
+.footer-sociais ul {
+  text-decoration: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+
+.footer-sociais li {
+    margin: 5px;
+}
+
+.footer-sociais li h3 {
+  margin: 12px 10px;
+}
+
+.icone-social {
+  margin: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.risco {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--cor-primaria),
+    transparent
+  );
+}
+
+.footer-sociais img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+/* =========================
+   MENSAGENS
+========================= */
+
+.mensagem {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: var(--cor-texto);
+  font-size: 14px;
+  z-index: 9999;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+  opacity: 0;
+  transform: translateY(20px);
+  animation: aparecer 0.3s forwards;
+}
+
+.mensagem-sucesso {
+  background: var(--cor-primaria);
+}
+
+.mensagem-erro {
+  background: #e74c3c;
+}
+
+.mensagem.sumir {
+  animation: desaparecer 0.3s forwards;
+}
+
+@keyframes aparecer {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes desaparecer {
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}

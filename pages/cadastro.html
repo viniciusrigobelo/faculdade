@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Criar Conta</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/cadastro.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="../index.html"><img src="../img/logos/logo.png" alt="Logo" class="header-logo"></a>
+
+    <div class="header-pesquisa">
+      <form autocomplete="off" aria-label="Pesquisar produtos">
+        <input type="text" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
+        <button aria-label="Buscar">
+          <img src="../img/icons/lupinha.png" alt="Ícone de busca">
+        </button>
+      </form>
+    </div>
+
+    <ul>
+      <li>
+        <a href="../pages/login.html">
+          <h3>Meu perfil</h3>
+          <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
+        </a>
+      </li>
+
+      <li>
+        <h3>Meus pedidos</h3>
+        <img src="../img/icons/pedidos.png" class="header-icone-pedidos" alt="Meus Pedidos">
+      </li>
+
+      <li>
+        <h3>Meu carrinho</h3>
+        <img src="../img/icons/carrinho.png" class="header-icone-carrinho" alt="Carrinho de Compras">
+      </li>
+    </ul>
+  </header>
+
+  <div class="risco"></div>
+
+  <main class="cadastro">
+  <div class="cadastro-container">
+    
+    <h1>Criar Conta</h1>
+    <h3>Preencha os dados abaixo</h3>
+
+    <form id="form-cadastro" class="cadastro-section">
+      <label>Nome</label>
+      <input type="text" id="nome" placeholder="Digite seu nome" required>
+
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Digite seu email" required>
+
+      <label>Senha</label>
+      <input type="password" id="senha" placeholder="Digite sua senha" required>
+
+      <label>Confirmar senha</label>
+      <input type="password" id="confirmar-senha" placeholder="Confirme sua senha" required>
+
+      <button type="submit" class="cadastro-btn">Cadastrar</button>
+    </form>
+
+    <div class="cadastro-login">
+      Já tem conta? <a href="login.html">Entrar</a>
+    </div>
+
+  </div>
+</main>
+
+    <!-- FOOTER -->
+  <footer>
+    <section class="footer-pagamentos">
+      <ul>
+        <li><img src="../img/icons/caminhao.png" class="icone-entrega" alt="Entrega">
+          <h2>ENTREGA</h2>
+          <h3>Enviamos para todo o Brasil</h3>
+        </li>
+        <li><img src="../img/icons/troca.png" class="footer-icone" alt="Troca de Produtos">
+          <h2>TROCA DE PRODUTOS</h2>
+          <h3>Fale conosco</h3>
+        </li>
+        <li><img src="../img/icons/cartao.png" class="footer-icone" alt="Parcelamento">
+          <h2>EM ATÉ 3X SEM JUROS</h2>
+          <h3>Para compras acima de R$150</h3>
+        </li>
+        <li><img src="../img/icons/pix.png" class="footer-icone" alt="Boleto e Pix">
+          <h2>BOLETO E PIX</h2>
+          <h3>Pague com toda comodidade</h3>
+        </li>
+      </ul>
+    </section>
+    <section class="footer-sobre">
+      <img src="../img/logos/logo.png" alt="Logo" class="footer-logo">
+      <div class="footer-colunas">
+        <ul>
+          <li>
+            <h1>INFORMAÇÕES</h1>
+          </li>
+          <li>
+            <h2>Sobre nós</h2>
+          </li>
+          <li>
+            <h2>Minha Conta</h2>
+          </li>
+          <li>
+            <h2>Cupons/Descontos</h2>
+          </li>
+          <li>
+            <h2>Contato</h2>
+          </li>
+          <li>
+            <h2>Fale Conosco</h2>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <h1>ATENDIMENTO AO CLIENTE</h1>
+          </li>
+          <li>
+            <h2>Trocas e Devoluções</h2>
+          </li>
+          <li>
+            <h2>Direito de Arrependimento</h2>
+          </li>
+          <li>
+            <h2>Dúvidas Frequentes</h2>
+          </li>
+          <li>
+            <h2>Consulta de Pedidos e Cancelamentos</h2>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <h1>LOJA VIRTUAL</h1>
+          </li>
+          <li>
+            <h2>☎️ (41) 4002-8922</h2>
+          </li>
+          <li>
+            <h2>📧 loja@xmenhqs.com.br</h2>
+          </li>
+          <li>
+            <h2>⏰ De Segunda a Sexta, 9h às 11h e das 13h às 17h.</h2>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div class="risco">
+    </div>
+    <div class="footer-sociais">
+      <ul>
+        <li>
+          <h3>Siga-nos nas redes sociais:</h3>
+        </li>
+        <li><img src="../img/icons/twitter.png" class="icone-social" alt="Twitter"></li>
+        <li><img src="../img/icons/instagram.png" class="icone-social" alt="Instagram"></li>
+        <li><img src="../img/icons/facebook.png" class="icone-social" alt="Facebook"></li>
+        <li><img src="../img/icons/whatsapp.png" class="icone-social" alt="WhatsApp"></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

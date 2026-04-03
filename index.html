@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <title>Comic Geek Store</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/home.css">
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat:wght@300;400&display=swap"
+    rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="img/logos/logo.png">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html"><img src="img/logos/logo.png" alt="Logo" class="header-logo"></a>
+
+    <div class="header-pesquisa">
+      <form autocomplete="off" aria-label="Pesquisar produtos">
+        <input type="text" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
+        <button aria-label="Buscar">
+          <img src="img/icons/lupinha.png" alt="Ícone de busca">
+        </button>
+      </form>
+    </div>
+
+    <ul>
+      <li>
+        <a href="pages/login.html">
+          <h3>Meu perfil</h3>
+          <img src="img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
+        </a>
+      </li>
+
+      <li>
+        <a href="pages/pedidos.html">
+           <h3>Meus pedidos</h3>
+           <img src="img/icons/pedidos.png" class="header-icone-pedidos" alt="Meus Pedidos">
+        </a>
+      </li>
+
+      <li>
+        <a href="pages/carrinho.html">
+           <h3>Meu carrinho</h3>
+           <img src="img/icons/carrinho.png" class="header-icone-carrinho" alt="Carrinho de Compras">
+        </a>
+      </li>
+    </ul>
+  </header>
+    
+  <div class="risco"></div>
+
+  <!-- NAV -->
+  <nav aria-label="Categorias da loja">
+    <ul>
+      <li>Tudo</li>
+      <li>Lançamentos</li>
+      <li>Pré-Venda</li>
+      <li><img src="img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></li>
+      <li><img src="img/logos/dc.png" class="nav-icone" alt="DC"></li>
+      <li>Especiais</li>
+    </ul>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <img src="img/logos/banner.png" alt="Banner principal da loja" class="banner-principal">
+
+    <!-- ÚLTIMOS LANÇAMENTOS -->
+    <section>
+      <div class="divisor"></div>
+      <div class="titulo-secao">
+        <img src="img/icons/exclamacao.png" alt="">
+        <h1>Últimos Lançamentos</h1>
+        <img src="img/icons/exclamacao.png" alt="">
+      </div>
+      <div class="divisor"></div>
+    </section>
+
+    <section class="lista-cards" aria-label="Últimos lançamentos">
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/alloutavengers.jpg" alt="All-Out Avengers (2022) #6">
+        </div>
+        <div class="card-produto__nome">
+          <h3>All-Out Avengers (2022) #6</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$29,90</h3>
+          <h2>R$24,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/spiderman.jpg" alt="The Amazing Spider-Man (2022) #20">
+        </div>
+        <div class="card-produto__nome">
+          <h3>The Amazing Spider-Man (2022) #20</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$39,90</h3>
+          <h2>R$32,50</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/carnage.jpg" alt="Carnificina (2022) #10">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Carnificina (2022) #10</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$19,90</h3>
+          <h2>R$17,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/crisesombria.jpg" alt="Crise Sombria #1">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Crise Sombria #1</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$24,90</h3>
+          <h2>R$19,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/batman.png" alt="Batman #23/81">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Batman #23/81</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$27,80</h3>
+          <h2>R$24,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/coringa.jpg" alt="O Coringa (2022) Vol.3">
+        </div>
+        <div class="card-produto__nome">
+          <h3>O Coringa (2022) Vol.3</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$39,90</h3>
+          <h2>R$29,90</h2>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- SÉRIE MARVEL -->
+    <section>
+      <div class="divisor"></div>
+
+      <div class="titulo-secao">
+        <img src="img/icons/martelo.png" alt="Martelo do Thor">
+        <h1>Série Marvel</h1>
+        <img src="img/icons/escudo.png" alt="Escudo do Capitão América">
+      </div>
+
+      <div class="divisor"></div>
+    </section>
+
+    <section class="lista-cards" aria-label="Série Marvel">
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/desafioinfinito.jpg" alt="Vingadores - Desafio Infinito">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Vingadores - Desafio Infinito</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$29,90</h3>
+          <h2>R$19,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/deadpooleixo.jpg" alt="Deadpool - Eixo">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Deadpool - Eixo</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$29,90</h3>
+          <h2>R$24,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/dinastiakang.jpg" alt="Vingadores - Dinastia Kang">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Vingadores - Dinastia Kang</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$25,90</h3>
+          <h2>R$22,70</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/guerrassecretas.jpg" alt="Guerras Secretas">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Guerras Secretas</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$34,90</h3>
+          <h2>R$29,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/guarioesdagalaxia.webp" alt="Guardiões da Galáxia - A Queda">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Guardiões da Galáxia - A Queda</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$29,90</h3>
+          <h2>R$24,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="marvel">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/guerracivil.jpg" alt="Guerra Civil">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Guerra Civil</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$28,90</h3>
+          <h2>R$21,90</h2>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- APENAS DC -->
+    <section>
+      <div class="divisor"></div>
+
+      <div class="titulo-secao">
+        <img src="img/icons/superman.png" alt="Superman">
+        <h1>Apenas DC</h1>
+        <img src="img/icons/batman.png" alt="Batman">
+      </div>
+
+      <div class="divisor"></div>
+    </section>
+
+    <section class="lista-cards" aria-label="Apenas DC">
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/reinodoamanha.jpg" alt="Reino do Amanhã">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Reino do Amanhã</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$19,90</h3>
+          <h2>R$14,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/batmanapiadamortal.webp" alt="Batman - A Piada Mortal">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Batman - A Piada Mortal</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$39,90</h3>
+          <h2>R$29,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/lanternaverde.jpg" alt="Lanterna Verde - A Guerra Dos Anéis">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Lanterna Verde - A Guerra Dos Anéis</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$29,90</h3>
+          <h2>R$19,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Crise nas Infinitas Terras">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Crise nas Infinitas Terras</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$32,90</h3>
+          <h2>R$25,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/flash.png" alt="Flashpoint (Ponto de Ignição)">
+        </div>
+        <div class="card-produto__nome">
+          <h3>Flashpoint (Ponto de Ignição)</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$34,90</h3>
+          <h2>R$24,90</h2>
+        </div>
+      </article>
+
+      <article class="card-produto" data-editora="dc">
+        <div class="card-produto__imagem">
+          <img src="img/quadrinhos/superman.jpg" alt="A Morte do Superman - Vol.1">
+        </div>
+        <div class="card-produto__nome">
+          <h3>A Morte do Superman - Vol.1</h3>
+        </div>
+        <div class="card-produto__preco">
+          <h3>R$34,90</h3>
+          <h2>R$29,90</h2>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <section class="footer-pagamentos">
+      <ul>
+        <li><img src="img/icons/caminhao.png" class="icone-entrega" alt="Entrega">
+          <h2>ENTREGA</h2>
+          <h3>Enviamos para todo o Brasil</h3>
+        </li>
+        <li><img src="img/icons/troca.png" class="footer-icone" alt="Troca de Produtos">
+          <h2>TROCA DE PRODUTOS</h2>
+          <h3>Fale conosco</h3>
+        </li>
+        <li><img src="img/icons/cartao.png" class="footer-icone" alt="Parcelamento">
+          <h2>EM ATÉ 3X SEM JUROS</h2>
+          <h3>Para compras acima de R$150</h3>
+        </li>
+        <li><img src="img/icons/pix.png" class="footer-icone" alt="Boleto e Pix">
+          <h2>BOLETO E PIX</h2>
+          <h3>Pague com toda comodidade</h3>
+        </li>
+      </ul>
+    </section>
+    <section class="footer-sobre">
+      <img src="img/logos/logo.png" alt="Logo" class="footer-logo">
+      <div class="footer-colunas">
+        <ul>
+          <li>
+            <h1>INFORMAÇÕES</h1>
+          </li>
+          <li>
+            <h2>Sobre nós</h2>
+          </li>
+          <li>
+            <h2>Minha Conta</h2>
+          </li>
+          <li>
+            <h2>Cupons/Descontos</h2>
+          </li>
+          <li>
+            <h2>Contato</h2>
+          </li>
+          <li>
+            <h2>Fale Conosco</h2>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <h1>ATENDIMENTO AO CLIENTE</h1>
+          </li>
+          <li>
+            <h2>Trocas e Devoluções</h2>
+          </li>
+          <li>
+            <h2>Direito de Arrependimento</h2>
+          </li>
+          <li>
+            <h2>Dúvidas Frequentes</h2>
+          </li>
+          <li>
+            <h2>Consulta de Pedidos e Cancelamentos</h2>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <h1>LOJA VIRTUAL</h1>
+          </li>
+          <li>
+            <h2>☎️ (41) 4002-8922</h2>
+          </li>
+          <li>
+            <h2>📧 loja@xmenhqs.com.br</h2>
+          </li>
+          <li>
+            <h2>⏰ De Segunda a Sexta, 9h às 11h e das 13h às 17h.</h2>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <div class="risco">
+    </div>
+    <div class="footer-sociais">
+      <ul>
+        <li>
+          <h3>Siga-nos nas redes sociais:</h3>
+        </li>
+        <li><img src="img/icons/twitter.png" class="icone-social" alt="Twitter"></li>
+        <li><img src="img/icons/instagram.png" class="icone-social" alt="Instagram"></li>
+        <li><img src="img/icons/facebook.png" class="icone-social" alt="Facebook"></li>
+        <li><img src="img/icons/whatsapp.png" class="icone-social" alt="WhatsApp"></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>
