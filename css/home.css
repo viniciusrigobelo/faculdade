@@ -17,13 +17,16 @@
 .card-produto {
   margin: auto;
   width: 200px;
-  height: 405px;
+  min-height: 430px;
+  height: auto;
   background-color: white;
   cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
   border: 2px solid transparent;
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-produto:hover {
@@ -128,4 +131,40 @@
     var(--cor-primaria),
     transparent
   );
+}
+
+/* Botão "Adicionar ao Carrinho" nos cards */
+.card-produto__btn {
+  display: block;
+  width: calc(100% - 16px);
+  margin: 8px auto 0;
+  padding: 9px 0;
+  background: var(--cor-primaria);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.card-produto__btn:hover {
+  background: var(--cor-destaque) !important;
+  color: #000 !important;
+  transform: scale(1.03) !important;
+  border-color: transparent !important;
+}
+
+/* Card oculto (filtro/busca) */
+.card-oculto {
+  display: none !important;
+}
+
+/* Seção grupo (wrapper de título + cards) */
+.secao-grupo {
+  width: 100%;
 }

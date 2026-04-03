@@ -32,21 +32,30 @@
     </div>
 
     <ul>
-      <li>
-        <a href="../pages/login.html">
-          <h3>Meu perfil</h3>
+      <li id="li-perfil">
+        <a href="../pages/login.html" id="link-perfil">
+          <h3 id="perfil-nome">Meu perfil</h3>
           <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
         </a>
       </li>
 
-      <li>
-        <h3>Meus pedidos</h3>
-        <img src="../img/icons/pedidos.png" class="header-icone-pedidos" alt="Meus Pedidos">
+      <li id="li-logout" style="display:none">
+        <button class="btn-logout" onclick="logout()">Sair</button>
       </li>
 
       <li>
-        <h3>Meu carrinho</h3>
-        <img src="../img/icons/carrinho.png" class="header-icone-carrinho" alt="Carrinho de Compras">
+        <a href="../pages/pedidos.html">
+          <h3>Meus pedidos</h3>
+          <img src="../img/icons/pedidos.png" class="header-icone-pedidos" alt="Meus Pedidos">
+        </a>
+      </li>
+
+      <li id="li-carrinho">
+        <a href="../pages/carrinho.html">
+          <h3>Meu carrinho</h3>
+          <img src="../img/icons/carrinho.png" class="header-icone-carrinho" alt="Carrinho de Compras">
+          <span class="carrinho-badge" id="carrinho-badge">0</span>
+        </a>
       </li>
     </ul>
   </header>
