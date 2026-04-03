@@ -201,3 +201,45 @@
   background: var(--cor-destaque);
   color: #000;
 }
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 768px) {
+  .pedidos-main {
+    padding: 0 12px 40px;
+    margin: 20px auto;
+  }
+
+  .pedidos-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .pedido-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pedido-card__direita {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedidos-titulo {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .pedido-item {
+    flex-wrap: wrap;
+  }
+
+  .pedido-item__preco {
+    width: 100%;
+    text-align: right;
+  }
+}

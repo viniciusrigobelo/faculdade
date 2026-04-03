@@ -168,3 +168,61 @@
 .secao-grupo {
   width: 100%;
 }
+
+/* =========================
+   RESPONSIVIDADE - HOME
+========================= */
+
+/* Tablet (até 900px) */
+@media (max-width: 900px) {
+  .banner-principal {
+    height: 350px;
+  }
+
+  .lista-cards {
+    justify-content: center;
+    margin: 30px 10px;
+  }
+
+  .card-produto {
+    width: 180px;
+  }
+
+  .divisor {
+    margin: 20px 20px;
+  }
+}
+
+/* Mobile (até 600px) */
+@media (max-width: 600px) {
+  .banner-principal {
+    height: 180px;
+  }
+
+  .lista-cards {
+    margin: 20px 10px;
+    gap: 15px;
+  }
+
+  .card-produto {
+    width: 150px;
+    min-height: 360px;
+  }
+
+  .card-produto__imagem {
+    height: 200px;
+  }
+
+  .card-produto__nome h3 {
+    font-size: 14px;
+  }
+
+  .titulo-secao h1 {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .divisor {
+    margin: 15px 10px;
+  }
+}

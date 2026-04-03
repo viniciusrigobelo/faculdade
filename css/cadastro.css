@@ -106,3 +106,57 @@ input:valid {
   flex-direction: column;
   justify-content: center;
 }
+
+/* =========================
+   BADGE DE TIPO
+========================= */
+
+.tipo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cor-primaria);
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.tipo-badge.juridica {
+  background: #00b894;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 768px) {
+  .cadastro-container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .cadastro h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cadastro-container {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .cadastro h1 {
+    font-size: 22px;
+  }
+
+  .cadastro-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

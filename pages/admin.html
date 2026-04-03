@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin — Comic Geek Store</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="../img/logos/logo.png">
+</head>
+
+<body>
+
+  <!-- TELA DE LOGIN ADMIN -->
+  <div id="admin-login" class="admin-login-overlay">
+    <div class="admin-login-box">
+      <img src="../img/logos/logo.png" alt="Logo" class="admin-login-logo">
+      <h1>Painel Administrativo</h1>
+      <p>Acesso restrito. Insira suas credenciais.</p>
+      <form id="form-admin-login">
+        <label>Usuário</label>
+        <input type="text" id="admin-user" placeholder="Usuário admin" required>
+        <label>Senha</label>
+        <input type="password" id="admin-senha" placeholder="Senha" required>
+        <p id="admin-login-erro" class="admin-login-erro"></p>
+        <button type="submit" class="btn-admin-entrar">Entrar</button>
+      </form>
+      <a href="../index.html" class="admin-voltar-link">← Voltar para a loja</a>
+    </div>
+  </div>
+
+  <!-- PAINEL ADMIN -->
+  <div id="admin-painel" style="display:none">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__logo">
+        <img src="../img/logos/logo.png" alt="Logo">
+        <span>Admin</span>
+      </div>
+      <nav class="admin-nav">
+        <button class="admin-nav__item ativo" onclick="mostrarAba('produtos')">
+          <span class="admin-nav__icone">📦</span> Produtos
+        </button>
+        <button class="admin-nav__item" onclick="mostrarAba('pedidos')">
+          <span class="admin-nav__icone">🛒</span> Pedidos
+        </button>
+        <button class="admin-nav__item" onclick="mostrarAba('usuarios')">
+          <span class="admin-nav__icone">👥</span> Usuários
+        </button>
+      </nav>
+      <button class="admin-logout" onclick="logoutAdmin()">Sair do painel</button>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="admin-main">
+
+      <!-- ABA: PRODUTOS -->
+      <section id="aba-produtos" class="admin-aba">
+        <div class="admin-aba__header">
+          <h2>Gerenciamento de Produtos</h2>
+          <button class="btn-admin-novo" onclick="toggleFormProduto()">+ Novo Produto</button>
+        </div>
+
+        <!-- Formulário de cadastro -->
+        <div id="admin-form-produto" class="admin-form-box" style="display:none">
+          <h3 id="admin-form-titulo">Cadastrar Novo Produto</h3>
+          <form id="form-admin-produto" class="admin-form">
+            <input type="hidden" id="admin-prod-id">
+
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Nome do Produto *</label>
+                <input type="text" id="admin-prod-nome" placeholder="Ex: Batman Vol.1" required>
+              </div>
+              <div class="admin-form__grupo">
+                <label>Editora *</label>
+                <select id="admin-prod-editora">
+                  <option value="marvel">Marvel</option>
+                  <option value="dc">DC</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Preço Original (riscado) *</label>
+                <input type="number" id="admin-prod-preco-original" placeholder="0.00" min="0" step="0.01" required>
+              </div>
+              <div class="admin-form__grupo">
+                <label>Preço de Venda *</label>
+                <input type="number" id="admin-prod-preco" placeholder="0.00" min="0" step="0.01" required>
+              </div>
+            </div>
+
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Seção *</label>
+                <select id="admin-prod-secao">
+                  <option value="lancamentos">Lançamentos</option>
+                  <option value="marvel">Série Marvel</option>
+                  <option value="dc">Apenas DC</option>
+                  <option value="prevenda">Pré-Venda</option>
+                  <option value="especiais">Especiais</option>
+                </select>
+              </div>
+              <div class="admin-form__grupo">
+                <label>URL da Imagem *</label>
+                <input type="text" id="admin-prod-img" placeholder="img/quadrinhos/batman.png ou https://...">
+              </div>
+            </div>
+
+            <div class="admin-form__acoes">
+              <button type="submit" class="btn-admin-salvar">Salvar Produto</button>
+              <button type="button" class="btn-admin-cancelar" onclick="toggleFormProduto()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Estatísticas rápidas -->
+        <div class="admin-stats">
+          <div class="admin-stat">
+            <span id="stat-total-produtos" class="admin-stat__num">0</span>
+            <span class="admin-stat__label">Produtos cadastrados</span>
+          </div>
+          <div class="admin-stat">
+            <span id="stat-total-pedidos" class="admin-stat__num">0</span>
+            <span class="admin-stat__label">Pedidos realizados</span>
+          </div>
+          <div class="admin-stat">
+            <span id="stat-total-usuarios" class="admin-stat__num">0</span>
+            <span class="admin-stat__label">Usuários cadastrados</span>
+          </div>
+        </div>
+
+        <!-- Tabela de produtos -->
+        <div class="admin-tabela-wrapper">
+          <table class="admin-tabela">
+            <thead>
+              <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Editora</th>
+                <th>Seção</th>
+                <th>Preço</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tabela-produtos"></tbody>
+          </table>
+          <p id="admin-produtos-vazio" class="admin-vazio" style="display:none">Nenhum produto cadastrado pelo admin ainda.</p>
+        </div>
+      </section>
+
+      <!-- ABA: PEDIDOS -->
+      <section id="aba-pedidos" class="admin-aba" style="display:none">
+        <div class="admin-aba__header">
+          <h2>Pedidos Realizados</h2>
+        </div>
+        <div id="admin-lista-pedidos" class="admin-pedidos"></div>
+        <p id="admin-pedidos-vazio" class="admin-vazio" style="display:none">Nenhum pedido realizado ainda.</p>
+      </section>
+
+      <!-- ABA: USUÁRIOS -->
+      <section id="aba-usuarios" class="admin-aba" style="display:none">
+        <div class="admin-aba__header">
+          <h2>Usuários Cadastrados</h2>
+        </div>
+        <div class="admin-tabela-wrapper">
+          <table class="admin-tabela">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Tipo</th>
+              </tr>
+            </thead>
+            <tbody id="admin-tabela-usuarios"></tbody>
+          </table>
+          <p id="admin-usuarios-vazio" class="admin-vazio" style="display:none">Nenhum usuário cadastrado ainda.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

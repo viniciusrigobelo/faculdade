@@ -4,10 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meus Pedidos — Comic Geek Store</title>
+  <title>Meus Produtos — Comic Geek Store</title>
 
   <link rel="stylesheet" href="../css/global.css">
-  <link rel="stylesheet" href="../css/pedidos.css">
+  <link rel="stylesheet" href="../css/vender.css">
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
 
     <ul>
       <li id="li-perfil">
-        <a href="../pages/login.html" id="link-perfil">
+        <a href="login.html" id="link-perfil">
           <h3 id="perfil-nome">Entre ou Cadastre-se</h3>
           <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
         </a>
@@ -54,14 +54,14 @@
       </li>
 
       <li>
-        <a href="../pages/pedidos.html">
+        <a href="pedidos.html">
           <h3>Meus pedidos</h3>
           <img src="../img/icons/pedidos.png" class="header-icone-pedidos" alt="Meus Pedidos">
         </a>
       </li>
 
       <li id="li-carrinho">
-        <a href="../pages/carrinho.html">
+        <a href="carrinho.html">
           <h3>Meu carrinho</h3>
           <img src="../img/icons/carrinho.png" class="header-icone-carrinho" alt="Carrinho de Compras">
           <span class="carrinho-badge" id="carrinho-badge">0</span>
@@ -76,23 +76,68 @@
   <nav aria-label="Categorias da loja">
     <ul>
       <li><a href="../index.html">Tudo</a></li>
-      <li><a href="../index.html">Lançamentos</a></li>
-      <li><a href="../index.html">Pré-Venda</a></li>
-      <li><a href="../index.html"><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></a></li>
-      <li><a href="../index.html"><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></a></li>
-      <li><a href="../index.html">Especiais</a></li>
+      <li><a href="../index.html?filtro=lancamentos">Lançamentos</a></li>
+      <li><a href="../index.html?filtro=prevenda">Pré-Venda</a></li>
+      <li><a href="../index.html?filtro=marvel"><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></a></li>
+      <li><a href="../index.html?filtro=dc"><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></a></li>
+      <li><a href="../index.html?filtro=especiais">Especiais</a></li>
     </ul>
   </nav>
 
   <!-- MAIN -->
-  <main class="pedidos-main">
+  <main class="vender-main">
 
-    <div class="pedidos-header">
-      <h1 class="pedidos-titulo">Meus Pedidos</h1>
-      <a href="../index.html" class="btn-voltar-loja">← Continuar Comprando</a>
+    <div id="vender-bloqueado" class="vender-bloqueado" style="display:none">
+      <h2>Acesso restrito</h2>
+      <p>Somente contas Pessoa Jurídica podem acessar esta área.</p>
+      <a href="../index.html" class="btn-vender-acao">Voltar para a loja</a>
     </div>
 
-    <div id="pedidos-lista"></div>
+    <div id="vender-conteudo">
+      <div class="vender-header">
+        <h1 class="vender-titulo">Meus Produtos</h1>
+        <button class="btn-novo-produto" onclick="abrirFormProduto()">+ Cadastrar Produto</button>
+      </div>
+
+      <!-- Formulário de cadastro de produto -->
+      <div id="form-produto-box" class="form-produto-box" style="display:none">
+        <h2>Cadastrar Novo Produto</h2>
+        <form id="form-produto" class="form-produto">
+          <div class="form-produto__grupo">
+            <label>Nome do Produto *</label>
+            <input type="text" id="prod-nome" placeholder="Ex: Batman Vol.1" required>
+          </div>
+          <div class="form-produto__grupo">
+            <label>Preço (R$) *</label>
+            <input type="number" id="prod-preco" placeholder="0.00" min="0" step="0.01" required>
+          </div>
+          <div class="form-produto__grupo">
+            <label>Categoria *</label>
+            <select id="prod-categoria">
+              <option value="marvel">Marvel</option>
+              <option value="dc">DC</option>
+              <option value="lancamentos">Lançamentos</option>
+              <option value="especiais">Especiais</option>
+            </select>
+          </div>
+          <div class="form-produto__grupo">
+            <label>URL da Imagem *</label>
+            <input type="url" id="prod-img" placeholder="https://..." required>
+          </div>
+          <div class="form-produto__grupo">
+            <label>Descrição</label>
+            <input type="text" id="prod-descricao" placeholder="Breve descrição do produto">
+          </div>
+          <div class="form-produto__acoes">
+            <button type="submit" class="btn-salvar-produto">Cadastrar</button>
+            <button type="button" class="btn-cancelar-produto" onclick="fecharFormProduto()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de produtos -->
+      <div id="lista-meus-produtos" class="lista-meus-produtos"></div>
+    </div>
 
   </main>
 

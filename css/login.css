@@ -170,3 +170,101 @@ input:invalid {
 input:valid {
   border-color: #4caf50;
 }
+
+/* =========================
+   ESCOLHA DE TIPO DE CONTA
+========================= */
+
+.criar-tipo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.criar-tipo__card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: #333;
+}
+
+.criar-tipo__card:hover {
+  border-color: var(--cor-primaria);
+  background: #f5f3ff;
+  color: var(--cor-primaria);
+  transform: translateY(-2px);
+}
+
+.criar-tipo__icone {
+  font-size: 30px;
+  flex-shrink: 0;
+}
+
+.criar-tipo__card strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.criar-tipo__card small {
+  display: block;
+  font-size: 13px;
+  color: #888;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 768px) {
+  .login h1 {
+    font-size: 28px;
+    margin: 20px 5%;
+  }
+
+  .login-container {
+    width: 90%;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .login-section {
+    width: 100%;
+  }
+
+  .criar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login h1 {
+    font-size: 22px;
+  }
+
+  .login-container {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .login-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .login-btn,
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

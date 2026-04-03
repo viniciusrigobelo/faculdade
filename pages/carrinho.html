@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meu Carrinho — Comic Geek Store</title>
 
   <link rel="stylesheet" href="../css/global.css">
@@ -32,13 +33,24 @@
     <ul>
       <li id="li-perfil">
         <a href="../pages/login.html" id="link-perfil">
-          <h3 id="perfil-nome">Meu perfil</h3>
+          <h3 id="perfil-nome">Entre ou Cadastre-se</h3>
           <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
         </a>
       </li>
 
       <li id="li-logout" style="display:none">
         <button class="btn-logout" onclick="logout()">Sair</button>
+      </li>
+
+      <li id="li-vender" style="display:none">
+        <a href="vender.html">
+          <h3>Meus Produtos</h3>
+          <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Meus Produtos">
+        </a>
+      </li>
+
+      <li id="li-admin" style="display:none">
+        <a href="admin.html" class="btn-admin-header">⚙ Admin</a>
       </li>
 
       <li>
@@ -86,9 +98,29 @@
       <aside id="carrinho-resumo" class="carrinho-resumo" style="display:none">
         <h2>Resumo do Pedido</h2>
         <div class="carrinho-resumo__linha">
+          <span>Subtotal</span>
+          <span id="subtotal-valor">R$ 0,00</span>
+        </div>
+
+        <div id="linha-desconto" class="carrinho-resumo__linha carrinho-resumo__desconto" style="display:none">
+          <span>Desconto</span>
+          <span id="desconto-valor" class="desconto-valor">- R$ 0,00</span>
+        </div>
+
+        <div class="carrinho-resumo__linha">
           <span>Total</span>
           <span id="total-valor" class="total-valor">R$ 0,00</span>
         </div>
+
+        <div class="cupom-box">
+          <label class="cupom-label">Tem um cupom?</label>
+          <div class="cupom-input-row">
+            <input type="text" id="cupom-input" class="cupom-input" placeholder="Digite o cupom">
+            <button type="button" class="btn-aplicar-cupom" onclick="aplicarCupom()">Aplicar</button>
+          </div>
+          <p id="cupom-msg" class="cupom-msg"></p>
+        </div>
+
         <p class="carrinho-parcelamento">Em até 3x sem juros para compras acima de R$150</p>
         <button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
         <a href="../index.html" class="btn-continuar">Continuar Comprando</a>
@@ -96,6 +128,48 @@
     </div>
 
   </main>
+
+  <!-- MODAL DE PAGAMENTO -->
+  <div id="modal-pagamento" class="modal-overlay" style="display:none">
+    <div class="modal-box">
+      <button class="modal-fechar" onclick="fecharModalPagamento()">✕</button>
+      <h2 class="modal-titulo">Escolha a forma de pagamento</h2>
+
+      <div class="pagamento-opcoes">
+        <label class="pagamento-opcao">
+          <input type="radio" name="pagamento" value="pix">
+          <div class="pagamento-opcao__card">
+            <img src="../img/icons/pix.png" alt="PIX" class="pagamento-icone">
+            <span>PIX</span>
+            <small>Aprovação imediata</small>
+          </div>
+        </label>
+        <label class="pagamento-opcao">
+          <input type="radio" name="pagamento" value="cartao">
+          <div class="pagamento-opcao__card">
+            <img src="../img/icons/cartao.png" alt="Cartão" class="pagamento-icone">
+            <span>Cartão de Crédito</span>
+            <small>Em até 3x sem juros</small>
+          </div>
+        </label>
+        <label class="pagamento-opcao">
+          <input type="radio" name="pagamento" value="boleto">
+          <div class="pagamento-opcao__card">
+            <img src="../img/icons/cartao.png" alt="Boleto" class="pagamento-icone">
+            <span>Boleto Bancário</span>
+            <small>Vence em 3 dias úteis</small>
+          </div>
+        </label>
+      </div>
+
+      <div id="pagamento-resumo" class="pagamento-resumo">
+        <span>Total a pagar:</span>
+        <strong id="modal-total">R$ 0,00</strong>
+      </div>
+
+      <button class="btn-confirmar-pagamento" onclick="confirmarPagamento()">Confirmar Pagamento</button>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -154,6 +228,9 @@
         <li><img src="../img/icons/facebook.png" class="icone-social" alt="Facebook"></li>
         <li><img src="../img/icons/whatsapp.png" class="icone-social" alt="WhatsApp"></li>
       </ul>
+    </div>
+    <div class="footer-admin-link">
+      <a href="admin.html">Área Administrativa</a>
     </div>
   </footer>
 

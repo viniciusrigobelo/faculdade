@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>X-Men HQs</title>
 
   <link rel="stylesheet" href="../css/global.css">
@@ -34,13 +35,24 @@
     <ul>
       <li id="li-perfil">
         <a href="../pages/login.html" id="link-perfil">
-          <h3 id="perfil-nome">Meu perfil</h3>
+          <h3 id="perfil-nome">Entre ou Cadastre-se</h3>
           <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Perfil do usuário">
         </a>
       </li>
 
       <li id="li-logout" style="display:none">
         <button class="btn-logout" onclick="logout()">Sair</button>
+      </li>
+
+      <li id="li-vender" style="display:none">
+        <a href="vender.html">
+          <h3>Meus Produtos</h3>
+          <img src="../img/icons/perfil.png" class="header-icone-perfil" alt="Meus Produtos">
+        </a>
+      </li>
+
+      <li id="li-admin" style="display:none">
+        <a href="admin.html" class="btn-admin-header">⚙ Admin</a>
       </li>
 
       <li>
@@ -102,11 +114,20 @@
 
       <section class="criar">
         <h2>Criar conta</h2>
-        <div class="login-divider">
+        <div class="login-divider"></div>
+        <h3>Escolha o tipo de conta para continuar:</h3>
+        <div class="criar-tipo">
+          <a href="cadastro.html?tipo=fisica" class="criar-tipo__card">
+            <span class="criar-tipo__icone">👤</span>
+            <strong>Pessoa Física</strong>
+            <small>Compre quadrinhos na nossa loja</small>
+          </a>
+          <a href="cadastro.html?tipo=juridica" class="criar-tipo__card">
+            <span class="criar-tipo__icone">🏢</span>
+            <strong>Pessoa Jurídica</strong>
+            <small>Cadastre e venda seus produtos</small>
+          </a>
         </div>
-        <h3>Faça seu cadastro no nosso site e fique por dentro de todas as últimas novidades sobre os quadrinhos de
-          super-heróis!</h3>
-        <a href="cadastro.html" class="btn">Criar conta</a>
       </section>
     </div>
   </main>
@@ -201,6 +222,9 @@
         <li><img src="../img/icons/facebook.png" class="icone-social" alt="Facebook"></li>
         <li><img src="../img/icons/whatsapp.png" class="icone-social" alt="WhatsApp"></li>
       </ul>
+    </div>
+    <div class="footer-admin-link">
+      <a href="admin.html">Área Administrativa</a>
     </div>
   </footer>
 
