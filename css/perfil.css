@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    PÁGINA DE PERFIL
 ========================= */
 
@@ -179,7 +179,7 @@
   padding: 11px 14px;
   font-size: 14px;
   color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   outline: none;
   width: 100%;
@@ -213,7 +213,7 @@
   border-radius: 12px;
   font-size: 14px;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
@@ -258,3 +258,4 @@
     max-width: 100%;
   }
 }
+

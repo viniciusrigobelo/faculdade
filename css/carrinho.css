@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    CARRINHO — LAYOUT
 ========================= */
 
@@ -16,7 +16,7 @@
 }
 
 .carrinho-titulo {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Bangers', cursive;
   font-size: 26px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -180,7 +180,7 @@
 }
 
 .carrinho-resumo h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   font-size: 16px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -242,7 +242,7 @@
   font-size: 14px;
   border: 1.5px solid #ddd;
   border-radius: 6px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   outline: none;
   transition: border-color 0.2s;
   text-transform: uppercase;
@@ -261,7 +261,7 @@
   border-radius: 6px;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s;
@@ -302,7 +302,7 @@
   font-weight: 700;
   cursor: pointer;
   margin-bottom: 10px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   letter-spacing: 1px;
   transition: all 0.2s;
 }
@@ -485,7 +485,7 @@
 }
 
 .modal-titulo {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   font-size: 17px;
   font-weight: 700;
   color: #222;
@@ -599,7 +599,7 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   letter-spacing: 1px;
   transition: all 0.2s;
 }
@@ -610,3 +610,4 @@
   transform: scale(1.02) !important;
   border-color: transparent !important;
 }
+

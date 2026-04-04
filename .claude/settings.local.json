@@ -3,7 +3,11 @@
     "allow": [
       "Bash(python3)",
       "Bash(sed '$ d')",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(sed -i \"s/font-family: 'Montserrat', sans-serif;/font-family: 'Bangers', cursive;/g\" \"c:\\\\Users\\\\olive\\\\OneDrive\\\\Área de Trabalho\\\\faculdade\\\\css\\\\admin.css\")",
+      "Bash(sed -i \"s/font-family: Montserrat;/font-family: 'Bangers', cursive;/g\" \"c:\\\\Users\\\\olive\\\\OneDrive\\\\Área de Trabalho\\\\faculdade\\\\css\\\\admin.css\")",
+      "Bash(sed -i \"s/font-family: 'Libre Baskerville', serif;/font-family: 'Bangers', cursive;/g\" \"c:\\\\Users\\\\olive\\\\OneDrive\\\\Área de Trabalho\\\\faculdade\\\\css\\\\admin.css\")",
+      "Bash(powershell -Command ':*)"
     ]
   }
 }

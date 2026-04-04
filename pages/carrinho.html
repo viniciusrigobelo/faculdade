@@ -113,6 +113,39 @@
           <span id="desconto-valor" class="desconto-valor">- R$ 0,00</span>
         </div>
 
+        <!-- FRETE -->
+        <div class="frete-box">
+          <label class="frete-label">Calcular Frete</label>
+          <div class="frete-input-row">
+            <input type="text" id="frete-cep" class="frete-cep-input" placeholder="00000-000" maxlength="9">
+            <button type="button" class="btn-calcular-frete" onclick="calcularFrete()">Calcular</button>
+          </div>
+          <p id="frete-msg" class="frete-msg"></p>
+          <div id="frete-opcoes" class="frete-opcoes" style="display:none">
+            <label class="frete-opcao">
+              <input type="radio" name="frete" value="pac" id="frete-pac">
+              <div class="frete-opcao__info">
+                <span class="frete-opcao__nome">📦 PAC</span>
+                <span class="frete-opcao__prazo" id="frete-pac-prazo"></span>
+                <span class="frete-opcao__preco" id="frete-pac-preco"></span>
+              </div>
+            </label>
+            <label class="frete-opcao">
+              <input type="radio" name="frete" value="sedex" id="frete-sedex">
+              <div class="frete-opcao__info">
+                <span class="frete-opcao__nome">🚀 SEDEX</span>
+                <span class="frete-opcao__prazo" id="frete-sedex-prazo"></span>
+                <span class="frete-opcao__preco" id="frete-sedex-preco"></span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div id="linha-frete" class="carrinho-resumo__linha" style="display:none">
+          <span>Frete</span>
+          <span id="frete-valor">R$ 0,00</span>
+        </div>
+
         <div class="carrinho-resumo__linha">
           <span>Total</span>
           <span id="total-valor" class="total-valor">R$ 0,00</span>

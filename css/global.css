@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    VARIÁVEIS E RESET
 ========================= */
 :root {
@@ -194,7 +194,7 @@ header li img {
   color: var(--cor-texto);
   padding: 6px 16px;
   border-radius: 20px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -258,7 +258,7 @@ header li img {
 }
 
 .estado-vazio h2 {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Bangers', cursive;
   color: var(--cor-primaria);
   font-size: 22px;
   margin-bottom: 10px;
@@ -276,7 +276,7 @@ header li img {
 nav {
   background: var(--cor-fundo);
   display: flex;
-  font-family: 'Montserrat';
+  font-family: 'Bangers', cursive;
 }
 
 nav ul {

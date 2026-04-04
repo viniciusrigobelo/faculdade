@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    PEDIDOS — LAYOUT
 ========================= */
 
@@ -16,7 +16,7 @@
 }
 
 .pedidos-titulo {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Bangers', cursive;
   font-size: 26px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -243,3 +243,4 @@
     text-align: right;
   }
 }
+

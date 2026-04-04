@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    VENDER — LAYOUT
 ========================= */
 
@@ -35,7 +35,7 @@
 }
 
 .vender-titulo {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Bangers', cursive;
   font-size: 26px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -51,7 +51,7 @@
   padding: 12px 22px;
   font-size: 14px;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   cursor: pointer;
   transition: all 0.2s;
   letter-spacing: 0.5px;
@@ -130,7 +130,7 @@
   font-size: 15px;
   border: 1.5px solid #ddd;
   border-radius: 7px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   transition: border-color 0.2s;
   outline: none;
 }
@@ -156,7 +156,7 @@
   border-radius: 7px;
   font-size: 14px;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -175,7 +175,7 @@
   border: 1.5px solid #ddd;
   border-radius: 7px;
   font-size: 14px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -342,3 +342,4 @@
     height: 70px;
   }
 }
+

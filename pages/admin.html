@@ -51,6 +51,7 @@
           <span class="admin-nav__icone">👥</span> Usuários
         </button>
       </nav>
+      <a href="../index.html" class="admin-voltar-site">← Voltar ao Site</a>
       <button class="admin-logout" onclick="logoutAdmin()">Sair do painel</button>
     </aside>
 
@@ -254,6 +255,25 @@
                   <label>UF</label>
                   <input type="text" id="admin-user-estado" placeholder="PR" maxlength="2">
                 </div>
+              </div>
+            </div>
+
+            <!-- Redefinir Senha -->
+            <div class="admin-form__secao">Senha do Usuário</div>
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Senha Atual</label>
+                <input type="text" id="admin-user-senha-atual" readonly style="opacity:0.6;cursor:default;letter-spacing:4px;" placeholder="Nenhuma senha cadastrada">
+              </div>
+            </div>
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Nova Senha <span style="font-size:11px;opacity:0.6">(deixe em branco para não alterar)</span></label>
+                <input type="password" id="admin-user-senha-nova" placeholder="Mínimo 6 caracteres">
+              </div>
+              <div class="admin-form__grupo">
+                <label>Confirmar Nova Senha</label>
+                <input type="password" id="admin-user-senha-confirmar" placeholder="Repita a nova senha">
               </div>
             </div>
 

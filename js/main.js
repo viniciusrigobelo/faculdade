@@ -251,11 +251,136 @@ function aplicarCupom() {
   atualizarTotalComDesconto();
 }
 
+// =========================
+// FRETE
+// =========================
+let freteValor = 0;
+
+function calcularFrete() {
+  const input = document.getElementById("frete-cep");
+  const msg   = document.getElementById("frete-msg");
+  const opcoes = document.getElementById("frete-opcoes");
+  if (!input) return;
+
+  const cep = input.value.replace(/\D/g, "");
+  if (cep.length !== 8) {
+    msg.textContent = "CEP inválido. Digite 8 números.";
+    msg.style.color = "#e74c3c";
+    return;
+  }
+
+  msg.textContent = "Consultando CEP...";
+  msg.style.color = "#888";
+  opcoes.style.display = "none";
+
+  fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.erro) {
+        msg.textContent = "CEP não encontrado.";
+        msg.style.color = "#e74c3c";
+        return;
+      }
+
+      // Formata CEP no input
+      input.value = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+
+      // Calcula frete baseado na UF
+      const uf = data.uf;
+      const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      const pesoTotal = carrinho.reduce((sum, item) => sum + item.qtd, 0);
+
+      const { pac, sedex } = calcularValoresFrete(uf, pesoTotal);
+
+      document.getElementById("frete-pac-preco").textContent  = pac.preco === 0 ? "GRÁTIS" : `R$ ${pac.preco.toFixed(2).replace(".", ",")}`;
+      document.getElementById("frete-pac-prazo").textContent  = `${pac.prazo} dias úteis`;
+      document.getElementById("frete-sedex-preco").textContent = `R$ ${sedex.preco.toFixed(2).replace(".", ",")}`;
+      document.getElementById("frete-sedex-prazo").textContent = `${sedex.prazo} dias úteis`;
+
+      msg.textContent = `📍 ${data.localidade} — ${uf}`;
+      msg.style.color = "#27ae60";
+      opcoes.style.display = "flex";
+
+      // Listeners nas opções
+      document.querySelectorAll('input[name="frete"]').forEach(radio => {
+        radio.onchange = function() {
+          freteValor = this.value === "pac" ? pac.preco : sedex.preco;
+          document.getElementById("frete-valor").textContent = freteValor === 0 ? "GRÁTIS" : `R$ ${freteValor.toFixed(2).replace(".", ",")}`;
+          document.getElementById("linha-frete").style.display = "flex";
+          atualizarTotalComDesconto();
+        };
+      });
+    })
+    .catch(() => {
+      msg.textContent = "Erro ao consultar o CEP. Tente novamente.";
+      msg.style.color = "#e74c3c";
+    });
+}
+
+function calcularValoresFrete(uf, qtdItens) {
+  // Regiões Sul/Sudeste: frete mais barato e rápido
+  const sudeste = ["SP", "RJ", "MG", "ES"];
+  const sul     = ["PR", "SC", "RS"];
+  const co      = ["GO", "MT", "MS", "DF"];
+  const norte   = ["AM", "PA", "AC", "RO", "RR", "AP", "TO"];
+  const nordeste = ["BA", "SE", "AL", "PE", "PB", "RN", "CE", "PI", "MA"];
+
+  const base = 1 + (qtdItens - 1) * 0.5; // peso base em kg simulado
+
+  let pac, sedex;
+
+  if (sudeste.includes(uf)) {
+    pac   = { preco: base <= 1 ? 0 : parseFloat((base * 4.5).toFixed(2)), prazo: 5 };
+    sedex = { preco: parseFloat((base * 14).toFixed(2)), prazo: 1 };
+  } else if (sul.includes(uf)) {
+    pac   = { preco: parseFloat((base * 6).toFixed(2)), prazo: 6 };
+    sedex = { preco: parseFloat((base * 18).toFixed(2)), prazo: 2 };
+  } else if (co.includes(uf)) {
+    pac   = { preco: parseFloat((base * 8).toFixed(2)), prazo: 8 };
+    sedex = { preco: parseFloat((base * 22).toFixed(2)), prazo: 2 };
+  } else if (nordeste.includes(uf)) {
+    pac   = { preco: parseFloat((base * 10).toFixed(2)), prazo: 10 };
+    sedex = { preco: parseFloat((base * 26).toFixed(2)), prazo: 3 };
+  } else if (norte.includes(uf)) {
+    pac   = { preco: parseFloat((base * 13).toFixed(2)), prazo: 14 };
+    sedex = { preco: parseFloat((base * 32).toFixed(2)), prazo: 4 };
+  } else {
+    pac   = { preco: parseFloat((base * 8).toFixed(2)), prazo: 9 };
+    sedex = { preco: parseFloat((base * 22).toFixed(2)), prazo: 3 };
+  }
+
+  return { pac, sedex };
+}
+
+// Formata CEP enquanto digita
+document.addEventListener("DOMContentLoaded", () => {
+  const cepInput = document.getElementById("frete-cep");
+  if (cepInput) {
+    // Pré-preenche com CEP do usuário logado
+    const u = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (u) {
+      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+      const dados = usuarios.find(x => x.email === u.email);
+      if (dados?.endereco?.cep) {
+        cepInput.value = dados.endereco.cep;
+      }
+    }
+    cepInput.addEventListener("input", function() {
+      let v = this.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
+      this.value = v;
+    });
+    cepInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") { e.preventDefault(); calcularFrete(); }
+    });
+  }
+});
+
 function atualizarTotalComDesconto() {
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const subtotal = carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
   const desconto = subtotal * (descontoAtivo / 100);
-  const total = subtotal - desconto;
+  const total = subtotal - desconto + freteValor;
 
   const subtotalEl = document.getElementById("subtotal-valor");
   const totalEl = document.getElementById("total-valor");
@@ -1171,6 +1296,14 @@ function editarUsuarioAdmin(email) {
   document.getElementById("admin-user-cidade").value      = end.cidade      || "";
   document.getElementById("admin-user-estado").value      = end.estado      || "";
 
+  // Mostra senha atual mascarada
+  const campoSenhaAtual = document.getElementById("admin-user-senha-atual");
+  if (campoSenhaAtual) {
+    campoSenhaAtual.value = u.senha ? "••••••••" : "";
+  }
+  document.getElementById("admin-user-senha-nova").value = "";
+  document.getElementById("admin-user-senha-confirmar").value = "";
+
   toggleCamposUsuarioAdmin();
 
   const box = document.getElementById("admin-form-usuario");
@@ -1206,8 +1339,15 @@ function salvarEdicaoUsuario(e) {
   const novoNome  = document.getElementById("admin-user-nome").value.trim();
   const novoEmail = document.getElementById("admin-user-email").value.trim().toLowerCase();
   const tipo      = document.getElementById("admin-user-tipo").value;
+  const senhaNova      = document.getElementById("admin-user-senha-nova").value;
+  const senhaConfirmar = document.getElementById("admin-user-senha-confirmar").value;
 
   if (!novoNome || !novoEmail) { mostrarMensagem("Preencha nome e e-mail!", "erro"); return; }
+
+  if (senhaNova) {
+    if (senhaNova.length < 6) { mostrarMensagem("A senha deve ter pelo menos 6 caracteres!", "erro"); return; }
+    if (senhaNova !== senhaConfirmar) { mostrarMensagem("As senhas não coincidem!", "erro"); return; }
+  }
 
   const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
   const idx = usuarios.findIndex(x => x.email === emailOriginal);
@@ -1237,18 +1377,28 @@ function salvarEdicaoUsuario(e) {
     delete usuarios[idx].cnpj;
   }
 
-  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  const salvar = () => {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    const logado = JSON.parse(localStorage.getItem("usuarioLogado"));
+    if (logado && logado.email === emailOriginal) {
+      localStorage.setItem("usuarioLogado", JSON.stringify({ nome: novoNome, email: novoEmail, tipo }));
+    }
+    fecharFormUsuario();
+    carregarUsuariosAdmin();
+    atualizarStats();
+    document.getElementById("admin-user-senha-nova").value = "";
+    document.getElementById("admin-user-senha-confirmar").value = "";
+    mostrarMensagem("Usuário atualizado com sucesso!");
+  };
 
-  // Atualiza usuarioLogado se for o mesmo
-  const logado = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if (logado && logado.email === emailOriginal) {
-    localStorage.setItem("usuarioLogado", JSON.stringify({ nome: novoNome, email: novoEmail, tipo }));
+  if (senhaNova) {
+    hashSenha(senhaNova).then(hash => {
+      usuarios[idx].senha = hash;
+      salvar();
+    });
+  } else {
+    salvar();
   }
-
-  fecharFormUsuario();
-  carregarUsuariosAdmin();
-  atualizarStats();
-  mostrarMensagem("Usuário atualizado com sucesso!");
 }
 
 function excluirUsuarioAdmin(email) {
