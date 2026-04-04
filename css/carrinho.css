@@ -537,6 +537,34 @@
   border-color: var(--cor-primaria);
 }
 
+.pagamento-opcao--bloqueada {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pagamento-opcao--bloqueada .pagamento-opcao__card {
+  border-color: #ddd;
+  background: #f5f5f5;
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.aviso-cartao {
+  font-size: 12px;
+  color: #e74c3c;
+  font-weight: 600;
+  margin: -6px 0 10px;
+  padding: 7px 12px;
+  background: rgba(231, 76, 60, 0.07);
+  border-left: 3px solid #e74c3c;
+  border-radius: 0 6px 6px 0;
+  display: block;
+}
+
+.aviso-cartao:empty {
+  display: none;
+}
+
 .pagamento-icone {
   width: 32px;
   height: 32px;

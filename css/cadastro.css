@@ -131,6 +131,51 @@ input:valid {
 }
 
 /* =========================
+   ENDEREÇO DE ENTREGA
+========================= */
+
+.endereco-titulo {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--cor-primaria);
+  border-top: 2px solid var(--cor-primaria);
+  margin-top: 24px;
+  padding-top: 16px;
+  margin-bottom: 4px;
+}
+
+.endereco-linha {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.endereco-grupo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.endereco-grupo--cep  { max-width: 160px; }
+.endereco-grupo--num  { max-width: 90px; }
+.endereco-grupo--uf   { max-width: 70px; }
+.endereco-grupo--rua  { flex: 1; }
+
+.opcional {
+  font-weight: 400;
+  font-size: 11px;
+  color: #aaa;
+  margin-left: 4px;
+}
+
+/* Remove o asterisco obrigatório nos labels do endereço */
+#campo-endereco label::after {
+  content: none;
+}
+
+/* =========================
    RESPONSIVIDADE
 ========================= */
 

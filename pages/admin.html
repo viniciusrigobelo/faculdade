@@ -7,7 +7,7 @@
   <title>Painel Admin — Comic Geek Store</title>
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/admin.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@300;400;600;700&family=Libre+Baskerville&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="../img/logos/logo.png">
 </head>
 
@@ -168,6 +168,102 @@
         <div class="admin-aba__header">
           <h2>Usuários Cadastrados</h2>
         </div>
+
+        <!-- Formulário de edição de usuário -->
+        <div id="admin-form-usuario" class="admin-form-box" style="display:none">
+          <h3 id="admin-form-usuario-titulo">Editar Usuário</h3>
+          <form id="form-admin-usuario" class="admin-form" onsubmit="salvarEdicaoUsuario(event)">
+            <input type="hidden" id="admin-user-email-original">
+
+            <!-- Tipo de conta -->
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Tipo de conta</label>
+                <select id="admin-user-tipo" onchange="toggleCamposUsuarioAdmin()">
+                  <option value="fisica">Pessoa Física</option>
+                  <option value="juridica">Pessoa Jurídica</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Pessoa Jurídica -->
+            <div id="admin-user-campo-razao" style="display:none">
+              <div class="admin-form__secao">Dados Empresariais</div>
+              <div class="admin-form__linha">
+                <div class="admin-form__grupo">
+                  <label>Razão Social</label>
+                  <input type="text" id="admin-user-razao" placeholder="Nome da empresa">
+                </div>
+                <div class="admin-form__grupo">
+                  <label>CNPJ</label>
+                  <input type="text" id="admin-user-cnpj" placeholder="00.000.000/0001-00" maxlength="18">
+                </div>
+              </div>
+            </div>
+
+            <!-- Dados Pessoais -->
+            <div class="admin-form__secao">Dados Pessoais</div>
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>Nome *</label>
+                <input type="text" id="admin-user-nome" placeholder="Nome completo" required>
+              </div>
+              <div id="admin-user-campo-cpf" class="admin-form__grupo">
+                <label>CPF</label>
+                <input type="text" id="admin-user-cpf" placeholder="000.000.000-00" maxlength="14">
+              </div>
+            </div>
+            <div class="admin-form__linha">
+              <div class="admin-form__grupo">
+                <label>E-mail *</label>
+                <input type="email" id="admin-user-email" placeholder="email@exemplo.com" required>
+              </div>
+            </div>
+
+            <!-- Endereço (apenas Física) -->
+            <div id="admin-user-campo-endereco" style="display:none">
+              <div class="admin-form__secao">Endereço de Entrega</div>
+              <div class="admin-form__linha">
+                <div class="admin-form__grupo admin-form__grupo--cep">
+                  <label>CEP</label>
+                  <input type="text" id="admin-user-cep" placeholder="00000-000" maxlength="9">
+                </div>
+                <div class="admin-form__grupo">
+                  <label>Rua / Logradouro</label>
+                  <input type="text" id="admin-user-rua" placeholder="Nome da rua">
+                </div>
+                <div class="admin-form__grupo admin-form__grupo--num">
+                  <label>Número</label>
+                  <input type="text" id="admin-user-numero" placeholder="Nº">
+                </div>
+              </div>
+              <div class="admin-form__linha">
+                <div class="admin-form__grupo">
+                  <label>Complemento</label>
+                  <input type="text" id="admin-user-complemento" placeholder="Apto, bloco...">
+                </div>
+                <div class="admin-form__grupo">
+                  <label>Bairro</label>
+                  <input type="text" id="admin-user-bairro" placeholder="Seu bairro">
+                </div>
+                <div class="admin-form__grupo">
+                  <label>Cidade</label>
+                  <input type="text" id="admin-user-cidade" placeholder="Sua cidade">
+                </div>
+                <div class="admin-form__grupo admin-form__grupo--uf">
+                  <label>UF</label>
+                  <input type="text" id="admin-user-estado" placeholder="PR" maxlength="2">
+                </div>
+              </div>
+            </div>
+
+            <div class="admin-form__acoes">
+              <button type="submit" class="btn-admin-salvar">Salvar Usuário</button>
+              <button type="button" class="btn-admin-cancelar" onclick="fecharFormUsuario()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
         <div class="admin-tabela-wrapper">
           <table class="admin-tabela">
             <thead>
@@ -175,6 +271,7 @@
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>Tipo</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody id="admin-tabela-usuarios"></tbody>

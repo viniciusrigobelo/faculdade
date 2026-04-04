@@ -12,22 +12,33 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
-  background-color: var(--cor-cinza);
+  font-family: 'Bangers', 'Montserrat', sans-serif;
+  background-color: #0d0d1a;
   color: var(--cor-texto);
 }
 
 h1, h2, h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Bangers', cursive;
 }
 
-h1, h2 {
-  font-weight: 600;
-  letter-spacing: 1.5px;
+h1 {
+  font-weight: 400;
+  letter-spacing: 3px;
+}
+
+h2 {
+  font-weight: 400;
+  letter-spacing: 2px;
 }
 
 h3 {
-  font-weight: 500;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+}
+
+p, label, input, select, textarea, button, a, li, span, td, th {
+  font-family: 'Bangers', cursive;
+  letter-spacing: 1px;
 }
 
 input:focus {
@@ -60,7 +71,7 @@ header {
 
 .header-logo {
   width: auto;
-  height: 115px;
+  height: 150px;
   margin: auto;
   padding: 8px 14px;
   object-fit: contain;
@@ -704,4 +715,148 @@ footer h2 {
   .footer-pagamentos h3 {
     font-size: 11px;
   }
+}
+
+/* =========================
+   MODAL PERFIL DO USUÁRIO
+========================= */
+
+.perfil-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.perfil-modal {
+  background: #16101f;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 0 32px;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(139,47,201,0.3);
+  animation: perfilEntrar 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  overflow: hidden;
+}
+
+@keyframes perfilEntrar {
+  from { opacity: 0; transform: scale(0.9) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Faixa roxa no topo */
+.perfil-modal::before {
+  content: '';
+  display: block;
+  height: 80px;
+  background: linear-gradient(135deg, var(--cor-primaria), #b05ee0);
+  margin-bottom: 0;
+}
+
+.perfil-modal__fechar {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: rgba(255,255,255,0.15) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  font-size: 14px !important;
+  color: #fff !important;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s !important;
+  padding: 0 !important;
+}
+
+.perfil-modal__fechar:hover {
+  background: rgba(255,255,255,0.3) !important;
+  transform: none !important;
+}
+
+.perfil-modal__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cor-primaria), #b05ee0);
+  border: 4px solid #16101f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  margin: -36px auto 14px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(139,47,201,0.5);
+}
+
+.perfil-modal__nome {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  padding: 0 24px;
+}
+
+.perfil-modal__tipo {
+  display: inline-block;
+  background: rgba(139,47,201,0.2);
+  border: 1px solid rgba(139,47,201,0.4);
+  color: #c97aff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.perfil-modal__dados {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0 24px;
+}
+
+.perfil-dado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  gap: 12px;
+}
+
+.perfil-dado + .perfil-dado {
+  margin-top: 6px;
+}
+
+.perfil-dado__label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.perfil-dado__valor {
+  font-size: 14px;
+  color: #fff;
+  font-weight: 500;
+  text-align: right;
+  word-break: break-all;
 }
