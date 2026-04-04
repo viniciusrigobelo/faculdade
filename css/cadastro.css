@@ -150,6 +150,7 @@ input:valid {
   display: flex;
   gap: 12px;
   align-items: flex-end;
+  flex-wrap: wrap;
 }
 
 .endereco-grupo {
@@ -190,18 +191,38 @@ input:valid {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .cadastro-container {
     width: 95%;
-    padding: 16px;
+    padding: 18px;
   }
 
   .cadastro h1 {
     font-size: 22px;
   }
+}
+
+@media (max-width: 480px) {
+  .cadastro-container {
+    width: 100%;
+    border-radius: 0;
+    padding: 16px;
+    box-shadow: none;
+  }
+
+  .cadastro h1 {
+    font-size: 20px;
+  }
 
   .cadastro-btn {
     width: 100%;
     text-align: center;
+  }
+
+  .endereco-grupo--cep,
+  .endereco-grupo--num,
+  .endereco-grupo--uf {
+    max-width: 100%;
+    flex: 1 1 100%;
   }
 }

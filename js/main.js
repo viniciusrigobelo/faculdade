@@ -252,6 +252,38 @@ function aplicarCupom() {
 }
 
 // =========================
+// CEP — AUTO PREENCHIMENTO
+// =========================
+function buscarCepAutoFill(cep, campos, msgId) {
+  const msg = document.getElementById(msgId);
+  if (msg) { msg.textContent = "Buscando endereço..."; msg.style.color = "#888"; }
+
+  fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.erro) {
+        if (msg) { msg.textContent = "CEP não encontrado."; msg.style.color = "#e74c3c"; }
+        return;
+      }
+      const setField = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      };
+      setField(campos.rua,    data.logradouro || "");
+      setField(campos.bairro, data.bairro     || "");
+      setField(campos.cidade, data.localidade || "");
+      setField(campos.estado, data.uf         || "");
+      if (msg) {
+        msg.textContent = `📍 ${data.localidade} — ${data.uf}`;
+        msg.style.color = "#27ae60";
+      }
+    })
+    .catch(() => {
+      if (msg) { msg.textContent = "Erro ao buscar o CEP."; msg.style.color = "#e74c3c"; }
+    });
+}
+
+// =========================
 // FRETE
 // =========================
 let freteValor = 0;
@@ -354,15 +386,17 @@ function calcularValoresFrete(uf, qtdItens) {
 
 // Formata CEP enquanto digita
 document.addEventListener("DOMContentLoaded", () => {
+  // --- CEP no carrinho (frete) ---
   const cepInput = document.getElementById("frete-cep");
   if (cepInput) {
-    // Pré-preenche com CEP do usuário logado
     const u = JSON.parse(localStorage.getItem("usuarioLogado"));
     if (u) {
       const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
       const dados = usuarios.find(x => x.email === u.email);
       if (dados?.endereco?.cep) {
         cepInput.value = dados.endereco.cep;
+        // Calcula frete automaticamente com o CEP salvo
+        calcularFrete();
       }
     }
     cepInput.addEventListener("input", function() {
@@ -372,6 +406,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     cepInput.addEventListener("keydown", function(e) {
       if (e.key === "Enter") { e.preventDefault(); calcularFrete(); }
+    });
+  }
+
+  // --- CEP no cadastro ---
+  const cepCadastro = document.getElementById("cep");
+  if (cepCadastro) {
+    cepCadastro.addEventListener("input", function() {
+      let v = this.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
+      this.value = v;
+      if (v.replace(/\D/g, "").length === 8) {
+        buscarCepAutoFill(v.replace(/\D/g, ""), {
+          rua: "rua", bairro: "bairro", cidade: "cidade", estado: "estado"
+        }, "cep-msg");
+      } else {
+        const msg = document.getElementById("cep-msg");
+        if (msg) msg.textContent = "";
+      }
+    });
+  }
+
+  // --- CEP no perfil ---
+  const cepPerfil = document.getElementById("perfil-cep");
+  if (cepPerfil) {
+    cepPerfil.addEventListener("input", function() {
+      let v = this.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
+      this.value = v;
+      if (v.replace(/\D/g, "").length === 8) {
+        buscarCepAutoFill(v.replace(/\D/g, ""), {
+          rua: "perfil-rua", bairro: "perfil-bairro", cidade: "perfil-cidade", estado: "perfil-estado"
+        }, "perfil-cep-msg");
+      } else {
+        const msg = document.getElementById("perfil-cep-msg");
+        if (msg) msg.textContent = "";
+      }
     });
   }
 });
@@ -662,7 +732,15 @@ function inicializarPesquisa() {
   });
 
   input.addEventListener("input", () => {
-    if (!input.value.trim()) filtrarProdutos("tudo");
+    aplicarBusca();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      input.value = "";
+      filtrarProdutos("tudo");
+      input.blur();
+    }
   });
 }
 
@@ -690,7 +768,7 @@ function inicializarBotoesCarrinho() {
 
     const pct = Math.round(((orig - venda) / orig) * 100);
     const badge = document.createElement("div");
-    badge.className = "card-produto__badge-desconto";
+    badge.className = "card-produto__badge-desconto badge-pct";
     badge.textContent = "-" + pct + "%";
     card.querySelector(".card-produto__imagem").appendChild(badge);
   });

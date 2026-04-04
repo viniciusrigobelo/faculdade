@@ -1,6 +1,10 @@
 ﻿/* =========================
    VARIÁVEIS E RESET
 ========================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --cor-fundo: #1f1f1f;
   --cor-primaria: #8B2FC9;
@@ -15,6 +19,12 @@ body {
   font-family: 'Bangers', 'Montserrat', sans-serif;
   background-color: #0d0d1a;
   color: var(--cor-texto);
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 h1, h2, h3 {
@@ -78,27 +88,86 @@ header {
 }
 
 .header-pesquisa {
-  max-width: 500px;
+  max-width: 480px;
   width: 100%;
-  height: auto;
-  border-radius: 15px;
-  background-color: var(--cor-cinza);
-  border: 3px solid var(--cor-primaria);
   margin: auto;
-  padding: 5px;
+}
+
+.header-pesquisa form {
+  width: 100%;
+}
+
+.pesquisa-wrapper {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(139, 47, 201, 0.5);
+  border-radius: 30px;
+  padding: 0 6px 0 14px;
+  gap: 8px;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+.pesquisa-wrapper:focus-within {
+  border-color: var(--cor-primaria);
+  background: rgba(139, 47, 201, 0.12);
+  box-shadow: 0 0 0 3px rgba(139, 47, 201, 0.2), 0 4px 20px rgba(139, 47, 201, 0.15);
+}
+
+.pesquisa-icone-esq {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+  transition: opacity 0.2s;
+}
+
+.pesquisa-wrapper:focus-within .pesquisa-icone-esq {
+  opacity: 0.9;
 }
 
 .header-pesquisa-input {
-  width: 100%;
-  max-width: 455px;
-  height: 30px;
-  border-radius: 15px;
-  display: inline-flex;
-  border: 0px transparent;
-  margin: auto;
+  flex: 1;
+  height: 42px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Bangers', cursive;
+  font-size: 15px;
+  letter-spacing: 0.8px;
+  color: #fff;
+  min-width: 0;
 }
 
-header button {
+.header-pesquisa-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 14px;
+}
+
+.pesquisa-btn {
+  flex-shrink: 0;
+  height: 32px;
+  padding: 0 16px;
+  background: var(--cor-primaria);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Bangers', cursive;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.pesquisa-btn:hover {
+  background: var(--cor-destaque) !important;
+  color: #000 !important;
+  transform: none !important;
+  border-color: transparent !important;
+}
+
+header button:not(.pesquisa-btn):not(.btn-logout) {
   width: 30px;
   height: 30px;
   border-radius: 5px;
@@ -154,16 +223,19 @@ header li img {
 .header-icone-perfil {
   position: relative;
   top: 10px;
+  filter: brightness(0) invert(1);
 }
 
 .header-icone-pedidos {
   position: relative;
   top: 10px;
+  filter: brightness(0) invert(1);
 }
 
 .header-icone-carrinho {
   position: relative;
   top: 10px;
+  filter: brightness(0) invert(1);
 }
 
 /* Badge do carrinho */

@@ -129,7 +129,7 @@
   left: 8px;
   background: linear-gradient(135deg, #e74c3c, #c0392b);
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   padding: 4px 10px;
   border-radius: 20px;
@@ -137,6 +137,25 @@
   box-shadow: 0 2px 8px rgba(231, 76, 60, 0.5);
   pointer-events: none;
   z-index: 2;
+}
+
+/* Badge de % desconto — embaixo do badge de NOVO/TRENDING */
+.card-produto__badge-desconto.badge-pct {
+  top: 34px;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.5);
+}
+
+/* Badge TRENDING — roxo, canto esquerdo */
+.card-produto__badge-desconto.badge-trending {
+  background: linear-gradient(135deg, var(--cor-primaria), #b05ee0);
+  box-shadow: 0 2px 8px rgba(139, 47, 201, 0.5);
+}
+
+/* Badge PRÉ-VENDA — dourado, canto esquerdo */
+.card-produto__badge-desconto.badge-prevenda {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.5);
 }
 
 .card-produto__imagem img {
@@ -766,6 +785,14 @@
     max-height: 280px;
   }
 
+  .secao-hero {
+    padding: 32px 20px;
+  }
+
+  .secao-hero__titulo {
+    font-size: 1.8rem;
+  }
+
   .lista-cards {
     margin: 30px 12px;
     gap: 16px;
@@ -788,6 +815,19 @@
 @media (max-width: 600px) {
   .banner-principal {
     height: 180px;
+  }
+
+  .secao-hero {
+    padding: 24px 16px;
+  }
+
+  .secao-hero__titulo {
+    font-size: 1.4rem;
+  }
+
+  .secao-hero__icone {
+    width: 40px;
+    height: 40px;
   }
 
   .lista-cards {
@@ -819,5 +859,16 @@
 
   .divisor {
     margin: 15px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .card-produto {
+    width: calc(50% - 8px);
+    min-height: 300px;
+  }
+
+  .card-produto__imagem {
+    height: 160px;
   }
 }

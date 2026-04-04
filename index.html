@@ -50,10 +50,13 @@
 
     <div class="header-pesquisa">
       <form id="form-pesquisa" autocomplete="off" aria-label="Pesquisar produtos">
-        <input type="text" id="input-pesquisa" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
-        <button type="submit" aria-label="Buscar">
-          <img src="img/icons/lupinha.png" alt="Ícone de busca">
-        </button>
+        <div class="pesquisa-wrapper">
+          <img src="img/icons/lupinha.png" alt="" class="pesquisa-icone-esq" aria-hidden="true">
+          <input type="text" id="input-pesquisa" class="header-pesquisa-input" placeholder="Buscar quadrinhos, autores...">
+          <button type="submit" class="pesquisa-btn" aria-label="Buscar">
+            <span>Buscar</span>
+          </button>
+        </div>
       </form>
     </div>
 
@@ -313,6 +316,82 @@
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="lancamentos"
+          data-nome="Miles Morales: Spider-Man #1"
+          data-preco="32.90"
+          data-img="img/quadrinhos/spiderman.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto">🔥 NOVO</span>
+            <img src="img/quadrinhos/spiderman.jpg" alt="Miles Morales: Spider-Man #1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Miles Morales: Spider-Man #1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$32,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="lancamentos"
+          data-nome="Deadpool & Wolverine: WWIII #1"
+          data-preco="29.90"
+          data-img="img/quadrinhos/deadpooleixo.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto">🔥 NOVO</span>
+            <img src="img/quadrinhos/deadpooleixo.jpg" alt="Deadpool & Wolverine: WWIII #1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Deadpool & Wolverine: WWIII #1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$29,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="lancamentos"
+          data-nome="Batman: The Gotham War #1"
+          data-preco="27.90"
+          data-img="img/quadrinhos/batman.png">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto">🔥 NOVO</span>
+            <img src="img/quadrinhos/batman.png" alt="Batman: The Gotham War #1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Batman: The Gotham War #1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$27,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="lancamentos"
+          data-nome="Harley Quinn: Black + White + Redder"
+          data-preco="24.90"
+          data-img="img/quadrinhos/coringa.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto">🔥 NOVO</span>
+            <img src="img/quadrinhos/coringa.jpg" alt="Harley Quinn: Black + White + Redder">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Harley Quinn: Black + White + Redder</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$24,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
       </section>
     </div>
 
@@ -416,6 +495,7 @@
             <h3>Guardiões da Galáxia - A Queda</h3>
           </div>
           <div class="card-produto__preco">
+            <h3>R$32,90</h3>
             <h2>R$24,90</h2>
           </div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
@@ -512,6 +592,81 @@
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="marvel"
+          data-nome="Moon Knight: Herói da Lua (2021)"
+          data-preco="29.90"
+          data-img="img/quadrinhos/carnage.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
+            <img src="img/quadrinhos/carnage.jpg" alt="Moon Knight: Herói da Lua">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Moon Knight: Herói da Lua (2021)</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$29,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="marvel"
+          data-nome="X-Men: Era de Krakoa Vol.1"
+          data-preco="34.90"
+          data-img="img/quadrinhos/alloutavengers.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
+            <img src="img/quadrinhos/alloutavengers.jpg" alt="X-Men: Era de Krakoa Vol.1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>X-Men: Era de Krakoa Vol.1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$34,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="marvel"
+          data-nome="Ms. Marvel: A Nova Mutante"
+          data-preco="26.90"
+          data-img="img/quadrinhos/guarioesdagalaxia.webp">
+          <div class="card-produto__imagem">
+            <img src="img/quadrinhos/guarioesdagalaxia.webp" alt="Ms. Marvel: A Nova Mutante">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Ms. Marvel: A Nova Mutante</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$26,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="marvel"
+          data-nome="Wolverine: O Arquivo Weapon X"
+          data-preco="27.90"
+          data-img="img/quadrinhos/guerracivil.jpg">
+          <div class="card-produto__imagem">
+            <img src="img/quadrinhos/guerracivil.jpg" alt="Wolverine: O Arquivo Weapon X">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Wolverine: O Arquivo Weapon X</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h3>R$33,90</h3>
+            <h2>R$27,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
       </section>
     </div>
 
@@ -579,6 +734,7 @@
             <h3>Lanterna Verde - A Guerra Dos Anéis</h3>
           </div>
           <div class="card-produto__preco">
+            <h3>R$27,90</h3>
             <h2>R$19,90</h2>
           </div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
@@ -689,6 +845,82 @@
           </div>
           <div class="card-produto__preco">
             <h2>R$24,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="dc"
+          data-nome="Nightwing: Saltando para a Luz"
+          data-preco="28.90"
+          data-img="img/quadrinhos/flash.png">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
+            <img src="img/quadrinhos/flash.png" alt="Nightwing: Saltando para a Luz">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Nightwing: Saltando para a Luz</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$28,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="dc"
+          data-nome="Superman: Filho de Kal-El #1"
+          data-preco="26.90"
+          data-img="img/quadrinhos/superman.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
+            <img src="img/quadrinhos/superman.jpg" alt="Superman: Filho de Kal-El #1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Superman: Filho de Kal-El #1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$26,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="dc"
+          data-nome="Poison Ivy #1: Raízes do Mal"
+          data-preco="22.90"
+          data-img="img/quadrinhos/lanternaverde.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto">🔥 NOVO</span>
+            <img src="img/quadrinhos/lanternaverde.jpg" alt="Poison Ivy #1: Raízes do Mal">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Poison Ivy #1: Raízes do Mal</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$22,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="dc"
+          data-nome="Harley Quinn: Roleta Russa (2021)"
+          data-preco="25.90"
+          data-img="img/quadrinhos/crisesinfinitas.jpg">
+          <div class="card-produto__imagem">
+            <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Harley Quinn: Roleta Russa">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Harley Quinn: Roleta Russa (2021)</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h3>R$31,90</h3>
+            <h2>R$25,90</h2>
           </div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
@@ -815,6 +1047,63 @@
           </div>
           <div class="card-produto__preco">
             <h2>R$33,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="prevenda"
+          data-nome="Miles Morales: Spider-Man — A Saga Secreta"
+          data-preco="44.90"
+          data-img="img/quadrinhos/spiderman.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
+            <img src="img/quadrinhos/spiderman.jpg" alt="Miles Morales: Spider-Man — A Saga Secreta">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Miles Morales: Spider-Man — A Saga Secreta</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$44,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="prevenda"
+          data-nome="X-Men: From the Ashes #1"
+          data-preco="38.90"
+          data-img="img/quadrinhos/alloutavengers.jpg">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
+            <img src="img/quadrinhos/alloutavengers.jpg" alt="X-Men: From the Ashes #1">
+          </div>
+          <div class="card-produto__nome">
+            <h3>X-Men: From the Ashes #1</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$38,90</h2>
+          </div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="dc"
+          data-secao="prevenda"
+          data-nome="Batman: Gotham by Gaslight — Era Kryptoniana"
+          data-preco="41.90"
+          data-img="img/quadrinhos/batman.png">
+          <div class="card-produto__imagem">
+            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
+            <img src="img/quadrinhos/batman.png" alt="Batman: Gotham by Gaslight — Era Kryptoniana">
+          </div>
+          <div class="card-produto__nome">
+            <h3>Batman: Gotham by Gaslight — Era Kryptoniana</h3>
+          </div>
+          <div class="card-produto__preco">
+            <h2>R$41,90</h2>
           </div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>

@@ -236,11 +236,20 @@
 
   .pedido-item {
     flex-wrap: wrap;
+    gap: 10px;
   }
 
   .pedido-item__preco {
     width: 100%;
     text-align: right;
+  }
+
+  .pedido-itens {
+    padding: 10px 14px;
+  }
+
+  .pedido-card__header {
+    padding: 12px 14px;
   }
 }
 

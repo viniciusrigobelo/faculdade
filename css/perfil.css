@@ -233,11 +233,35 @@
    RESPONSIVIDADE
 ========================= */
 
+@media (max-width: 768px) {
+  .perfil-banner {
+    padding: 32px 24px 24px;
+  }
+
+  .perfil-banner__info h1 {
+    font-size: 20px;
+  }
+
+  .perfil-banner__avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 26px;
+  }
+
+  .perfil-content {
+    margin: 24px auto 0;
+  }
+}
+
 @media (max-width: 600px) {
   .perfil-banner {
     flex-wrap: wrap;
-    padding: 32px 20px 24px;
-    gap: 16px;
+    padding: 24px 16px 20px;
+    gap: 14px;
+  }
+
+  .perfil-banner__info h1 {
+    font-size: 18px;
   }
 
   .perfil-banner__voltar {
@@ -246,7 +270,8 @@
 
   .perfil-grid {
     grid-template-columns: 1fr;
-    padding: 18px;
+    padding: 16px;
+    gap: 12px;
   }
 
   .perfil-campo--full,
@@ -256,6 +281,10 @@
   .perfil-campo--uf {
     grid-column: auto;
     max-width: 100%;
+  }
+
+  .perfil-card__header {
+    padding: 14px 16px;
   }
 }
 

@@ -412,6 +412,15 @@
   .pagamento-opcoes {
     gap: 10px;
   }
+
+  .frete-opcao__info {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .frete-opcao__preco {
+    min-width: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -424,13 +433,19 @@
     height: 80px;
   }
 
-  .cupom-input-row {
+  .cupom-input-row,
+  .frete-input-row {
     flex-direction: column;
   }
 
-  .btn-aplicar-cupom {
+  .btn-aplicar-cupom,
+  .btn-calcular-frete {
     width: 100%;
     height: 40px;
+  }
+
+  .carrinho-resumo {
+    padding: 16px;
   }
 }
 
@@ -609,5 +624,140 @@
   color: #000 !important;
   transform: scale(1.02) !important;
   border-color: transparent !important;
+}
+
+/* =========================
+   FRETE BOX
+========================= */
+
+.frete-box {
+  margin: 16px 0;
+  padding: 14px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1.5px dashed #ddd;
+}
+
+.frete-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.frete-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.frete-cep-input {
+  flex: 1;
+  height: 38px;
+  padding: 0 12px;
+  font-size: 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Bangers', cursive;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.frete-cep-input:focus {
+  border-color: var(--cor-primaria);
+}
+
+.btn-calcular-frete {
+  height: 38px;
+  padding: 0 14px;
+  background: var(--cor-primaria);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Bangers', cursive;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-calcular-frete:hover {
+  background: var(--cor-destaque) !important;
+  color: #000 !important;
+  transform: none !important;
+  border-color: transparent !important;
+}
+
+.frete-msg {
+  margin: 8px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 18px;
+}
+
+.frete-opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.frete-opcao {
+  cursor: pointer;
+}
+
+.frete-opcao input[type="radio"] {
+  display: none;
+}
+
+.frete-opcao__info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: all 0.2s;
+}
+
+.frete-opcao input[type="radio"]:checked + .frete-opcao__info {
+  border-color: var(--cor-primaria);
+  background: #f5f3ff;
+}
+
+.frete-opcao__info:hover {
+  border-color: var(--cor-primaria);
+}
+
+.frete-opcao__nome {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  flex: 1;
+}
+
+.frete-opcao__prazo {
+  font-size: 11px;
+  color: #888;
+}
+
+.frete-opcao__preco {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cor-primaria);
+  min-width: 60px;
+  text-align: right;
+}
+
+/* =========================
+   CEP MSG (cadastro / perfil)
+========================= */
+
+.cep-msg {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 16px;
 }
 
