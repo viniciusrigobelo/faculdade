@@ -57,11 +57,11 @@ main.cadastro {
   box-shadow: 0 0 5px var(--cor-primaria);
 }
 
-input:invalid {
+input:invalid:not(:placeholder-shown) {
   border-color: #ff4d4d;
 }
 
-input:valid {
+input:valid:not(:placeholder-shown) {
   border-color: #4caf50;
 }
 

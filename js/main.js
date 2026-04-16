@@ -102,6 +102,7 @@ function inicializarHeader() {
       const _u = _usuarios.find(x => x.email === usuarioLogado.email);
       if (_u && _u.status === "aprovado") {
         liVender.style.display = "inline-block";
+        document.querySelector("header")?.classList.add("header--pj");
       }
     }
   }
@@ -1551,14 +1552,93 @@ function inicializarCadastro() {
         };
       }
 
-      usuarios.push(novoUsuario);
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      localStorage.setItem("usuarioLogado", JSON.stringify({ nome: novoUsuario.nome, email: novoUsuario.email, tipo }));
-
-      mostrarMensagem("Conta criada com sucesso!");
-      setTimeout(() => (window.location.href = "../index.html"), 1500);
+      // Abre modal de aceite de termos antes de salvar a conta
+      abrirModalTermos(novoUsuario, usuarios, tipo);
     });
   });
+}
+
+// =========================
+// MODAL ACEITE DE TERMOS
+// =========================
+function abrirModalTermos(novoUsuario, usuarios, tipo) {
+  const overlay = document.createElement("div");
+  overlay.className = "termos-modal-overlay";
+  overlay.id = "termos-modal-overlay";
+
+  overlay.innerHTML =
+    '<div class="termos-modal">' +
+      '<h2 class="termos-modal__titulo">Antes de continuar</h2>' +
+      '<p class="termos-modal__sub">Leia os pontos principais e confirme antes de criar sua conta.</p>' +
+      '<ul class="termos-modal__lista">' +
+        '<li><span>🔞</span><span>Esta plataforma é exclusiva para <strong>maiores de 18 anos</strong>. Declaração falsa sujeita às penalidades do Art. 299 do Código Penal.</span></li>' +
+        '<li><span>🔒</span><span>Sua senha é protegida com criptografia SHA-256. Nunca a compartilhamos.</span></li>' +
+        '<li><span>📦</span><span>Seus dados de entrega são usados apenas para processar pedidos.</span></li>' +
+        '<li><span>🚫</span><span>Não vendemos seus dados para terceiros (LGPD — Lei nº 13.709/2018).</span></li>' +
+        '<li><span>↩️</span><span>Direito de devolução em até 7 dias após o recebimento (CDC, Art. 49).</span></li>' +
+        '<li><span>⚖️</span><span>Transações acima de R$ 10.000,00 podem exigir documentação adicional (COAF).</span></li>' +
+      '</ul>' +
+      '<p class="termos-modal__links">' +
+        'Leia na íntegra: ' +
+        '<a href="termos.html" target="_blank">Termos e Condições de Uso</a> e ' +
+        '<a href="privacidade.html" target="_blank">Política de Privacidade</a>.' +
+      '</p>' +
+      '<div class="termos-modal__check-row">' +
+        '<input type="checkbox" id="check-maior-idade">' +
+        '<label for="check-maior-idade">Declaro, sob as penas da lei, que sou <strong>maior de 18 anos</strong> e possuo plena capacidade civil para contratar (Art. 5º do Código Civil).</label>' +
+      '</div>' +
+      '<div class="termos-modal__check-row">' +
+        '<input type="checkbox" id="check-aceite-termos">' +
+        '<label for="check-aceite-termos">Li, compreendi e concordo integralmente com os <strong>Termos e Condições de Uso</strong> e a <strong>Política de Privacidade</strong> da Comic Geek Store.</label>' +
+      '</div>' +
+      '<div class="termos-modal__btns">' +
+        '<button class="termos-btn-cancelar" onclick="fecharModalTermos()">Cancelar</button>' +
+        '<button class="termos-btn-aceitar" id="btn-aceitar-termos" disabled onclick="confirmarAceiteTermos()">Criar Conta</button>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(overlay);
+
+  // Habilita botão somente quando AMBOS os checkboxes estiverem marcados
+  function verificarChecks() {
+    var idade  = document.getElementById("check-maior-idade").checked;
+    var termos = document.getElementById("check-aceite-termos").checked;
+    document.getElementById("btn-aceitar-termos").disabled = !(idade && termos);
+  }
+  document.getElementById("check-maior-idade").addEventListener("change", verificarChecks);
+  document.getElementById("check-aceite-termos").addEventListener("change", verificarChecks);
+
+  // Salva dados pendentes para usar ao confirmar
+  window._pendingUsuario = novoUsuario;
+  window._pendingUsuarios = usuarios;
+  window._pendingTipo = tipo;
+}
+
+function fecharModalTermos() {
+  const overlay = document.getElementById("termos-modal-overlay");
+  if (overlay) overlay.remove();
+  window._pendingUsuario = null;
+  window._pendingUsuarios = null;
+  window._pendingTipo = null;
+}
+
+function confirmarAceiteTermos() {
+  const novoUsuario = window._pendingUsuario;
+  const usuarios = window._pendingUsuarios;
+  const tipo = window._pendingTipo;
+  if (!novoUsuario || !usuarios) return;
+
+  novoUsuario.termosAceitos = true;
+  novoUsuario.termosAceitosEm = new Date().toISOString();
+  novoUsuario.maiorIdadeDeclarado = true;
+
+  usuarios.push(novoUsuario);
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  localStorage.setItem("usuarioLogado", JSON.stringify({ nome: novoUsuario.nome, email: novoUsuario.email, tipo }));
+
+  fecharModalTermos();
+  mostrarMensagem("Conta criada com sucesso!");
+  setTimeout(() => (window.location.href = "../index.html"), 1500);
 }
 
 // =========================
@@ -2700,6 +2780,34 @@ window.addEventListener("storage", function (e) {
 })();
 
 // =========================
+// PREVIEW DE IMAGEM — FORMULÁRIOS
+// =========================
+function _aplicarPreviewImg(url, imgEl, placeholderEl) {
+  if (!imgEl || !placeholderEl) return;
+  var limpo = (url || "").trim();
+  if (limpo.length > 4) {
+    imgEl.src = limpo;
+    imgEl.style.display = "block";
+    placeholderEl.style.display = "none";
+  } else {
+    imgEl.style.display = "none";
+    placeholderEl.style.display = "flex";
+  }
+}
+
+function atualizarPreviewImgAdmin(url) {
+  _aplicarPreviewImg(url,
+    document.getElementById("admin-img-preview"),
+    document.getElementById("admin-img-placeholder"));
+}
+
+function atualizarPreviewImgVendedor(url) {
+  _aplicarPreviewImg(url,
+    document.getElementById("vender-img-preview"),
+    document.getElementById("vender-img-placeholder"));
+}
+
+// =========================
 // BADGES E PARCELAS DOS CARDS
 // =========================
 (function () {
@@ -2731,10 +2839,7 @@ window.addEventListener("storage", function (e) {
         badgePromo.textContent = "Promoção";
         imgBox.appendChild(badgePromo);
 
-        var badgePct = document.createElement("span");
-        badgePct.className = "card-badge-pct-off";
-        badgePct.innerHTML = pct + "%<br>OFF";
-        imgBox.appendChild(badgePct);
+
       }
     }
 
@@ -2759,66 +2864,84 @@ window.addEventListener("storage", function (e) {
 })();
 
 // =========================
-// SCROLL HORIZONTAL DE PRODUTOS
+// SCROLL HORIZONTAL DE PRODUTOS (auto-scroll + bolinhas por página)
 // =========================
 (function () {
-  var SCROLL_PX = 620;
+  var CARD_WIDTH = 191;
+  var INTERVALO  = 2800;
 
   function criarScrollHorizontal(lista) {
     if (!lista) return;
-    if (lista.parentElement && lista.parentElement.classList.contains("secao-scroll-wrapper")) return;
+    if (lista.dataset.autoScrollOk) return;
+    lista.dataset.autoScrollOk = "1";
 
-    var wrapper = document.createElement("div");
-    wrapper.className = "secao-scroll-wrapper";
-    lista.parentNode.insertBefore(wrapper, lista);
-    wrapper.appendChild(lista);
+    var timer = null;
+    var total  = lista.querySelectorAll(".card-produto").length;
 
-    var btnPrev = document.createElement("button");
-    btnPrev.type = "button";
-    btnPrev.className = "secao-scroll__btn secao-scroll__btn--prev oculto";
-    btnPrev.innerHTML = "&#8249;";
-    btnPrev.setAttribute("aria-label", "Rolar para a esquerda");
+    var dotsWrap = document.createElement("div");
+    dotsWrap.className = "produto-dots";
+    lista.parentNode.insertBefore(dotsWrap, lista.nextSibling);
 
-    var btnNext = document.createElement("button");
-    btnNext.type = "button";
-    btnNext.className = "secao-scroll__btn secao-scroll__btn--next";
-    btnNext.innerHTML = "&#8250;";
-    btnNext.setAttribute("aria-label", "Rolar para a direita");
+    var dots = [];
 
-    wrapper.appendChild(btnPrev);
-    wrapper.appendChild(btnNext);
-
-    function atualizar() {
-      var atInicio = lista.scrollLeft <= 2;
-      var atFim    = lista.scrollLeft >= lista.scrollWidth - lista.clientWidth - 2;
-      btnPrev.classList.toggle("oculto", atInicio);
-      btnNext.classList.toggle("oculto", atFim || lista.scrollWidth <= lista.clientWidth);
+    function getVisiveis() {
+      return Math.max(1, Math.floor(lista.clientWidth / CARD_WIDTH));
     }
 
-    btnPrev.addEventListener("click", function () {
-      lista.scrollBy({ left: -SCROLL_PX, behavior: "smooth" });
-    });
+    function getNumPaginas() {
+      return Math.ceil(total / getVisiveis());
+    }
 
-    btnNext.addEventListener("click", function () {
-      lista.scrollBy({ left: SCROLL_PX, behavior: "smooth" });
-    });
+    function getPaginaAtual() {
+      var paginaW = getVisiveis() * CARD_WIDTH;
+      return Math.round(lista.scrollLeft / paginaW);
+    }
 
-    lista.addEventListener("scroll", atualizar, { passive: true });
-    window.addEventListener("resize", atualizar, { passive: true });
-
-    // Swipe no celular
-    var touchStartX = 0;
-    lista.addEventListener("touchstart", function (e) {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-    lista.addEventListener("touchend", function (e) {
-      var diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        lista.scrollBy({ left: diff > 0 ? SCROLL_PX : -SCROLL_PX, behavior: "smooth" });
+    function reconstruirDots() {
+      var n = getNumPaginas();
+      dotsWrap.innerHTML = "";
+      dots = [];
+      for (var i = 0; i < n; i++) {
+        (function (idx) {
+          var d = document.createElement("button");
+          d.type = "button";
+          d.className = "produto-dot" + (idx === 0 ? " ativo" : "");
+          d.setAttribute("aria-label", "Página " + (idx + 1));
+          d.addEventListener("click", function () {
+            parar();
+            lista.scrollTo({ left: idx * getVisiveis() * CARD_WIDTH, behavior: "smooth" });
+            setTimeout(iniciar, 3000);
+          });
+          dotsWrap.appendChild(d);
+          dots.push(d);
+        })(i);
       }
-    }, { passive: true });
+    }
 
-    atualizar();
+    function atualizarDots() {
+      var p = Math.max(0, Math.min(getPaginaAtual(), dots.length - 1));
+      dots.forEach(function (d, i) { d.classList.toggle("ativo", i === p); });
+    }
+
+    lista.addEventListener("scroll", atualizarDots, { passive: true });
+    window.addEventListener("resize", function () { reconstruirDots(); atualizarDots(); }, { passive: true });
+
+    reconstruirDots();
+
+    function avancar() {
+      var atFim = lista.scrollLeft >= lista.scrollWidth - lista.clientWidth - 2;
+      lista[atFim ? "scrollTo" : "scrollBy"]({ left: atFim ? 0 : CARD_WIDTH, behavior: "smooth" });
+    }
+
+    function iniciar() { clearInterval(timer); timer = setInterval(avancar, INTERVALO); }
+    function parar()   { clearInterval(timer); }
+
+    lista.addEventListener("mouseenter", parar);
+    lista.addEventListener("mouseleave", iniciar);
+    lista.addEventListener("touchstart", parar, { passive: true });
+    lista.addEventListener("touchend", function () { setTimeout(iniciar, 2000); }, { passive: true });
+
+    iniciar();
   }
 
   function inicializarScrollProdutos() {
@@ -2827,10 +2950,121 @@ window.addEventListener("storage", function (e) {
 
   document.addEventListener("DOMContentLoaded", inicializarScrollProdutos);
 
-  // Exposto para re-chamar quando produtos de vendedor/admin são renderizados dinamicamente
   window._reinicializarScrollProdutos = function () {
     document.querySelectorAll(".lista-cards").forEach(criarScrollHorizontal);
   };
+})();
+
+// =========================
+// SEGURANÇA — META TAGS (inject nas páginas sem elas)
+// =========================
+(function injetarMetasSeguranca() {
+  function addMeta(httpEquiv, content) {
+    if (document.querySelector('meta[http-equiv="' + httpEquiv + '"]')) return;
+    var m = document.createElement("meta");
+    m.httpEquiv = httpEquiv;
+    m.content = content;
+    document.head.appendChild(m);
+  }
+  addMeta("X-Content-Type-Options", "nosniff");
+  addMeta("Referrer-Policy", "strict-origin-when-cross-origin");
+  addMeta("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+})();
+
+// =========================
+// LGPD — BANNER DE COOKIES
+// =========================
+(function inicializarLGPD() {
+  if (localStorage.getItem("lgpd_aceito")) return;
+  var inPages = window.location.pathname.replace(/\\/g, '/').includes('/pages/');
+  var base = inPages ? '../' : '';
+  var banner = document.createElement("div");
+  banner.className = "lgpd-banner";
+  banner.id = "lgpd-banner";
+  banner.innerHTML =
+    '<div class="lgpd-banner__texto">' +
+      '🍪 Utilizamos cookies para melhorar sua experiência de compra e personalizar conteúdo. ' +
+      'Seus dados são protegidos conforme a <strong>Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)</strong>. ' +
+      'Ao continuar navegando, você concorda com nossa ' +
+      '<a href="' + base + 'pages/privacidade.html">Política de Privacidade</a> e ' +
+      '<a href="' + base + 'pages/termos.html">Termos de Uso</a>.' +
+    '</div>' +
+    '<div class="lgpd-banner__btns">' +
+      '<button class="lgpd-btn-aceitar" onclick="aceitarLGPD()">Aceitar Todos</button>' +
+      '<button class="lgpd-btn-recusar" onclick="fecharLGPD()">Apenas Essenciais</button>' +
+    '</div>';
+  document.body.appendChild(banner);
+})();
+
+function aceitarLGPD() {
+  localStorage.setItem("lgpd_aceito", "todos");
+  var b = document.getElementById("lgpd-banner");
+  if (b) b.remove();
+}
+
+function fecharLGPD() {
+  localStorage.setItem("lgpd_aceito", "essenciais");
+  var b = document.getElementById("lgpd-banner");
+  if (b) b.remove();
+}
+
+// =========================
+// SELOS DE SEGURANÇA NO FOOTER
+// =========================
+(function injetarSelosSeguranca() {
+  document.addEventListener("DOMContentLoaded", function () {
+    var adminLink = document.querySelector(".footer-admin-link");
+    if (!adminLink) return;
+    var div = document.createElement("div");
+    div.className = "footer-seguranca";
+    div.innerHTML =
+      '<div class="selo-seguranca">' +
+        '<span class="selo-seguranca__icone">🔒</span>' +
+        '<div class="selo-seguranca__texto">' +
+          '<span class="selo-seguranca__titulo">Site Seguro</span>' +
+          '<span class="selo-seguranca__sub">Conexão criptografada SSL</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="selo-seguranca">' +
+        '<span class="selo-seguranca__icone">🛡️</span>' +
+        '<div class="selo-seguranca__texto">' +
+          '<span class="selo-seguranca__titulo">Dados Protegidos</span>' +
+          '<span class="selo-seguranca__sub">Conformidade com a LGPD</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="selo-seguranca">' +
+        '<span class="selo-seguranca__icone">✅</span>' +
+        '<div class="selo-seguranca__texto">' +
+          '<span class="selo-seguranca__titulo">Compra Garantida</span>' +
+          '<span class="selo-seguranca__sub">Política de troca e devolução</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="selo-seguranca">' +
+        '<span class="selo-seguranca__icone">💳</span>' +
+        '<div class="selo-seguranca__texto">' +
+          '<span class="selo-seguranca__titulo">Pagamento Seguro</span>' +
+          '<span class="selo-seguranca__sub">PIX, cartão e boleto protegidos</span>' +
+        '</div>' +
+      '</div>';
+    adminLink.parentNode.insertBefore(div, adminLink);
+  });
+})();
+
+// =========================
+// INDICADOR DE FORMULÁRIO SEGURO
+// =========================
+(function injetarFormSeguro() {
+  document.addEventListener("DOMContentLoaded", function () {
+    var seletores = [".login-form", ".cadastro-form", "#form-dados-pix", "#form-dados-cartao", "#form-dados-boleto"];
+    seletores.forEach(function (sel) {
+      var form = document.querySelector(sel);
+      if (!form || form.querySelector(".form-seguro-badge")) return;
+      var badge = document.createElement("div");
+      badge.className = "form-seguro-badge";
+      badge.innerHTML = '<span class="form-seguro-badge__icone">🔒</span> Seus dados estão protegidos por criptografia';
+      form.appendChild(badge);
+    });
+  });
 })();
 
 // =========================
@@ -2853,6 +3087,8 @@ if (document.getElementById("pedidos-lista")) {
 if (document.getElementById("lista-vendedores")) {
   renderizarProdutosVendedores();
   renderizarProdutosAdmin();
+  // Reinicializa dots/auto-scroll nas seções que receberam novos cards
+  if (window._reinicializarScrollProdutos) window._reinicializarScrollProdutos();
 }
 inicializarBotoesCarrinho();
 

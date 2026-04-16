@@ -117,7 +117,14 @@
               </div>
               <div class="admin-form__grupo">
                 <label>URL da Imagem *</label>
-                <input type="text" id="admin-prod-img" placeholder="img/quadrinhos/batman.png ou https://...">
+                <input type="text" id="admin-prod-img" placeholder="img/quadrinhos/batman.png ou https://..." oninput="atualizarPreviewImgAdmin(this.value)">
+                <div class="img-preview-wrap" id="admin-img-preview-wrap">
+                  <div class="img-preview-placeholder" id="admin-img-placeholder">
+                    <span class="img-preview-icon">📚</span>
+                    <span class="img-preview-texto">Prévia da capa</span>
+                  </div>
+                  <img id="admin-img-preview" src="" alt="Prévia" class="img-preview-img" style="display:none" onerror="this.style.display='none';document.getElementById('admin-img-placeholder').style.display='flex'">
+                </div>
               </div>
             </div>
 

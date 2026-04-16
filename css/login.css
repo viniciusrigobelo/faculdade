@@ -163,11 +163,11 @@ main.login h3 {
   text-decoration: underline;
 }
 
-input:invalid {
+input:invalid:not(:placeholder-shown) {
   border-color: #ff4d4d;
 }
 
-input:valid {
+input:valid:not(:placeholder-shown) {
   border-color: #4caf50;
 }
 
@@ -461,5 +461,22 @@ input:valid {
   .btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .login h1 {
+    font-size: 20px;
+  }
+
+  .login-container {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 14px;
+  }
+
+  .modal-esqueci-box {
+    padding: 24px 18px;
   }
 }

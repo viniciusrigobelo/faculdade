@@ -152,7 +152,14 @@
           </div>
           <div class="form-produto__grupo">
             <label>URL da Imagem *</label>
-            <input type="url" id="prod-img" placeholder="https://..." required>
+            <input type="url" id="prod-img" placeholder="https://..." required oninput="atualizarPreviewImgVendedor(this.value)">
+            <div class="img-preview-wrap" id="vender-img-preview-wrap">
+              <div class="img-preview-placeholder" id="vender-img-placeholder">
+                <span class="img-preview-icon">📚</span>
+                <span class="img-preview-texto">Prévia da capa</span>
+              </div>
+              <img id="vender-img-preview" src="" alt="Prévia" class="img-preview-img" style="display:none" onerror="this.style.display='none';document.getElementById('vender-img-placeholder').style.display='flex'">
+            </div>
           </div>
           <div class="form-produto__grupo">
             <label>Descrição</label>
