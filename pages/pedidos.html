@@ -29,10 +29,13 @@
 
     <div class="header-pesquisa">
       <form autocomplete="off" aria-label="Pesquisar produtos">
-        <input type="text" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
-        <button type="submit" aria-label="Buscar">
-          <img src="../img/icons/lupinha.png" alt="Ícone de busca">
-        </button>
+        <div class="pesquisa-wrapper">
+          <img src="../img/icons/lupinha.png" alt="" class="pesquisa-icone-esq" aria-hidden="true">
+          <input type="text" class="header-pesquisa-input" placeholder="Buscar quadrinhos, autores...">
+          <button type="submit" class="pesquisa-btn" aria-label="Buscar">
+            <span>Buscar</span>
+          </button>
+        </div>
       </form>
     </div>
 
@@ -82,11 +85,11 @@
   <nav aria-label="Categorias da loja">
     <ul>
       <li><a href="../index.html">Tudo</a></li>
-      <li><a href="../index.html">Lançamentos</a></li>
-      <li><a href="../index.html">Pré-Venda</a></li>
-      <li><a href="../index.html"><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></a></li>
-      <li><a href="../index.html"><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></a></li>
-      <li><a href="../index.html">Especiais</a></li>
+      <li><a href="../index.html?filtro=lancamentos">Lançamentos</a></li>
+      <li><a href="../index.html?filtro=prevenda">Pré-Venda</a></li>
+      <li><a href="../index.html?filtro=marvel"><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></a></li>
+      <li><a href="../index.html?filtro=dc"><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></a></li>
+      <li><a href="../index.html?filtro=especiais">Especiais</a></li>
     </ul>
   </nav>
 

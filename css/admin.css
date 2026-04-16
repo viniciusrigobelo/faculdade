@@ -842,6 +842,154 @@
 .admin-form__grupo--uf  { max-width: 70px; }
 
 /* Badge origem vendedor */
+/* =========================
+   APROVAÇÕES PJ
+========================= */
+
+.admin-aprovacoes-desc {
+  font-size: 13px;
+  color: #888;
+  margin: -8px 0 20px;
+}
+
+.admin-aprovacoes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.aprovacao-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  border-left: 4px solid var(--cor-primaria);
+}
+
+.aprovacao-card__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cor-primaria), #b05ee0);
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aprovacao-card__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.aprovacao-card__info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 6px;
+}
+
+.aprovacao-card__info p {
+  font-size: 13px;
+  color: #666;
+  margin: 3px 0;
+}
+
+.aprovacao-label {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #888;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-right: 6px;
+}
+
+.aprovacao-card__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-aprovar-vend {
+  padding: 9px 20px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-aprovar-vend:hover {
+  background: #219a52 !important;
+  transform: none !important;
+  color: white !important;
+}
+
+.btn-rejeitar-vend {
+  padding: 9px 20px;
+  background: white;
+  color: #e74c3c;
+  border: 2px solid #e74c3c;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Bangers', cursive;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-rejeitar-vend:hover {
+  background: #e74c3c !important;
+  color: white !important;
+  transform: none !important;
+}
+
+/* Badge de pendentes no nav */
+.admin-badge-pendentes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e74c3c;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 10px;
+  padding: 0 5px;
+  margin-left: 6px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Estados vender pendente/rejeitado */
+.vender-pendente h2 { color: #e67e22; }
+.vender-rejeitado h2 { color: #e74c3c; }
+
+.vender-pendente__icone {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+
 .badge-vendedor {
   display: inline-block;
   background: rgba(0, 184, 148, 0.15);
@@ -854,5 +1002,80 @@
   letter-spacing: 0.3px;
   margin-left: 6px;
   vertical-align: middle;
+}
+
+.input-preco-venda {
+  background: #2a2a2a;
+  color: #888;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.label-opcional {
+  font-size: 11px;
+  font-weight: 400;
+  color: #888;
+  margin-left: 4px;
+}
+
+@media (max-width: 360px) {
+  .admin-main {
+    padding: 8px;
+  }
+
+  .admin-nav__item {
+    padding: 10px 10px;
+    font-size: 13px;
+  }
+
+  .admin-tabela th,
+  .admin-tabela td {
+    padding: 8px 8px;
+    font-size: 11px;
+  }
+
+  .admin-stats {
+    flex-direction: column;
+  }
+}
+
+/* Telas grandes / Projetores */
+@media (min-width: 1400px) {
+  .admin-sidebar {
+    width: 280px;
+  }
+
+  .admin-main {
+    margin-left: 280px;
+    padding: 36px 48px;
+  }
+
+  .admin-sidebar__logo img {
+    height: 60px;
+  }
+
+  .admin-nav__item {
+    font-size: 16px;
+    padding: 16px 24px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .admin-sidebar {
+    width: 300px;
+  }
+
+  .admin-main {
+    margin-left: 300px;
+    padding: 48px 80px;
+  }
+
+  .admin-aba__header h2 {
+    font-size: 32px;
+  }
+
+  .admin-stat__num {
+    font-size: 48px;
+  }
 }
 

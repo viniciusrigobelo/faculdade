@@ -23,10 +23,13 @@
 
     <div class="header-pesquisa">
       <form autocomplete="off" aria-label="Pesquisar produtos">
-        <input type="text" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
-        <button type="submit" aria-label="Buscar">
-          <img src="../img/icons/lupinha.png" alt="Ícone de busca">
-        </button>
+        <div class="pesquisa-wrapper">
+          <img src="../img/icons/lupinha.png" alt="" class="pesquisa-icone-esq" aria-hidden="true">
+          <input type="text" class="header-pesquisa-input" placeholder="Buscar quadrinhos, autores...">
+          <button type="submit" class="pesquisa-btn" aria-label="Buscar">
+            <span>Buscar</span>
+          </button>
+        </div>
       </form>
     </div>
 
@@ -170,32 +173,10 @@
           </div>
         </div>
 
-        <!-- Alterar Senha -->
-        <div class="perfil-card">
-          <div class="perfil-card__header">
-            <div class="perfil-card__icon">🔒</div>
-            <h2 class="perfil-card__titulo">Alterar Senha <span class="perfil-opcional">(opcional)</span></h2>
-          </div>
-
-          <div class="perfil-grid">
-            <div class="perfil-campo">
-              <label>Senha atual</label>
-              <input type="password" id="perfil-senha-atual" placeholder="Sua senha atual">
-            </div>
-
-            <div class="perfil-campo">
-              <label>Nova senha</label>
-              <input type="password" id="perfil-senha-nova" placeholder="Mínimo 6 caracteres">
-            </div>
-
-            <div class="perfil-campo">
-              <label>Confirmar nova senha</label>
-              <input type="password" id="perfil-senha-confirmar" placeholder="Repita a nova senha">
-            </div>
-          </div>
+        <div class="perfil-acoes">
+          <button type="submit" class="perfil-btn-salvar">Salvar alterações</button>
+          <button type="button" class="perfil-btn-senha" onclick="abrirModalResetSenha()">🔒 Alterar senha</button>
         </div>
-
-        <button type="submit" class="perfil-btn-salvar">Salvar alterações</button>
 
       </form>
     </div>

@@ -204,8 +204,14 @@
    BOTÃO SALVAR
 ========================= */
 
+.perfil-acoes {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 .perfil-btn-salvar {
-  width: 100%;
+  flex: 1;
   padding: 15px;
   background: linear-gradient(135deg, #8B2FC9, #b05ee0);
   color: #fff;
@@ -227,6 +233,24 @@
   box-shadow: 0 8px 28px rgba(139,47,201,0.55) !important;
   border-color: transparent !important;
   color: #fff !important;
+}
+
+.perfil-btn-senha {
+  padding: 15px 20px;
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.perfil-btn-senha:hover {
+  border-color: #8B2FC9;
+  color: #c47de8;
 }
 
 /* =========================
@@ -285,6 +309,52 @@
 
   .perfil-card__header {
     padding: 14px 16px;
+  }
+
+  .perfil-acoes {
+    flex-direction: column;
+  }
+
+  .perfil-btn-salvar,
+  .perfil-btn-senha {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .perfil-page {
+    padding-bottom: 30px;
+  }
+
+  .perfil-banner__avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+  }
+
+  .perfil-banner__info h1 {
+    font-size: 16px;
+  }
+
+  .perfil-card {
+    border-radius: 10px;
+  }
+}
+
+/* Telas grandes / Projetores */
+@media (min-width: 1400px) {
+  .perfil-content {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .perfil-content {
+    max-width: 1000px;
+  }
+
+  .perfil-banner {
+    padding: 60px 80px 50px;
   }
 }
 

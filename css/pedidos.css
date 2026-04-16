@@ -253,3 +253,34 @@
   }
 }
 
+@media (max-width: 360px) {
+  .pedidos-main {
+    padding: 0 8px 30px;
+  }
+
+  .pedido-item__img {
+    width: 40px;
+    height: 55px;
+  }
+
+  .pedido-card {
+    border-radius: 10px;
+  }
+}
+
+/* Telas grandes / Projetores */
+@media (min-width: 1400px) {
+  .pedidos-main {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 40px 60px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .pedidos-main {
+    max-width: 1300px;
+    padding: 0 60px 80px;
+  }
+}
+

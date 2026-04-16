@@ -33,10 +33,13 @@
 
     <div class="header-pesquisa">
       <form autocomplete="off" aria-label="Pesquisar produtos">
-        <input type="text" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
-        <button aria-label="Buscar">
-          <img src="../img/icons/lupinha.png" alt="Ícone de busca">
-        </button>
+        <div class="pesquisa-wrapper">
+          <img src="../img/icons/lupinha.png" alt="" class="pesquisa-icone-esq" aria-hidden="true">
+          <input type="text" class="header-pesquisa-input" placeholder="Buscar quadrinhos, autores...">
+          <button type="submit" class="pesquisa-btn" aria-label="Buscar">
+            <span>Buscar</span>
+          </button>
+        </div>
       </form>
     </div>
 
@@ -85,12 +88,12 @@
   <!-- NAV -->
   <nav aria-label="Categorias da loja">
     <ul>
-      <li>Tudo</li>
-      <li>Lançamentos</li>
-      <li>Pré-Venda</li>
-      <li><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></li>
-      <li><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></li>
-      <li>Especiais</li>
+      <li><a href="../index.html">Tudo</a></li>
+      <li><a href="../index.html?filtro=lancamentos">Lançamentos</a></li>
+      <li><a href="../index.html?filtro=prevenda">Pré-Venda</a></li>
+      <li><a href="../index.html?filtro=marvel"><img src="../img/logos/marvel.png" class="nav-icone-marvel" alt="Marvel"></a></li>
+      <li><a href="../index.html?filtro=dc"><img src="../img/logos/dc.png" class="nav-icone" alt="DC"></a></li>
+      <li><a href="../index.html?filtro=especiais">Especiais</a></li>
     </ul>
   </nav>
 
@@ -114,7 +117,7 @@
 
           <div class="login-actions">
             <button class="btn" type="submit">Entrar</button>
-            <a href="#" class="login-forgot">Esqueceu a senha?</a>
+            <a href="#" class="login-forgot" onclick="abrirModalResetSenha(); return false;">Esqueceu a senha?</a>
           </div>
         </form>
         <h4 class="login-warning">* Campos obrigatórios</h4>
@@ -210,7 +213,7 @@
             <h2>☎️ (41) 4002-8922</h2>
           </li>
           <li>
-            <h2>📧 loja@xmenhqs.com.br</h2>
+            <h2>📧 loja@comicgeekstore.com.br</h2>
           </li>
           <li>
             <h2>⏰ De Segunda a Sexta, 9h às 11h e das 13h às 17h.</h2>
@@ -218,8 +221,7 @@
         </ul>
       </div>
     </section>
-    <div class="login-divider">
-    </div>
+    <div class="risco"></div>
     <div class="footer-sociais">
       <ul>
         <li>

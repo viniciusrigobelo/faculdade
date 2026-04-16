@@ -246,6 +246,201 @@ input:valid {
   }
 }
 
+/* =========================
+   MODAL ESQUECEU A SENHA
+========================= */
+
+.modal-esqueci-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-esqueci-box {
+  background: #fff;
+  color: #222;
+  border-radius: 14px;
+  padding: 36px 40px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+}
+
+.modal-esqueci-fechar {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+}
+
+.modal-esqueci-fechar:hover { color: #222; }
+
+.modal-esqueci-titulo {
+  font-family: 'Bangers', cursive;
+  font-size: 28px;
+  color: var(--cor-primaria);
+  margin-bottom: 8px;
+}
+
+.modal-esqueci-desc {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.modal-esqueci-label {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.modal-esqueci-input {
+  width: 100%;
+  height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.modal-esqueci-input:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(100,60,180,0.12);
+}
+
+.modal-esqueci-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px;
+  background: var(--cor-primaria);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-esqueci-btn:hover { background: var(--cor-destaque); color: #000; }
+
+.esqueci-link-box {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 16px;
+}
+
+.esqueci-link-titulo {
+  font-size: 13px;
+  font-weight: 700;
+  color: #166534;
+  margin: 0 0 6px;
+}
+
+.esqueci-link-url {
+  display: block;
+  font-size: 12px;
+  color: #1d4ed8;
+  word-break: break-all;
+  text-decoration: underline;
+}
+
+.esqueci-link-aviso {
+  font-size: 11px;
+  color: #888;
+  margin: 6px 0 0;
+}
+
+/* =========================
+   PÁGINA REDEFINIR SENHA
+========================= */
+
+.redefinir-container {
+  max-width: 480px;
+  width: 90%;
+  display: block;
+}
+
+.redefinir-box {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.redefinir-icone {
+  font-size: 52px;
+  margin-bottom: 14px;
+}
+
+.redefinir-box h2 {
+  font-family: 'Bangers', cursive;
+  font-size: 30px;
+  color: var(--cor-primaria);
+  margin-bottom: 8px;
+}
+
+.redefinir-box p {
+  color: #555;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.redefinir-email-info {
+  background: #f5f3ff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.redefinir-btn-voltar {
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+/* =========================
+   PERFIL — BOTÃO RESET SENHA
+========================= */
+
+.perfil-senha-desc {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.perfil-btn-reset-senha {
+  padding: 10px 24px;
+  background: var(--cor-primaria);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.perfil-btn-reset-senha:hover { background: var(--cor-destaque); color: #000; }
+.perfil-btn-reset-senha:disabled { opacity: 0.5; cursor: default; }
+
 @media (max-width: 480px) {
   .login h1 {
     font-size: 22px;

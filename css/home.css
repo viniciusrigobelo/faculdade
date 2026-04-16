@@ -1,12 +1,240 @@
 ﻿/* =========================
-   MAIN / HOME - Desktop
+   BANNER SLIDER
 ========================= */
 
+.banner-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #0d0d1a;
+  line-height: 0;
+}
+
+.banner-slide {
+  display: none;
+  width: 100%;
+  animation: sliderFade 0.6s ease;
+}
+
+.banner-slide.ativo {
+  display: block;
+}
+
+@keyframes sliderFade {
+  from { opacity: 0; transform: scale(1.015); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Banner slide 1 — imagem existente */
 .banner-principal {
   width: 100%;
   height: auto;
   display: block;
 }
+
+/* Banners CSS (slides 2 e 3) */
+.banner-css {
+  width: 100%;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  padding: 48px 80px;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.banner-css--marvel {
+  background: linear-gradient(120deg, #1a0000 0%, #6b0000 45%, #c0000a 100%);
+}
+
+.banner-css--promo {
+  background: linear-gradient(120deg, #0d0d1a 0%, #1a0a2e 45%, #4b1a8c 100%);
+}
+
+.banner-css__conteudo {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.banner-css__logo {
+  height: 36px;
+  width: auto;
+  margin-bottom: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.banner-css__tag {
+  display: inline-block;
+  background: var(--cor-destaque);
+  color: #000;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  font-family: 'Bangers', cursive;
+}
+
+.banner-css__titulo {
+  font-family: 'Bangers', cursive;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  line-height: 1.05;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+
+.banner-css--promo .banner-css__titulo {
+  color: var(--cor-destaque);
+}
+
+.banner-css__sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.5px;
+  margin: 0 0 24px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.banner-css__btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #fff;
+  color: #6b0000;
+  font-family: 'Bangers', cursive;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: 700;
+}
+
+.banner-css__btn:hover {
+  background: var(--cor-destaque);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.banner-css__btn--amarelo {
+  background: var(--cor-destaque);
+  color: #000;
+}
+
+.banner-css__btn--amarelo:hover {
+  background: #fff;
+  color: var(--cor-primaria);
+}
+
+/* Decoração geométrica de fundo */
+.banner-css__deco {
+  position: absolute;
+  right: -60px;
+  top: -60px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.banner-css__deco--marvel {
+  background: radial-gradient(circle, #ff4444 0%, transparent 70%);
+  right: 40px;
+  top: -100px;
+  width: 600px;
+  height: 600px;
+  opacity: 0.15;
+}
+
+.banner-css__deco--promo {
+  background: radial-gradient(circle, var(--cor-destaque) 0%, transparent 70%);
+  right: 60px;
+  top: -80px;
+  width: 550px;
+  height: 550px;
+  opacity: 0.12;
+}
+
+/* Setas de navegação */
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.2s;
+  padding: 0;
+  backdrop-filter: blur(4px);
+}
+
+.banner-arrow:hover {
+  background: var(--cor-primaria) !important;
+  border-color: var(--cor-primaria) !important;
+  color: #fff !important;
+  transform: translateY(-50%) scale(1.08) !important;
+}
+
+.banner-arrow--prev { left: 18px; }
+.banner-arrow--next { right: 18px; }
+
+/* Bolinhas */
+.banner-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.banner-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.25s;
+}
+
+.banner-dot.ativo {
+  background: var(--cor-destaque);
+  width: 28px;
+  border-radius: 5px;
+}
+
+.banner-dot:hover {
+  background: rgba(255,255,255,0.7) !important;
+  transform: none !important;
+}
+
+/* =========================
+   MAIN / HOME - Desktop
+========================= */
 
 /* =========================
    SEÇÃO HERO (páginas de categoria)
@@ -76,15 +304,64 @@
 
 .lista-cards {
   display: flex;
-  margin: 50px 20px;
-  gap: 24px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  margin: 0;
+  padding: 20px 16px 28px;
+  gap: 14px;
+}
+
+.lista-cards::-webkit-scrollbar {
+  display: none;
+}
+
+/* Wrapper com botões de scroll */
+.secao-scroll-wrapper {
+  position: relative;
+}
+
+.secao-scroll__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(13, 13, 26, 0.88);
+  border: 2px solid rgba(139, 47, 201, 0.55);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  padding: 0;
+}
+
+.secao-scroll__btn:hover {
+  background: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+.secao-scroll__btn--prev { left: 4px; }
+.secao-scroll__btn--next { right: 4px; }
+
+.secao-scroll__btn.oculto {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .card-produto {
-  width: 210px;
-  height: 390px;
+  width: 175px;
+  height: 355px;
   background-color: white;
   cursor: pointer;
   border-radius: 10px;
@@ -115,7 +392,7 @@
 
 .card-produto__imagem {
   width: 88%;
-  height: 260px;
+  height: 220px;
   margin: 10px auto 6px;
   position: relative;
   background: #f0f0f0;
@@ -186,71 +463,127 @@
 .card-produto__preco h3 {
   font-weight: 400;
   text-decoration: line-through;
-  margin-left: 8px;
-  font-size: 13px;
-  color: #999;
+  font-size: 11px;
+  color: #bbb;
+  margin: 0;
 }
 
 .card-produto__preco h2 {
   font-weight: 800;
-  margin-left: 8px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   font-size: 15px;
-  color: #333;
+  color: #1a1a1a;
+  margin: 0;
 }
 
-/* Preço com desconto → fundo roxo, texto preto */
+/* Preço com desconto — sem fundo colorido */
 .card-produto__preco h3 + h2 {
-  background-color: var(--cor-primaria);
-  color: #000;
-  padding: 3px 8px;
-  border-radius: 4px;
+  background-color: transparent;
+  color: #1a1a1a;
+  padding: 0;
+  border-radius: 0;
 }
 
 .card-produto__preco {
   justify-content: center;
-  align-items: center;
-  gap: 6px;
+  align-items: baseline;
+  gap: 5px;
   display: flex;
-  margin: 6px 0;
+  margin: 4px 0 2px;
+  padding: 0 8px;
+}
+
+/* Texto de parcela */
+.card-produto__parcela {
+  font-size: 10px;
+  color: #aaa;
+  text-align: center;
+  padding: 0 8px 6px;
+  margin: 0;
+  line-height: 1.3;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Badge "Promoção" — vermelho, borda esquerda da imagem */
+.card-badge-promo {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  background: #e53935;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 7px 3px 5px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  border-radius: 0 3px 3px 0;
+  z-index: 3;
+  font-family: 'Montserrat', sans-serif;
+  pointer-events: none;
+}
+
+/* Badge "X% OFF" — verde, círculo, canto direito */
+.card-badge-pct-off {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: #27ae60;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.25;
+  z-index: 3;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  pointer-events: none;
 }
 
 .titulo-secao {
-  background: var(--cor-primaria);
-  color: var(--cor-texto);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 16px;
   width: 100%;
-  text-align: center;
+  padding: 44px 24px 0;
+}
+
+.titulo-secao img {
+  display: none;
 }
 
 .titulo-secao h1 {
   font-family: 'Bangers', cursive;
   font-size: 26px;
-  letter-spacing: 3px;
+  letter-spacing: 8px;
   text-transform: uppercase;
-  margin: 5px auto;
-  text-align: center;
+  color: rgba(255,255,255,0.85);
+  margin: 0;
+  padding-bottom: 12px;
+  position: relative;
   cursor: default;
 }
 
-.titulo-secao img {
-  width: 40px;
-  height: 40px;
-  margin: auto;
+.titulo-secao h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to right, var(--cor-primaria), var(--cor-destaque));
 }
 
 .divisor {
-  height: 2px;
-  margin: 30px 40px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--cor-primaria),
-    transparent
-  );
+  display: none;
 }
 
 /* Botão "Adicionar ao Carrinho" nos cards */
@@ -287,6 +620,8 @@
 /* Seção grupo (wrapper de título + cards) */
 .secao-grupo {
   width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 /* =========================
@@ -781,6 +1116,21 @@
 
 /* Tablet (até 900px) */
 @media (max-width: 900px) {
+  .banner-css {
+    min-height: 260px;
+    padding: 36px 48px;
+  }
+
+  .banner-css__titulo {
+    font-size: 2.2rem;
+  }
+
+  .banner-css__deco--marvel,
+  .banner-css__deco--promo {
+    width: 380px;
+    height: 380px;
+  }
+
   .banner-principal {
     max-height: 280px;
   }
@@ -794,17 +1144,17 @@
   }
 
   .lista-cards {
-    margin: 30px 12px;
-    gap: 16px;
+    margin: 20px auto 36px;
+    gap: 12px;
   }
 
   .card-produto {
-    width: 190px;
-    min-height: 370px;
+    width: 165px;
+    min-height: 330px;
   }
 
   .card-produto__imagem {
-    height: 240px;
+    height: 200px;
   }
 
   .divisor {
@@ -813,6 +1163,46 @@
 }
 
 @media (max-width: 600px) {
+  .banner-css {
+    min-height: 200px;
+    padding: 24px 60px 24px 24px;
+  }
+
+  .banner-css__titulo {
+    font-size: 1.6rem;
+    letter-spacing: 1.5px;
+  }
+
+  .banner-css__sub {
+    font-size: 13px;
+  }
+
+  .banner-css__btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .banner-css__logo {
+    height: 26px;
+  }
+
+  .banner-css__deco--marvel,
+  .banner-css__deco--promo {
+    width: 250px;
+    height: 250px;
+    right: -20px;
+    top: -40px;
+  }
+
+  .banner-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 22px;
+  }
+
+  .banner-arrow--prev { left: 8px; }
+  .banner-arrow--next { right: 8px; }
+
   .banner-principal {
     height: 180px;
   }
@@ -831,17 +1221,18 @@
   }
 
   .lista-cards {
-    margin: 16px 8px;
-    gap: 12px;
+    margin: 14px auto 28px;
+    gap: 10px;
+    padding: 0 10px;
   }
 
   .card-produto {
-    width: 155px;
-    min-height: 330px;
+    width: 148px;
+    min-height: 305px;
   }
 
   .card-produto__imagem {
-    height: 190px;
+    height: 175px;
   }
 
   .card-produto__nome h3 {
@@ -854,7 +1245,7 @@
 
   .titulo-secao h1 {
     font-size: 18px;
-    letter-spacing: 2px;
+    letter-spacing: 5px;
   }
 
   .divisor {
@@ -864,11 +1255,76 @@
 
 @media (max-width: 400px) {
   .card-produto {
-    width: calc(50% - 8px);
-    min-height: 300px;
+    width: 140px;
+    min-height: 295px;
   }
 
   .card-produto__imagem {
-    height: 160px;
+    height: 165px;
+  }
+}
+
+@media (max-width: 360px) {
+  .card-produto {
+    width: 130px;
+    min-height: 270px;
+  }
+
+  .card-produto__imagem {
+    height: 148px;
+  }
+
+  .lista-cards {
+    gap: 10px;
+    padding: 16px 10px 22px;
+  }
+}
+
+/* Telas grandes / Projetores */
+@media (min-width: 1400px) {
+  .lista-cards {
+    margin: 24px auto 48px;
+    gap: 18px;
+  }
+
+  .secao-grupo {
+    max-width: 1400px;
+  }
+
+  .card-produto {
+    width: 195px;
+    height: 380px;
+  }
+
+  .card-produto__imagem {
+    height: 245px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .lista-cards {
+    gap: 22px;
+    margin: 28px auto 56px;
+  }
+
+  .secao-grupo {
+    max-width: 1700px;
+  }
+
+  .card-produto {
+    width: 215px;
+    height: 405px;
+  }
+
+  .card-produto__imagem {
+    height: 265px;
+  }
+
+  .secao-hero__titulo {
+    font-size: 3rem;
+  }
+
+  .secao-hero__inner {
+    max-width: 1200px;
   }
 }

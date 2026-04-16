@@ -117,7 +117,47 @@
   <!-- MAIN -->
   <main>
 
-    <img src="img/logos/banner.png" alt="Banner principal da loja" class="banner-principal">
+    <!-- BANNER SLIDER -->
+    <div class="banner-slider" id="banner-slider">
+
+      <!-- Slide 1: imagem existente -->
+      <div class="banner-slide ativo">
+        <img src="img/logos/banner.png" alt="Banner Comic Geek Store" class="banner-principal">
+      </div>
+
+      <!-- Slide 2: Marvel temático -->
+      <div class="banner-slide">
+        <div class="banner-css banner-css--marvel">
+          <div class="banner-css__conteudo">
+            <img src="img/logos/marvel.png" alt="Marvel" class="banner-css__logo">
+            <h2 class="banner-css__titulo">OS MAIORES HERÓIS<br>EM UM SÓ LUGAR</h2>
+            <p class="banner-css__sub">Coleções completas · Edições raras · Novidades toda semana</p>
+            <a href="pages/marvel.html" class="banner-css__btn">Ver coleção Marvel</a>
+          </div>
+          <div class="banner-css__deco banner-css__deco--marvel"></div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Promoção frete grátis -->
+      <div class="banner-slide">
+        <div class="banner-css banner-css--promo">
+          <div class="banner-css__conteudo">
+            <span class="banner-css__tag">OFERTA ESPECIAL</span>
+            <h2 class="banner-css__titulo">FRETE GRÁTIS<br>ACIMA DE R$ 200</h2>
+            <p class="banner-css__sub">Para todo o Brasil · PAC e SEDEX · Sem código de cupom</p>
+            <a href="pages/lancamentos.html" class="banner-css__btn banner-css__btn--amarelo">Aproveitar agora</a>
+          </div>
+          <div class="banner-css__deco banner-css__deco--promo"></div>
+        </div>
+      </div>
+
+      <!-- Bolinhas -->
+      <div class="banner-dots">
+        <button class="banner-dot ativo" onclick="irParaSlide(0)" aria-label="Slide 1"></button>
+        <button class="banner-dot" onclick="irParaSlide(1)" aria-label="Slide 2"></button>
+        <button class="banner-dot" onclick="irParaSlide(2)" aria-label="Slide 3"></button>
+      </div>
+    </div>
 
     <!-- ÚLTIMOS LANÇAMENTOS -->
     <div class="secao-grupo" id="grupo-lancamentos">
@@ -142,13 +182,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/alloutavengers.jpg" alt="All-Out Avengers (2022) #6">
           </div>
-          <div class="card-produto__nome">
-            <h3>All-Out Avengers (2022) #6</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$29,90</h3>
-            <h2>R$24,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>All-Out Avengers (2022) #6</h3></div>
+          <div class="card-produto__preco"><h3>R$29,90</h3><h2>R$24,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -161,30 +196,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/spiderman.jpg" alt="The Amazing Spider-Man (2022) #20">
           </div>
-          <div class="card-produto__nome">
-            <h3>The Amazing Spider-Man (2022) #20</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$32,50</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="lancamentos"
-          data-nome="Carnificina (2022) #10"
-          data-preco="17.90"
-          data-img="img/quadrinhos/carnage.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/carnage.jpg" alt="Carnificina (2022) #10">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Carnificina (2022) #10</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$17,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>The Amazing Spider-Man (2022) #20</h3></div>
+          <div class="card-produto__preco"><h2>R$32,50</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -197,85 +210,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/crisesombria.jpg" alt="Crise Sombria #1">
           </div>
-          <div class="card-produto__nome">
-            <h3>Crise Sombria #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$24,90</h3>
-            <h2>R$19,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="lancamentos"
-          data-nome="Batman #23/81"
-          data-preco="24.90"
-          data-img="img/quadrinhos/batman.png">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/batman.png" alt="Batman #23/81">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Batman #23/81</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="lancamentos"
-          data-nome="O Coringa (2022) Vol.3"
-          data-preco="29.90"
-          data-img="img/quadrinhos/coringa.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/coringa.jpg" alt="O Coringa (2022) Vol.3">
-          </div>
-          <div class="card-produto__nome">
-            <h3>O Coringa (2022) Vol.3</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$29,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="lancamentos"
-          data-nome="Conflito do Século"
-          data-preco="26.90"
-          data-img="img/quadrinhos/conflitodoseculo.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/conflitodoseculo.jpg" alt="Conflito do Século">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Conflito do Século</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$26,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="lancamentos"
-          data-nome="X-Men: Dias de um Futuro Esquecido"
-          data-preco="28.90"
-          data-img="img/quadrinhos/guerrassecretas.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/guerrassecretas.jpg" alt="X-Men: Dias de um Futuro Esquecido">
-          </div>
-          <div class="card-produto__nome">
-            <h3>X-Men: Dias de um Futuro Esquecido</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$28,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Crise Sombria #1</h3></div>
+          <div class="card-produto__preco"><h3>R$24,90</h3><h2>R$19,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -288,107 +224,22 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Liga da Justiça: Origem">
           </div>
-          <div class="card-produto__nome">
-            <h3>Liga da Justiça: Origem</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$32,90</h3>
-            <h2>R$26,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Liga da Justiça: Origem</h3></div>
+          <div class="card-produto__preco"><h3>R$32,90</h3><h2>R$26,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
         <article class="card-produto"
           data-editora="dc"
           data-secao="lancamentos"
-          data-nome="Esquadrão Suicida Vol.1"
-          data-preco="22.90"
-          data-img="img/quadrinhos/crisesombria.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/crisesombria.jpg" alt="Esquadrão Suicida Vol.1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Esquadrão Suicida Vol.1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$22,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="lancamentos"
-          data-nome="Miles Morales: Spider-Man #1"
-          data-preco="32.90"
-          data-img="img/quadrinhos/spiderman.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto">🔥 NOVO</span>
-            <img src="img/quadrinhos/spiderman.jpg" alt="Miles Morales: Spider-Man #1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Miles Morales: Spider-Man #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$32,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="lancamentos"
-          data-nome="Deadpool & Wolverine: WWIII #1"
+          data-nome="O Coringa (2022) Vol.3"
           data-preco="29.90"
-          data-img="img/quadrinhos/deadpooleixo.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto">🔥 NOVO</span>
-            <img src="img/quadrinhos/deadpooleixo.jpg" alt="Deadpool & Wolverine: WWIII #1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Deadpool & Wolverine: WWIII #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$29,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="lancamentos"
-          data-nome="Batman: The Gotham War #1"
-          data-preco="27.90"
-          data-img="img/quadrinhos/batman.png">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto">🔥 NOVO</span>
-            <img src="img/quadrinhos/batman.png" alt="Batman: The Gotham War #1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Batman: The Gotham War #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$27,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="lancamentos"
-          data-nome="Harley Quinn: Black + White + Redder"
-          data-preco="24.90"
           data-img="img/quadrinhos/coringa.jpg">
           <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto">🔥 NOVO</span>
-            <img src="img/quadrinhos/coringa.jpg" alt="Harley Quinn: Black + White + Redder">
+            <img src="img/quadrinhos/coringa.jpg" alt="O Coringa (2022) Vol.3">
           </div>
-          <div class="card-produto__nome">
-            <h3>Harley Quinn: Black + White + Redder</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>O Coringa (2022) Vol.3</h3></div>
+          <div class="card-produto__preco"><h2>R$29,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -418,67 +269,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/desafioinfinito.jpg" alt="Vingadores - Desafio Infinito">
           </div>
-          <div class="card-produto__nome">
-            <h3>Vingadores - Desafio Infinito</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$29,90</h3>
-            <h2>R$19,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Deadpool - Eixo"
-          data-preco="24.90"
-          data-img="img/quadrinhos/deadpooleixo.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/deadpooleixo.jpg" alt="Deadpool - Eixo">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Deadpool - Eixo</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Vingadores - Dinastia Kang"
-          data-preco="22.70"
-          data-img="img/quadrinhos/dinastiakang.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/dinastiakang.jpg" alt="Vingadores - Dinastia Kang">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Vingadores - Dinastia Kang</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$22,70</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Guerras Secretas"
-          data-preco="29.90"
-          data-img="img/quadrinhos/guerrassecretas.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/guerrassecretas.jpg" alt="Guerras Secretas">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Guerras Secretas</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$29,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Vingadores - Desafio Infinito</h3></div>
+          <div class="card-produto__preco"><h3>R$29,90</h3><h2>R$19,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -491,13 +283,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/guarioesdagalaxia.webp" alt="Guardiões da Galáxia - A Queda">
           </div>
-          <div class="card-produto__nome">
-            <h3>Guardiões da Galáxia - A Queda</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$32,90</h3>
-            <h2>R$24,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Guardiões da Galáxia - A Queda</h3></div>
+          <div class="card-produto__preco"><h3>R$32,90</h3><h2>R$24,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -510,141 +297,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/guerracivil.jpg" alt="Guerra Civil">
           </div>
-          <div class="card-produto__nome">
-            <h3>Guerra Civil</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$28,90</h3>
-            <h2>R$21,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Conflito do Século"
-          data-preco="26.90"
-          data-img="img/quadrinhos/conflitodoseculo.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/conflitodoseculo.jpg" alt="Conflito do Século">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Conflito do Século</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$26,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Pantera Negra: Uma Nação Sob Nossos Pés"
-          data-preco="27.90"
-          data-img="img/quadrinhos/alloutavengers.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/alloutavengers.jpg" alt="Pantera Negra: Uma Nação Sob Nossos Pés">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Pantera Negra: Uma Nação Sob Nossos Pés</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$27,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Thor: O Deus do Trovão"
-          data-preco="24.90"
-          data-img="img/quadrinhos/dinastiakang.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/dinastiakang.jpg" alt="Thor: O Deus do Trovão">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Thor: O Deus do Trovão</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Homem de Ferro: Extremis"
-          data-preco="22.90"
-          data-img="img/quadrinhos/carnage.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/carnage.jpg" alt="Homem de Ferro: Extremis">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Homem de Ferro: Extremis</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$22,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Moon Knight: Herói da Lua (2021)"
-          data-preco="29.90"
-          data-img="img/quadrinhos/carnage.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
-            <img src="img/quadrinhos/carnage.jpg" alt="Moon Knight: Herói da Lua">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Moon Knight: Herói da Lua (2021)</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$29,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="X-Men: Era de Krakoa Vol.1"
-          data-preco="34.90"
-          data-img="img/quadrinhos/alloutavengers.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
-            <img src="img/quadrinhos/alloutavengers.jpg" alt="X-Men: Era de Krakoa Vol.1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>X-Men: Era de Krakoa Vol.1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$34,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="marvel"
-          data-nome="Ms. Marvel: A Nova Mutante"
-          data-preco="26.90"
-          data-img="img/quadrinhos/guarioesdagalaxia.webp">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/guarioesdagalaxia.webp" alt="Ms. Marvel: A Nova Mutante">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Ms. Marvel: A Nova Mutante</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$26,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Guerra Civil</h3></div>
+          <div class="card-produto__preco"><h3>R$28,90</h3><h2>R$21,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -657,13 +311,22 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/guerracivil.jpg" alt="Wolverine: O Arquivo Weapon X">
           </div>
-          <div class="card-produto__nome">
-            <h3>Wolverine: O Arquivo Weapon X</h3>
+          <div class="card-produto__nome"><h3>Wolverine: O Arquivo Weapon X</h3></div>
+          <div class="card-produto__preco"><h3>R$33,90</h3><h2>R$27,90</h2></div>
+          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
+        </article>
+
+        <article class="card-produto"
+          data-editora="marvel"
+          data-secao="marvel"
+          data-nome="Guerras Secretas"
+          data-preco="29.90"
+          data-img="img/quadrinhos/guerrassecretas.jpg">
+          <div class="card-produto__imagem">
+            <img src="img/quadrinhos/guerrassecretas.jpg" alt="Guerras Secretas">
           </div>
-          <div class="card-produto__preco">
-            <h3>R$33,90</h3>
-            <h2>R$27,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Guerras Secretas</h3></div>
+          <div class="card-produto__preco"><h2>R$29,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -687,37 +350,14 @@
         <article class="card-produto"
           data-editora="dc"
           data-secao="dc"
-          data-nome="Reino do Amanhã"
-          data-preco="14.90"
-          data-img="img/quadrinhos/reinodoamanha.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/reinodoamanha.jpg" alt="Reino do Amanhã">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Reino do Amanhã</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$14,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
           data-nome="Batman - A Piada Mortal"
           data-preco="29.90"
           data-img="img/quadrinhos/batmanapiadamortal.webp">
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/batmanapiadamortal.webp" alt="Batman - A Piada Mortal">
           </div>
-          <div class="card-produto__nome">
-            <h3>Batman - A Piada Mortal</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$39,90</h3>
-            <h2>R$29,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Batman - A Piada Mortal</h3></div>
+          <div class="card-produto__preco"><h3>R$39,90</h3><h2>R$29,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -730,31 +370,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/lanternaverde.jpg" alt="Lanterna Verde - A Guerra Dos Anéis">
           </div>
-          <div class="card-produto__nome">
-            <h3>Lanterna Verde - A Guerra Dos Anéis</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$27,90</h3>
-            <h2>R$19,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Crise nas Infinitas Terras"
-          data-preco="25.90"
-          data-img="img/quadrinhos/crisesinfinitas.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Crise nas Infinitas Terras">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Crise nas Infinitas Terras</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$25,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Lanterna Verde - A Guerra Dos Anéis</h3></div>
+          <div class="card-produto__preco"><h3>R$27,90</h3><h2>R$19,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -767,12 +384,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/flash.png" alt="Flashpoint (Ponto de Ignição)">
           </div>
-          <div class="card-produto__nome">
-            <h3>Flashpoint (Ponto de Ignição)</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Flashpoint (Ponto de Ignição)</h3></div>
+          <div class="card-produto__preco"><h2>R$24,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -785,124 +398,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/superman.jpg" alt="A Morte do Superman - Vol.1">
           </div>
-          <div class="card-produto__nome">
-            <h3>A Morte do Superman - Vol.1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$34,90</h3>
-            <h2>R$29,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Esquadrão Suicida: Ponto Zero"
-          data-preco="22.90"
-          data-img="img/quadrinhos/coringa.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/coringa.jpg" alt="Esquadrão Suicida: Ponto Zero">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Esquadrão Suicida: Ponto Zero</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$22,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Mulher-Maravilha: Terra Um"
-          data-preco="28.90"
-          data-img="img/quadrinhos/crisesombria.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/crisesombria.jpg" alt="Mulher-Maravilha: Terra Um">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Mulher-Maravilha: Terra Um</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$28,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Shazam!: A Origem"
-          data-preco="24.90"
-          data-img="img/quadrinhos/batman.png">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/batman.png" alt="Shazam!: A Origem">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Shazam!: A Origem</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$24,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Nightwing: Saltando para a Luz"
-          data-preco="28.90"
-          data-img="img/quadrinhos/flash.png">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
-            <img src="img/quadrinhos/flash.png" alt="Nightwing: Saltando para a Luz">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Nightwing: Saltando para a Luz</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$28,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Superman: Filho de Kal-El #1"
-          data-preco="26.90"
-          data-img="img/quadrinhos/superman.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-trending">TRENDING</span>
-            <img src="img/quadrinhos/superman.jpg" alt="Superman: Filho de Kal-El #1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Superman: Filho de Kal-El #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$26,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="dc"
-          data-nome="Poison Ivy #1: Raízes do Mal"
-          data-preco="22.90"
-          data-img="img/quadrinhos/lanternaverde.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto">🔥 NOVO</span>
-            <img src="img/quadrinhos/lanternaverde.jpg" alt="Poison Ivy #1: Raízes do Mal">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Poison Ivy #1: Raízes do Mal</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$22,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>A Morte do Superman - Vol.1</h3></div>
+          <div class="card-produto__preco"><h3>R$34,90</h3><h2>R$29,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -913,15 +410,10 @@
           data-preco="25.90"
           data-img="img/quadrinhos/crisesinfinitas.jpg">
           <div class="card-produto__imagem">
-            <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Harley Quinn: Roleta Russa">
+            <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Harley Quinn: Roleta Russa (2021)">
           </div>
-          <div class="card-produto__nome">
-            <h3>Harley Quinn: Roleta Russa (2021)</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$31,90</h3>
-            <h2>R$25,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Harley Quinn: Roleta Russa (2021)</h3></div>
+          <div class="card-produto__preco"><h3>R$31,90</h3><h2>R$25,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -951,12 +443,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/guerrassecretas.jpg" alt="Vingadores: Segredo Absoluto">
           </div>
-          <div class="card-produto__nome">
-            <h3>Vingadores: Segredo Absoluto</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$39,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Vingadores: Segredo Absoluto</h3></div>
+          <div class="card-produto__preco"><h2>R$39,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -969,12 +457,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/batman.png" alt="Batman: Corte das Corujas">
           </div>
-          <div class="card-produto__nome">
-            <h3>Batman: Corte das Corujas</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$34,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Batman: Corte das Corujas</h3></div>
+          <div class="card-produto__preco"><h2>R$34,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -987,31 +471,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/carnage.jpg" alt="X-Men: Fênix Negra">
           </div>
-          <div class="card-produto__nome">
-            <h3>X-Men: Fênix Negra</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h3>R$46,90</h3>
-            <h2>R$36,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="prevenda"
-          data-nome="Superman: Todos os Amanhãs"
-          data-preco="32.90"
-          data-img="img/quadrinhos/superman.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/superman.jpg" alt="Superman: Todos os Amanhãs">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Superman: Todos os Amanhãs</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$32,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>X-Men: Fênix Negra</h3></div>
+          <div class="card-produto__preco"><h3>R$46,90</h3><h2>R$36,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -1024,12 +485,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/spiderman.jpg" alt="Spider-Man: Clone Saga">
           </div>
-          <div class="card-produto__nome">
-            <h3>Spider-Man: Clone Saga</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$38,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Spider-Man: Clone Saga</h3></div>
+          <div class="card-produto__preco"><h2>R$38,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -1042,69 +499,8 @@
           <div class="card-produto__imagem">
             <img src="img/quadrinhos/crisesinfinitas.jpg" alt="Liga da Justiça: Guerra de Darkseid">
           </div>
-          <div class="card-produto__nome">
-            <h3>Liga da Justiça: Guerra de Darkseid</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$33,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="prevenda"
-          data-nome="Miles Morales: Spider-Man — A Saga Secreta"
-          data-preco="44.90"
-          data-img="img/quadrinhos/spiderman.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
-            <img src="img/quadrinhos/spiderman.jpg" alt="Miles Morales: Spider-Man — A Saga Secreta">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Miles Morales: Spider-Man — A Saga Secreta</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$44,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="prevenda"
-          data-nome="X-Men: From the Ashes #1"
-          data-preco="38.90"
-          data-img="img/quadrinhos/alloutavengers.jpg">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
-            <img src="img/quadrinhos/alloutavengers.jpg" alt="X-Men: From the Ashes #1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>X-Men: From the Ashes #1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$38,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="dc"
-          data-secao="prevenda"
-          data-nome="Batman: Gotham by Gaslight — Era Kryptoniana"
-          data-preco="41.90"
-          data-img="img/quadrinhos/batman.png">
-          <div class="card-produto__imagem">
-            <span class="card-produto__badge-desconto badge-prevenda">PRÉ-VENDA</span>
-            <img src="img/quadrinhos/batman.png" alt="Batman: Gotham by Gaslight — Era Kryptoniana">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Batman: Gotham by Gaslight — Era Kryptoniana</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$41,90</h2>
-          </div>
+          <div class="card-produto__nome"><h3>Liga da Justiça: Guerra de Darkseid</h3></div>
+          <div class="card-produto__preco"><h2>R$33,90</h2></div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>
 
@@ -1212,24 +608,6 @@
           </div>
           <div class="card-produto__preco">
             <h2>R$69,90</h2>
-          </div>
-          <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
-        </article>
-
-        <article class="card-produto"
-          data-editora="marvel"
-          data-secao="especiais"
-          data-nome="Marvel Omnibus - Clássicos Vol.1"
-          data-preco="99.90"
-          data-img="img/quadrinhos/alloutavengers.jpg">
-          <div class="card-produto__imagem">
-            <img src="img/quadrinhos/alloutavengers.jpg" alt="Marvel Omnibus - Clássicos Vol.1">
-          </div>
-          <div class="card-produto__nome">
-            <h3>Marvel Omnibus - Clássicos Vol.1</h3>
-          </div>
-          <div class="card-produto__preco">
-            <h2>R$99,90</h2>
           </div>
           <button class="card-produto__btn">+ Adicionar ao Carrinho</button>
         </article>

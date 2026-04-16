@@ -10,7 +10,8 @@
       "Bash(powershell -Command ':*)",
       "Bash(sed -i 's/class=\"card-produto__badge-desconto\">TRENDING/class=\"card-produto__badge-desconto badge-trending\">TRENDING/g' index.html)",
       "Bash(sed -i 's/class=\"card-produto__badge-desconto\">PRÉ-VENDA/class=\"card-produto__badge-desconto badge-prevenda\">PRÉ-VENDA/g' index.html)",
-      "Bash(grep -n \"badge-desconto\\\\|<h3>R\\\\$\\\\|<h2>R\\\\$\" index.html)"
+      "Bash(grep -n \"badge-desconto\\\\|<h3>R\\\\$\\\\|<h2>R\\\\$\" index.html)",
+      "WebFetch(domain:www.comix.com.br)"
     ]
   }
 }

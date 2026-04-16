@@ -46,10 +46,13 @@
 
     <div class="header-pesquisa">
       <form id="form-pesquisa" autocomplete="off" aria-label="Pesquisar produtos">
-        <input type="text" id="input-pesquisa" class="header-pesquisa-input" placeholder="Pesquisar em toda a loja">
-        <button type="submit" aria-label="Buscar">
-          <img src="../img/icons/lupinha.png" alt="Ícone de busca">
-        </button>
+        <div class="pesquisa-wrapper">
+          <img src="../img/icons/lupinha.png" alt="" class="pesquisa-icone-esq" aria-hidden="true">
+          <input type="text" id="input-pesquisa" class="header-pesquisa-input" placeholder="Buscar quadrinhos, autores...">
+          <button type="submit" class="pesquisa-btn" aria-label="Buscar">
+            <span>Buscar</span>
+          </button>
+        </div>
       </form>
     </div>
 
@@ -370,6 +373,9 @@
         <li><img src="../img/icons/facebook.png" class="icone-social" alt="Facebook"></li>
         <li><img src="../img/icons/whatsapp.png" class="icone-social" alt="WhatsApp"></li>
       </ul>
+    </div>
+    <div class="footer-admin-link">
+      <a href="admin.html">Área Administrativa</a>
     </div>
   </footer>
 

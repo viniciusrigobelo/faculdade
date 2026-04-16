@@ -96,9 +96,13 @@ function inicializarHeader() {
     }
     if (liLogout) liLogout.style.display = "inline-block";
 
-    // Mostrar "Meus Produtos" só para Pessoa Jurídica
+    // Mostrar "Meus Produtos" só para PJ aprovada
     if (liVender && usuarioLogado.tipo === "juridica") {
-      liVender.style.display = "inline-block";
+      const _usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+      const _u = _usuarios.find(x => x.email === usuarioLogado.email);
+      if (_u && _u.status === "aprovado") {
+        liVender.style.display = "inline-block";
+      }
     }
   }
 
@@ -133,18 +137,23 @@ function atualizarBadgeCarrinho() {
 // =========================
 // CARRINHO — ADICIONAR
 // =========================
-function adicionarAoCarrinho(nome, preco, img) {
+function adicionarAoCarrinho(nome, preco, img, qtd = 1, precoOriginal = null) {
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const idx = carrinho.findIndex((item) => item.nome === nome);
   if (idx >= 0) {
-    carrinho[idx].qtd += 1;
+    carrinho[idx].qtd += qtd;
   } else {
-    carrinho.push({ nome, preco: parseFloat(preco), img, qtd: 1 });
+    const item = { nome, preco: parseFloat(preco), img, qtd };
+    if (precoOriginal && parseFloat(precoOriginal) > parseFloat(preco)) {
+      item.precoOriginal = parseFloat(precoOriginal);
+    }
+    carrinho.push(item);
   }
   localStorage.setItem("carrinho", JSON.stringify(carrinho));
   atualizarBadgeCarrinho();
   const nomeResumido = nome.length > 35 ? nome.substring(0, 35) + "..." : nome;
-  mostrarMensagem(`"${nomeResumido}" adicionado ao carrinho!`);
+  const sufixo = qtd > 1 ? ` (${qtd}x)` : "";
+  mostrarMensagem(`"${nomeResumido}"${sufixo} adicionado ao carrinho!`);
 }
 
 // =========================
@@ -169,13 +178,19 @@ function renderizarCarrinho() {
   }
 
   container.innerHTML = carrinho
-    .map(
-      (item, idx) => `
-    <div class="carrinho-item">
+    .map((item, idx) => {
+      const temDesconto = item.precoOriginal && item.precoOriginal > item.preco;
+      const pct = temDesconto ? Math.round((1 - item.preco / item.precoOriginal) * 100) : 0;
+      const precoHtml = temDesconto
+        ? `<span class="carrinho-item__preco-orig">R$ ${item.precoOriginal.toFixed(2).replace(".", ",")}</span>
+           <span class="carrinho-item__preco carrinho-item__preco--desconto">R$ ${item.preco.toFixed(2).replace(".", ",")} <span class="carrinho-item__badge-desc">-${pct}%</span></span>`
+        : `<span class="carrinho-item__preco">R$ ${item.preco.toFixed(2).replace(".", ",")}</span>`;
+      return `
+    <div class="carrinho-item${temDesconto ? " carrinho-item--desconto" : ""}">
       <img src="../${sanitizar(item.img)}" alt="${sanitizar(item.nome)}" class="carrinho-item__img">
       <div class="carrinho-item__info">
         <h3>${sanitizar(item.nome)}</h3>
-        <span class="carrinho-item__preco">R$ ${item.preco.toFixed(2).replace(".", ",")}</span>
+        ${precoHtml}
       </div>
       <div class="carrinho-item__qtd">
         <button class="btn-qtd" onclick="alterarQtd(${idx}, -1)">−</button>
@@ -184,8 +199,8 @@ function renderizarCarrinho() {
       </div>
       <span class="carrinho-item__subtotal">R$ ${(item.preco * item.qtd).toFixed(2).replace(".", ",")}</span>
       <button class="carrinho-item__remover" onclick="removerItem(${idx})" title="Remover">✕</button>
-    </div>`
-    )
+    </div>`;
+    })
     .join("");
 
   if (resumo) resumo.style.display = "block";
@@ -232,6 +247,15 @@ function aplicarCupom() {
 
   if (!codigo) {
     msg.textContent = "Digite um cupom.";
+    msg.className = "cupom-msg erro";
+    return;
+  }
+
+  // Bloqueia cupom se algum item do carrinho já tem desconto
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  const temItemComDesconto = carrinho.some(item => item.precoOriginal && item.precoOriginal > item.preco);
+  if (temItemComDesconto) {
+    msg.textContent = "Cupons não são válidos para itens já em promoção.";
     msg.className = "cupom-msg erro";
     return;
   }
@@ -349,15 +373,27 @@ function calcularFrete() {
     });
 }
 
+const FRETE_GRATIS_MINIMO = 200;
+
 function calcularValoresFrete(uf, qtdItens) {
+  // Frete grátis para compras acima de R$ 200
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  const subtotal = carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
+  if (subtotal >= FRETE_GRATIS_MINIMO) {
+    return {
+      pac:   { preco: 0, prazo: calcularPrazoPac(uf) },
+      sedex: { preco: 0, prazo: calcularPrazoSedex(uf) }
+    };
+  }
+
   // Regiões Sul/Sudeste: frete mais barato e rápido
-  const sudeste = ["SP", "RJ", "MG", "ES"];
-  const sul     = ["PR", "SC", "RS"];
-  const co      = ["GO", "MT", "MS", "DF"];
-  const norte   = ["AM", "PA", "AC", "RO", "RR", "AP", "TO"];
+  const sudeste  = ["SP", "RJ", "MG", "ES"];
+  const sul      = ["PR", "SC", "RS"];
+  const co       = ["GO", "MT", "MS", "DF"];
+  const norte    = ["AM", "PA", "AC", "RO", "RR", "AP", "TO"];
   const nordeste = ["BA", "SE", "AL", "PE", "PB", "RN", "CE", "PI", "MA"];
 
-  const base = 1 + (qtdItens - 1) * 0.5; // peso base em kg simulado
+  const base = 1 + (qtdItens - 1) * 0.5;
 
   let pac, sedex;
 
@@ -382,6 +418,16 @@ function calcularValoresFrete(uf, qtdItens) {
   }
 
   return { pac, sedex };
+}
+
+function calcularPrazoPac(uf) {
+  const prazoMap = { SP:5,RJ:5,MG:5,ES:5, PR:6,SC:6,RS:6, GO:8,MT:8,MS:8,DF:8, BA:10,SE:10,AL:10,PE:10,PB:10,RN:10,CE:10,PI:10,MA:10, AM:14,PA:14,AC:14,RO:14,RR:14,AP:14,TO:14 };
+  return prazoMap[uf] || 9;
+}
+
+function calcularPrazoSedex(uf) {
+  const prazoMap = { SP:1,RJ:1,MG:1,ES:1, PR:2,SC:2,RS:2, GO:2,MT:2,MS:2,DF:2, BA:3,SE:3,AL:3,PE:3,PB:3,RN:3,CE:3,PI:3,MA:3, AM:4,PA:4,AC:4,RO:4,RR:4,AP:4,TO:4 };
+  return prazoMap[uf] || 3;
 }
 
 // Formata CEP enquanto digita
@@ -450,7 +496,21 @@ function atualizarTotalComDesconto() {
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const subtotal = carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
   const desconto = subtotal * (descontoAtivo / 100);
-  const total = subtotal - desconto + freteValor;
+
+  // Frete grátis acima de R$ 200
+  const freteEfetivo = subtotal >= FRETE_GRATIS_MINIMO ? 0 : freteValor;
+  if (subtotal >= FRETE_GRATIS_MINIMO && freteValor > 0) {
+    freteValor = 0;
+    const freteEl = document.getElementById("frete-valor");
+    if (freteEl) freteEl.textContent = "GRÁTIS";
+    // Atualiza os preços exibidos nas opções
+    const pacPreco   = document.getElementById("frete-pac-preco");
+    const sedexPreco = document.getElementById("frete-sedex-preco");
+    if (pacPreco)   pacPreco.textContent   = "GRÁTIS";
+    if (sedexPreco) sedexPreco.textContent = "GRÁTIS";
+  }
+
+  const total = subtotal - desconto + freteEfetivo;
 
   const subtotalEl = document.getElementById("subtotal-valor");
   const totalEl = document.getElementById("total-valor");
@@ -466,6 +526,21 @@ function atualizarTotalComDesconto() {
   } else {
     if (linhaDesconto) linhaDesconto.style.display = "none";
   }
+
+  // Banners de frete grátis
+  const bannerGratis    = document.getElementById("banner-frete-gratis");
+  const bannerProgresso = document.getElementById("banner-frete-progresso");
+  if (bannerGratis && bannerProgresso) {
+    if (subtotal >= FRETE_GRATIS_MINIMO) {
+      bannerGratis.style.display = "block";
+      bannerProgresso.style.display = "none";
+    } else {
+      bannerGratis.style.display = "none";
+      const faltam = FRETE_GRATIS_MINIMO - subtotal;
+      bannerProgresso.style.display = "block";
+      bannerProgresso.textContent = `🚚 Faltam R$ ${faltam.toFixed(2).replace(".", ",")} para frete GRÁTIS!`;
+    }
+  }
 }
 
 function finalizarCompra() {
@@ -479,41 +554,46 @@ function finalizarCompra() {
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   if (carrinho.length === 0) return;
 
-  // Abre o modal de pagamento
   const subtotal = carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
-  const total = subtotal - subtotal * (descontoAtivo / 100);
+  const total = subtotal - subtotal * (descontoAtivo / 100) + freteValor;
   const modalTotal = document.getElementById("modal-total");
   if (modalTotal) modalTotal.textContent = "R$ " + total.toFixed(2).replace(".", ",");
 
-  // Limpa seleção anterior
+  // Resetar para step 1
+  _mostrarStep(1);
   document.querySelectorAll('input[name="pagamento"]').forEach(r => r.checked = false);
 
-  // Cartão de crédito só disponível para compras acima de R$150
-  const radioCartao  = document.querySelector('input[name="pagamento"][value="cartao"]');
-  const labelCartao  = radioCartao?.closest(".pagamento-opcao");
-  const avisoCartao  = document.getElementById("aviso-cartao");
-  const faltam       = 150 - total;
-
+  // Cartão sempre disponível
+  const radioCartao = document.querySelector('input[name="pagamento"][value="cartao"]');
+  const labelCartao = radioCartao?.closest(".pagamento-opcao");
   if (radioCartao) {
-    if (total < 150) {
-      radioCartao.disabled = true;
-      labelCartao.classList.add("pagamento-opcao--bloqueada");
-      if (avisoCartao) avisoCartao.textContent =
-        `Adicione mais R$ ${faltam.toFixed(2).replace(".", ",")} para pagar com cartão.`;
-    } else {
-      radioCartao.disabled = false;
-      labelCartao.classList.remove("pagamento-opcao--bloqueada");
-      if (avisoCartao) avisoCartao.textContent = "";
-    }
+    radioCartao.disabled = false;
+    labelCartao?.classList.remove("pagamento-opcao--bloqueada");
   }
 
   const modal = document.getElementById("modal-pagamento");
   if (modal) modal.style.display = "flex";
 }
 
+function _mostrarStep(n) {
+  [1, 2, 3].forEach(i => {
+    const el = document.getElementById("pag-step-" + i);
+    if (el) el.style.display = i === n ? "block" : "none";
+  });
+  const cardStep = document.getElementById("pag-step-card");
+  if (cardStep) cardStep.style.display = n === "card" ? "block" : "none";
+  const boletoStep = document.getElementById("pag-step-boleto");
+  if (boletoStep) boletoStep.style.display = n === "boleto" ? "block" : "none";
+}
+
 function fecharModalPagamento() {
   const modal = document.getElementById("modal-pagamento");
   if (modal) modal.style.display = "none";
+  _mostrarStep(1);
+}
+
+function voltarStep1() {
+  _mostrarStep(1);
 }
 
 function confirmarPagamento() {
@@ -522,15 +602,451 @@ function confirmarPagamento() {
     mostrarMensagem("Selecione uma forma de pagamento!", "erro");
     return;
   }
-  if (metodoPagamento.value === "cartao" && metodoPagamento.disabled) {
-    mostrarMensagem("Cartão de crédito disponível apenas para compras acima de R$ 150,00!", "erro");
+  // PIX → vai para etapa 2 (formulário de dados)
+  if (metodoPagamento.value === "pix") {
+    _abrirFormPix();
     return;
   }
 
+  // Cartão → vai para etapa do cartão
+  if (metodoPagamento.value === "cartao") {
+    _abrirFormCartao();
+    return;
+  }
+
+  // Boleto → formulário de dados
+  if (metodoPagamento.value === "boleto") {
+    _abrirFormBoleto();
+    return;
+  }
+
+  // Outros métodos → confirma direto
+  _finalizarPedido(metodoPagamento.value);
+}
+
+function _abrirFormPix() {
+  // Exibe o total na etapa 2
+  const totalTexto = document.getElementById("modal-total")?.textContent || "R$ 0,00";
+  const el = document.getElementById("pix-total-display");
+  if (el) el.textContent = totalTexto;
+
+  // Pré-preenche com dados do usuário logado (se existirem)
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const u = usuarios.find(x => x.email === usuarioLogado?.email) || {};
+
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+
+  set("pix-nome", u.nome || usuarioLogado?.nome || "");
+
+  // Label e placeholder conforme tipo
+  const docLabel = document.getElementById("pix-doc-label");
+  const docInput = document.getElementById("pix-doc");
+  if (u.tipo === "juridica") {
+    if (docLabel) docLabel.textContent = "CNPJ *";
+    if (docInput) docInput.placeholder = "00.000.000/0000-00";
+    set("pix-doc", u.cnpj || "");
+  } else {
+    if (docLabel) docLabel.textContent = "CPF *";
+    if (docInput) docInput.placeholder = "000.000.000-00";
+    set("pix-doc", u.cpf || "");
+  }
+
+  // Endereço (só existe para Pessoa Física)
+  const end = u.endereco || {};
+  set("pix-cep",    end.cep    || "");
+  set("pix-rua",    end.rua    || "");
+  set("pix-numero", end.numero || "");
+  set("pix-bairro", end.bairro || "");
+  set("pix-cidade", end.cidade || "");
+  set("pix-estado", end.estado || "");
+
+  _mostrarStep(2);
+
+  // Formata CEP enquanto digita
+  const cepPix = document.getElementById("pix-cep");
+  if (cepPix && !cepPix._pixListener) {
+    cepPix._pixListener = true;
+    cepPix.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
+      this.value = v;
+    });
+  }
+}
+
+function gerarQRCodePix(e) {
+  e.preventDefault();
+
+  const nome   = document.getElementById("pix-nome").value.trim();
+  const doc    = document.getElementById("pix-doc").value.trim();
+  const cep    = document.getElementById("pix-cep").value.trim();
+  const rua    = document.getElementById("pix-rua").value.trim();
+  const numero = document.getElementById("pix-numero").value.trim();
+  const bairro = document.getElementById("pix-bairro").value.trim();
+  const cidade = document.getElementById("pix-cidade").value.trim();
+  const estado = document.getElementById("pix-estado").value.trim().toUpperCase();
+
+  if (!nome || !doc || !cep || !rua || !numero || !bairro || !cidade || !estado) {
+    mostrarMensagem("Preencha todos os campos obrigatórios!", "erro");
+    return;
+  }
+
+  const totalTexto = document.getElementById("pix-total-display")?.textContent || "R$ 0,00";
+  const totalNum   = totalTexto.replace("R$", "").replace(",", ".").trim();
+
+  // Monta o payload do QR Code
+  const pixPayload =
+    `00020126580014BR.GOV.BCB.PIX` +
+    `0136comicgeekstore@pix.com.br` +
+    `52040000` +
+    `5303986` +
+    `54${String(totalNum.length).padStart(2,"0")}${totalNum}` +
+    `5802BR` +
+    `5913ComicGeekStore` +
+    `6007${estado}` +
+    `62070503***` +
+    `6304`;
+
+  // QR Code via API pública (sem backend necessário)
+  const url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&data=${encodeURIComponent(pixPayload)}`;
+
+  const img = document.getElementById("pix-qrcode-img");
+  if (img) img.src = url;
+
+  const totalFinal = document.getElementById("pix-total-final");
+  if (totalFinal) totalFinal.textContent = totalTexto;
+
+  _mostrarStep(3);
+}
+
+function copiarChavePix() {
+  const chave = document.getElementById("pix-chave-exibida")?.textContent || "";
+  navigator.clipboard.writeText(chave).then(() => {
+    mostrarMensagem("Chave PIX copiada!");
+  }).catch(() => {
+    mostrarMensagem("Não foi possível copiar. Copie manualmente: " + chave, "erro");
+  });
+}
+
+function confirmarPagamentoPix() {
+  _finalizarPedido("pix");
+}
+
+// =========================
+// BOLETO
+// =========================
+
+function _abrirFormBoleto() {
+  const totalTexto = document.getElementById("modal-total")?.textContent || "R$ 0,00";
+  const el = document.getElementById("boleto-total-display");
+  if (el) el.textContent = totalTexto;
+
+  // Pré-preenche com dados do usuário logado
+  const user = JSON.parse(localStorage.getItem("usuarioLogado") || "null");
+  if (user) {
+    const nomeEl = document.getElementById("boleto-nome");
+    if (nomeEl && !nomeEl.value) nomeEl.value = user.nome || "";
+    const cpfEl = document.getElementById("boleto-cpf");
+    if (cpfEl && !cpfEl.value && user.cpf) cpfEl.value = user.cpf;
+  }
+
+  // Máscara CPF
+  const cpfInput = document.getElementById("boleto-cpf");
+  if (cpfInput && !cpfInput._bolMask) {
+    cpfInput._bolMask = true;
+    cpfInput.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "").slice(0, 11);
+      if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+      else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+      else if (v.length > 3) v = v.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+      this.value = v;
+    });
+  }
+
+  // Máscara CEP
+  const cepInput = document.getElementById("boleto-cep");
+  if (cepInput && !cepInput._bolMask) {
+    cepInput._bolMask = true;
+    cepInput.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "").slice(0, 8);
+      if (v.length > 5) v = v.replace(/(\d{5})(\d{1,3})/, "$1-$2");
+      this.value = v;
+    });
+  }
+
+  document.getElementById("boleto-form-section").style.display = "block";
+  document.getElementById("boleto-display-section").style.display = "none";
+  _mostrarStep("boleto");
+}
+
+function gerarBoleto(e) {
+  e.preventDefault();
+
+  const nome    = document.getElementById("boleto-nome").value.trim();
+  const cpf     = document.getElementById("boleto-cpf").value.trim();
+  const cep     = document.getElementById("boleto-cep").value.trim();
+  const rua     = document.getElementById("boleto-rua").value.trim();
+  const num     = document.getElementById("boleto-numero").value.trim();
+  const bairro  = document.getElementById("boleto-bairro").value.trim();
+  const cidade  = document.getElementById("boleto-cidade").value.trim();
+  const estado  = document.getElementById("boleto-estado").value.trim().toUpperCase();
+
+  // Gera números do boleto
+  const r4 = () => String(Math.floor(Math.random() * 9000 + 1000));
+  const nossoNum = r4() + r4() + r4();
+  const numDoc   = "CGS-" + Date.now().toString().slice(-8);
+
+  // Vencimento: 3 dias úteis
+  const hoje = new Date();
+  let dias = 0;
+  const venc = new Date(hoje);
+  while (dias < 3) {
+    venc.setDate(venc.getDate() + 1);
+    const dow = venc.getDay();
+    if (dow !== 0 && dow !== 6) dias++;
+  }
+  const fmt = (d) => `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
+
+  const totalTexto = document.getElementById("boleto-total-display").textContent;
+
+  // Linha digitável realista
+  const linhaDigitavel =
+    `00190.${r4()}${r4()} ${r4()}${r4()}.${r4()}0 ${r4()}${r4()}.${r4()}1 6 ${nossoNum}`;
+
+  // Preenche o boleto visual
+  document.getElementById("boleto-linha-digitavel").textContent = linhaDigitavel;
+  document.getElementById("boleto-nosso-numero").textContent = nossoNum;
+  document.getElementById("boleto-num-doc").textContent = numDoc;
+  document.getElementById("boleto-emissao").textContent = fmt(hoje);
+  document.getElementById("boleto-vencimento").textContent = fmt(venc);
+  document.getElementById("boleto-valor").textContent = totalTexto;
+  document.getElementById("boleto-valor-cobrado").textContent = totalTexto;
+  document.getElementById("boleto-pagador-nome").textContent = nome;
+  document.getElementById("boleto-pagador-end").textContent =
+    `${rua}, ${num} — ${bairro} — ${cidade}/${estado} — CEP: ${cep}`;
+  document.getElementById("boleto-pagador-doc").textContent = `CPF: ${cpf}`;
+
+  // Gera barras do código de barras
+  _gerarBarrasBoleto(nossoNum);
+
+  // Guarda linha para copiar
+  window._boletoLinha = linhaDigitavel;
+
+  document.getElementById("boleto-form-section").style.display = "none";
+  document.getElementById("boleto-display-section").style.display = "block";
+}
+
+function _gerarBarrasBoleto(seed) {
+  const container = document.getElementById("boleto-barcode");
+  if (!container) return;
+  container.innerHTML = "";
+  let n = parseInt(seed.replace(/\D/g, "0").slice(0, 9)) || 123456789;
+  for (let i = 0; i < 96; i++) {
+    n = (n * 1664525 + 1013904223) & 0x7fffffff;
+    const w = (n % 3) + 1;
+    const span = document.createElement("span");
+    span.className = i % 2 === 0 ? "boleto-bar" : "boleto-bar--space";
+    span.style.width = w + "px";
+    container.appendChild(span);
+  }
+}
+
+function copiarLinhaDigitavel() {
+  const linha = window._boletoLinha || "";
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(linha).then(() => mostrarMensagem("Linha digitável copiada!", "sucesso"));
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = linha;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    mostrarMensagem("Linha digitável copiada!", "sucesso");
+  }
+}
+
+function confirmarPagamentoBoleto() {
+  _finalizarPedido("boleto");
+}
+
+// =========================
+// CARTÃO — DETECÇÃO
+// =========================
+const _BANDEIRAS = [
+  { id: "elo",       nome: "Elo",        cor: "#1a1a1a", regex: /^(4011|4312|4389|4514|4576|5067|5090|6362|6363|6516|6550)/ },
+  { id: "hipercard", nome: "Hipercard",  cor: "#822124", regex: /^(606282|3841)/ },
+  { id: "amex",      nome: "Amex",       cor: "#007bc1", regex: /^3[47]/ },
+  { id: "mastercard",nome: "Mastercard", cor: "#2c2c2c", regex: /^(5[1-5]|2[2-7])/ },
+  { id: "visa",      nome: "Visa",       cor: "#1a1f71", regex: /^4/ },
+];
+
+// BINs de débito conhecidos (Brasil, simplificado)
+const _BINS_DEBITO = [
+  "4011","4312","4389","4514","4576",   // Elo Débito
+  "5067","6362","6363",                 // Elo Débito
+  "4002","4003","4009","4360",          // Visa Electron
+  "5041","5090",                        // Mastercard Débito
+];
+
+function _detectarBandeira(n) {
+  const digits = n.replace(/\D/g, "");
+  return _BANDEIRAS.find(b => b.regex.test(digits)) || null;
+}
+
+function _detectarTipo(n) {
+  const digits = n.replace(/\D/g, "");
+  if (digits.length < 4) return null;
+  return _BINS_DEBITO.some(p => digits.startsWith(p)) ? "debito" : "credito";
+}
+
+function _abrirFormCartao() {
+  const totalTexto = document.getElementById("modal-total")?.textContent || "R$ 0,00";
+  const el = document.getElementById("cartao-total-display");
+  if (el) el.textContent = totalTexto;
+
+  // Pré-preenche nome do titular
+  const u = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (u) {
+    const nomeEl = document.getElementById("cartao-nome");
+    if (nomeEl && !nomeEl.value) nomeEl.value = u.nome.toUpperCase();
+  }
+
+  // Reset preview
+  _atualizarPreviewCartao();
+  _mostrarStep("card");
+
+  // ---- Listeners do formulário ----
+  const numInput = document.getElementById("cartao-numero");
+  const nomeInput = document.getElementById("cartao-nome");
+  const valInput = document.getElementById("cartao-validade");
+  const cvvInput = document.getElementById("cartao-cvv");
+
+  if (numInput && !numInput._cartaoListener) {
+    numInput._cartaoListener = true;
+
+    numInput.addEventListener("input", function () {
+      // Formata com espaços a cada 4 dígitos
+      let v = this.value.replace(/\D/g, "").slice(0, 16);
+      this.value = v.replace(/(.{4})/g, "$1 ").trim();
+      _atualizarPreviewCartao();
+    });
+
+    nomeInput.addEventListener("input", function () {
+      this.value = this.value.toUpperCase();
+      _atualizarPreviewCartao();
+    });
+
+    valInput.addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "").slice(0, 4);
+      if (v.length > 2) v = v.slice(0, 2) + "/" + v.slice(2);
+      this.value = v;
+      _atualizarPreviewCartao();
+    });
+
+    cvvInput.addEventListener("input", function () {
+      this.value = this.value.replace(/\D/g, "").slice(0, 4);
+      _atualizarPreviewCartao();
+    });
+
+    cvvInput.addEventListener("focus",  () => { document.getElementById("cartao-preview")?.classList.add("virado"); });
+    cvvInput.addEventListener("blur",   () => { document.getElementById("cartao-preview")?.classList.remove("virado"); });
+  }
+}
+
+function _atualizarPreviewCartao() {
+  const numero   = (document.getElementById("cartao-numero")?.value   || "").replace(/\D/g, "");
+  const nome     = document.getElementById("cartao-nome")?.value      || "";
+  const validade = document.getElementById("cartao-validade")?.value  || "";
+  const cvv      = document.getElementById("cartao-cvv")?.value       || "";
+
+  const preview  = document.getElementById("cartao-preview");
+  const bandeira = _detectarBandeira(numero);
+  const tipo     = _detectarTipo(numero);
+
+  // Número formatado no preview
+  const blocos = (numero.padEnd(16, "•")).match(/.{1,4}/g) || [];
+  const prevNumero = document.getElementById("prev-numero");
+  if (prevNumero) prevNumero.textContent = blocos.join(" ");
+
+  // Nome
+  const prevNome = document.getElementById("prev-nome");
+  if (prevNome) prevNome.textContent = nome || "SEU NOME";
+
+  // Validade
+  const prevVal = document.getElementById("prev-validade");
+  if (prevVal) prevVal.textContent = validade || "MM/AA";
+
+  // CVV
+  const prevCvv = document.getElementById("prev-cvv");
+  if (prevCvv) prevCvv.textContent = cvv ? "•".repeat(cvv.length) : "•••";
+
+  // Bandeira no preview e no input
+  if (preview) {
+    _BANDEIRAS.forEach(b => preview.classList.remove("bandeira-" + b.id));
+    if (bandeira) preview.classList.add("bandeira-" + bandeira.id);
+  }
+  const prevBandeira = document.getElementById("prev-bandeira-nome");
+  const inlineBandeira = document.getElementById("cartao-bandeira-inline");
+  if (prevBandeira) prevBandeira.textContent = bandeira ? bandeira.nome.toUpperCase() : "";
+  if (inlineBandeira) inlineBandeira.textContent = bandeira ? bandeira.nome : "";
+
+  // Tipo (Crédito / Débito) no badge do preview
+  const prevTipo = document.getElementById("prev-tipo");
+  if (prevTipo) {
+    prevTipo.textContent = tipo === "debito" ? "DÉBITO" : tipo === "credito" ? "CRÉDITO" : "";
+  }
+
+  // Badge detectado embaixo do campo
+  const detectado = document.getElementById("cartao-detectado");
+  if (detectado) {
+    if (bandeira && tipo) {
+      detectado.innerHTML =
+        `<span class="badge-bandeira" style="background:${bandeira.cor}">${bandeira.nome}</span>` +
+        `<span class="badge-tipo badge-tipo--${tipo}">${tipo === "debito" ? "Débito" : "Crédito"}</span>`;
+    } else if (bandeira) {
+      detectado.innerHTML =
+        `<span class="badge-bandeira" style="background:${bandeira.cor}">${bandeira.nome}</span>`;
+    } else {
+      detectado.innerHTML = numero.length >= 4
+        ? '<span style="color:#aaa;font-size:11px">Bandeira não identificada</span>'
+        : "";
+    }
+  }
+}
+
+function confirmarPagamentoCartao(e) {
+  e.preventDefault();
+
+  const numero   = document.getElementById("cartao-numero")?.value.replace(/\D/g, "") || "";
+  const nome     = document.getElementById("cartao-nome")?.value.trim() || "";
+  const validade = document.getElementById("cartao-validade")?.value.trim() || "";
+  const cvv      = document.getElementById("cartao-cvv")?.value.trim() || "";
+
+  if (numero.length < 13) { mostrarMensagem("Número de cartão inválido!", "erro"); return; }
+  if (!nome)               { mostrarMensagem("Informe o nome do titular!", "erro"); return; }
+  if (!/^\d{2}\/\d{2}$/.test(validade)) { mostrarMensagem("Validade inválida! Use MM/AA.", "erro"); return; }
+  if (cvv.length < 3)      { mostrarMensagem("CVV inválido!", "erro"); return; }
+
+  // Validade não expirada
+  const [mm, aa] = validade.split("/").map(Number);
+  const agora = new Date();
+  const ano4 = 2000 + aa;
+  if (ano4 < agora.getFullYear() || (ano4 === agora.getFullYear() && mm < agora.getMonth() + 1)) {
+    mostrarMensagem("Cartão expirado!", "erro"); return;
+  }
+
+  const tipo = _detectarTipo(numero);
+  const metodo = tipo === "debito" ? "cartao_debito" : "cartao_credito";
+  _finalizarPedido(metodo);
+}
+
+function _finalizarPedido(metodoPagamento) {
   const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const subtotalPedido = carrinho.reduce((sum, item) => sum + item.preco * item.qtd, 0);
-  const total = subtotalPedido - subtotalPedido * (descontoAtivo / 100);
+  const total = subtotalPedido - subtotalPedido * (descontoAtivo / 100) + freteValor;
 
   const agora = new Date();
   const pedido = {
@@ -541,7 +1057,7 @@ function confirmarPagamento() {
     email: usuarioLogado.email,
     itens: JSON.parse(JSON.stringify(carrinho)),
     total,
-    pagamento: metodoPagamento.value,
+    pagamento: metodoPagamento,
     status: "concluido",
   };
 
@@ -752,7 +1268,9 @@ function inicializarBotoesCarrinho() {
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       const card = this.closest(".card-produto");
-      adicionarAoCarrinho(card.dataset.nome, card.dataset.preco, card.dataset.img);
+      const origText = card.querySelector(".card-produto__preco h3")?.textContent?.replace("R$","").replace(",",".").trim();
+      const precoOriginal = origText ? parseFloat(origText) : null;
+      adicionarAoCarrinho(card.dataset.nome, card.dataset.preco, card.dataset.img, 1, precoOriginal);
     });
   });
 
@@ -879,18 +1397,14 @@ function mudarQtdModal(delta) {
 
 function comprarModal() {
   if (!modalProdutoAtual) return;
-  for (let i = 0; i < modalQtd; i++) {
-    adicionarAoCarrinho(modalProdutoAtual.nome, modalProdutoAtual.preco, modalProdutoAtual.img);
-  }
+  adicionarAoCarrinho(modalProdutoAtual.nome, modalProdutoAtual.preco, modalProdutoAtual.img, modalQtd, modalProdutoAtual.precoOriginal);
   fecharModalProduto();
   setTimeout(() => window.location.href = "pages/carrinho.html", 800);
 }
 
 function adicionarCarrinhoModal() {
   if (!modalProdutoAtual) return;
-  for (let i = 0; i < modalQtd; i++) {
-    adicionarAoCarrinho(modalProdutoAtual.nome, modalProdutoAtual.preco, modalProdutoAtual.img);
-  }
+  adicionarAoCarrinho(modalProdutoAtual.nome, modalProdutoAtual.preco, modalProdutoAtual.img, modalQtd, modalProdutoAtual.precoOriginal);
   fecharModalProduto();
 }
 
@@ -1014,7 +1528,8 @@ function inicializarCadastro() {
     }
 
     hashSenha(senha).then(senhaHash => {
-      const novoUsuario = { nome: sanitizar(nome), email: sanitizar(email), senha: senhaHash, tipo };
+      const novoUsuario = { nome: sanitizar(nome), email: sanitizar(email), senha: senhaHash, tipo,
+        status: tipo === "juridica" ? "pendente" : "aprovado" };
 
       if (tipo === "juridica") {
         const razao = document.getElementById("razao-social")?.value.trim();
@@ -1142,16 +1657,18 @@ function mostrarAba(aba) {
   document.querySelectorAll(".admin-nav__item").forEach(b => b.classList.remove("ativo"));
   document.getElementById("aba-" + aba).style.display = "block";
   const btns = document.querySelectorAll(".admin-nav__item");
-  const abas = ["produtos","pedidos","usuarios"];
+  const abas = ["produtos","pedidos","usuarios","aprovacoes"];
   btns[abas.indexOf(aba)]?.classList.add("ativo");
 
-  if (aba === "pedidos")  carregarPedidosAdmin();
-  if (aba === "usuarios") carregarUsuariosAdmin();
+  if (aba === "pedidos")    carregarPedidosAdmin();
+  if (aba === "usuarios")   carregarUsuariosAdmin();
+  if (aba === "aprovacoes") carregarAprovacoes();
 }
 
 function carregarPainelAdmin() {
   carregarTabelaProdutos();
   atualizarStats();
+  atualizarBadgeAprovacoes();
 }
 
 function atualizarStats() {
@@ -1162,6 +1679,86 @@ function atualizarStats() {
   if (el("stat-total-produtos")) el("stat-total-produtos").textContent = produtos.length;
   if (el("stat-total-pedidos"))  el("stat-total-pedidos").textContent  = pedidos.length;
   if (el("stat-total-usuarios")) el("stat-total-usuarios").textContent = usuarios.length;
+}
+
+// ---- APROVAÇÕES PJ ----
+
+function atualizarBadgeAprovacoes() {
+  const badge = document.getElementById("badge-pendentes");
+  if (!badge) return;
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const count = usuarios.filter(u => u.tipo === "juridica" && u.status === "pendente").length;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = "inline-flex";
+  } else {
+    badge.style.display = "none";
+  }
+}
+
+function carregarAprovacoes() {
+  const lista = document.getElementById("admin-lista-aprovacoes");
+  const vazio = document.getElementById("admin-aprovacoes-vazio");
+  if (!lista) return;
+
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const pendentes = usuarios.filter(u => u.tipo === "juridica" && u.status === "pendente");
+
+  atualizarBadgeAprovacoes();
+
+  if (pendentes.length === 0) {
+    lista.innerHTML = "";
+    if (vazio) vazio.style.display = "block";
+    return;
+  }
+
+  if (vazio) vazio.style.display = "none";
+  lista.innerHTML = pendentes.map(u => `
+    <div class="aprovacao-card">
+      <div class="aprovacao-card__avatar">${u.nome.charAt(0).toUpperCase()}</div>
+      <div class="aprovacao-card__info">
+        <h3>${u.nome}</h3>
+        <p><span class="aprovacao-label">Razão Social</span> ${u.razaoSocial || "—"}</p>
+        <p><span class="aprovacao-label">CNPJ</span> ${u.cnpj || "—"}</p>
+        <p><span class="aprovacao-label">E-mail</span> ${u.email}</p>
+      </div>
+      <div class="aprovacao-card__acoes">
+        <button class="btn-aprovar-vend" onclick="aprovarVendedor('${u.email}')">✓ Aprovar</button>
+        <button class="btn-rejeitar-vend" onclick="rejeitarVendedor('${u.email}')">✕ Rejeitar</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function _sincronizarUsuarioLogado(email, campos) {
+  const logado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (logado && logado.email === email) {
+    localStorage.setItem("usuarioLogado", JSON.stringify({ ...logado, ...campos }));
+  }
+}
+
+function aprovarVendedor(email) {
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const idx = usuarios.findIndex(u => u.email === email);
+  if (idx < 0) return;
+  usuarios[idx].status = "aprovado";
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  _sincronizarUsuarioLogado(email, { status: "aprovado" });
+  mostrarMensagem("Vendedor aprovado com sucesso!");
+  carregarAprovacoes();
+  atualizarBadgeAprovacoes();
+}
+
+function rejeitarVendedor(email) {
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const idx = usuarios.findIndex(u => u.email === email);
+  if (idx < 0) return;
+  usuarios[idx].status = "rejeitado";
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  _sincronizarUsuarioLogado(email, { status: "rejeitado" });
+  mostrarMensagem("Cadastro rejeitado.", "erro");
+  carregarAprovacoes();
+  atualizarBadgeAprovacoes();
 }
 
 // ---- PRODUTOS ADMIN ----
@@ -1231,6 +1828,13 @@ function editarProduto(id, origem) {
   document.getElementById("admin-prod-nome").value           = p.nome;
   document.getElementById("admin-prod-editora").value        = p.editora || p.categoria || "marvel";
   document.getElementById("admin-prod-preco-original").value = p.precoOriginal || p.preco;
+  // Recalculate stored discount %
+  if (p.precoOriginal && p.precoOriginal > p.preco) {
+    const desc = Math.round((1 - p.preco / p.precoOriginal) * 100);
+    document.getElementById("admin-prod-desconto").value = desc;
+  } else {
+    document.getElementById("admin-prod-desconto").value = "";
+  }
   document.getElementById("admin-prod-preco").value          = p.preco;
   document.getElementById("admin-prod-secao").value          = p.secao || p.categoria || "lancamentos";
   document.getElementById("admin-prod-img").value            = p.img;
@@ -1252,12 +1856,24 @@ function excluirProduto(id, origem) {
   mostrarMensagem("Produto excluído.");
 }
 
+function calcularPrecoAdmin() {
+  const original = parseFloat(document.getElementById("admin-prod-preco-original")?.value) || 0;
+  const desconto = parseFloat(document.getElementById("admin-prod-desconto")?.value) || 0;
+  const campoPreco = document.getElementById("admin-prod-preco");
+  if (!campoPreco) return;
+  if (original > 0) {
+    const final = desconto > 0 ? (original * (1 - desconto / 100)).toFixed(2) : original.toFixed(2);
+    campoPreco.value = final;
+  }
+}
+
 function salvarProdutoAdmin(e) {
   e.preventDefault();
   const id            = document.getElementById("admin-prod-id").value;
   const nome          = document.getElementById("admin-prod-nome").value.trim();
   const editora       = document.getElementById("admin-prod-editora").value;
   const precoOriginal = document.getElementById("admin-prod-preco-original").value;
+  const desconto      = parseFloat(document.getElementById("admin-prod-desconto")?.value) || 0;
   const preco         = document.getElementById("admin-prod-preco").value;
   const secao         = document.getElementById("admin-prod-secao").value;
   const img           = document.getElementById("admin-prod-img").value.trim();
@@ -1438,6 +2054,10 @@ function salvarEdicaoUsuario(e) {
   if (tipo === "juridica") {
     usuarios[idx].razaoSocial = document.getElementById("admin-user-razao").value.trim();
     usuarios[idx].cnpj        = document.getElementById("admin-user-cnpj").value.trim();
+    // Admin está promovendo para PJ: garantir acesso imediato (aprovado)
+    if (usuarios[idx].status !== "aprovado") {
+      usuarios[idx].status = "aprovado";
+    }
     delete usuarios[idx].cpf;
     delete usuarios[idx].endereco;
   } else {
@@ -1451,6 +2071,8 @@ function salvarEdicaoUsuario(e) {
       cidade:      document.getElementById("admin-user-cidade").value.trim(),
       estado:      document.getElementById("admin-user-estado").value.trim().toUpperCase(),
     };
+    // Voltou para PF: remove status PJ para virar perfil normal
+    delete usuarios[idx].status;
     delete usuarios[idx].razaoSocial;
     delete usuarios[idx].cnpj;
   }
@@ -1459,7 +2081,10 @@ function salvarEdicaoUsuario(e) {
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
     const logado = JSON.parse(localStorage.getItem("usuarioLogado"));
     if (logado && logado.email === emailOriginal) {
-      localStorage.setItem("usuarioLogado", JSON.stringify({ nome: novoNome, email: novoEmail, tipo }));
+      const usuarioAtualizado = usuarios[idx];
+      const dadosLogado = { nome: novoNome, email: novoEmail, tipo };
+      if (tipo === "juridica") dadosLogado.status = usuarioAtualizado.status;
+      localStorage.setItem("usuarioLogado", JSON.stringify(dadosLogado));
     }
     fecharFormUsuario();
     carregarUsuariosAdmin();
@@ -1558,16 +2183,6 @@ function renderizarProdutosAdmin() {
       </div>
       <button class="card-produto__btn">+ Adicionar ao Carrinho</button>`;
 
-    card.querySelector(".card-produto__btn").addEventListener("click", function(e) {
-      e.stopPropagation();
-      adicionarAoCarrinho(p.nome, p.preco, p.img);
-    });
-
-    card.addEventListener("click", function(e) {
-      if (e.target.closest(".card-produto__btn")) return;
-      abrirModalProduto(this);
-    });
-
     lista.appendChild(card);
   });
 }
@@ -1575,15 +2190,49 @@ function renderizarProdutosAdmin() {
 // =========================
 // VENDER — PÁGINA PJ
 // =========================
+function calcularPrecoVendedor() {
+  const original = parseFloat(document.getElementById("prod-preco-original")?.value) || 0;
+  const desconto = parseFloat(document.getElementById("prod-desconto")?.value) || 0;
+  const campoPreco = document.getElementById("prod-preco");
+  if (!campoPreco) return;
+  if (original > 0) {
+    const final = desconto > 0 ? (original * (1 - desconto / 100)).toFixed(2) : original.toFixed(2);
+    campoPreco.value = final;
+  } else {
+    campoPreco.value = "";
+  }
+}
+
 function inicializarVender() {
-  const conteudo = document.getElementById("vender-conteudo");
-  const bloqueado = document.getElementById("vender-bloqueado");
+  const conteudo   = document.getElementById("vender-conteudo");
+  const bloqueado  = document.getElementById("vender-bloqueado");
+  const pendente   = document.getElementById("vender-pendente");
+  const rejeitado  = document.getElementById("vender-rejeitado");
   if (!conteudo) return;
 
   const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+  // Não é PJ
   if (!usuarioLogado || usuarioLogado.tipo !== "juridica") {
     if (conteudo) conteudo.style.display = "none";
     if (bloqueado) bloqueado.style.display = "block";
+    return;
+  }
+
+  // Verifica status de aprovação
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const u = usuarios.find(x => x.email === usuarioLogado.email);
+  const status = u?.status || "pendente";
+
+  if (status === "pendente") {
+    if (conteudo) conteudo.style.display = "none";
+    if (pendente) pendente.style.display = "block";
+    return;
+  }
+
+  if (status === "rejeitado") {
+    if (conteudo) conteudo.style.display = "none";
+    if (rejeitado) rejeitado.style.display = "block";
     return;
   }
 
@@ -1593,24 +2242,31 @@ function inicializarVender() {
   if (formProduto) {
     formProduto.addEventListener("submit", function (e) {
       e.preventDefault();
-      const nome = document.getElementById("prod-nome").value.trim();
-      const preco = document.getElementById("prod-preco").value;
+      const nome          = document.getElementById("prod-nome").value.trim();
+      const precoOriginal = parseFloat(document.getElementById("prod-preco-original").value);
+      const desconto      = parseFloat(document.getElementById("prod-desconto").value) || 0;
+      const preco         = desconto > 0
+        ? parseFloat((precoOriginal * (1 - desconto / 100)).toFixed(2))
+        : precoOriginal;
       const categoria = document.getElementById("prod-categoria").value;
-      const img = document.getElementById("prod-img").value.trim();
+      const img       = document.getElementById("prod-img").value.trim();
       const descricao = document.getElementById("prod-descricao").value.trim();
 
-      if (!nome || !preco || !img) {
+      if (!nome || !precoOriginal || !img) {
         mostrarMensagem("Preencha todos os campos obrigatórios!", "erro");
         return;
       }
 
-      const produtos = JSON.parse(localStorage.getItem("produtosVendedores")) || [];
-      produtos.push({
+      const produto = {
         id: Date.now(),
-        nome, preco: parseFloat(preco), categoria, img, descricao,
+        nome, preco, categoria, img, descricao,
         vendedorEmail: usuarioLogado.email,
         vendedorNome: usuarioLogado.nome
-      });
+      };
+      if (desconto > 0) produto.precoOriginal = precoOriginal;
+
+      const produtos = JSON.parse(localStorage.getItem("produtosVendedores")) || [];
+      produtos.push(produto);
       localStorage.setItem("produtosVendedores", JSON.stringify(produtos));
 
       mostrarMensagem("Produto cadastrado com sucesso!");
@@ -1634,7 +2290,18 @@ function renderizarMeusProdutos() {
     return;
   }
 
-  lista.innerHTML = meus.map(p => `
+  const todosPedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+  lista.innerHTML = meus.map(p => {
+    let qtdVendida = 0;
+    todosPedidos.forEach(pedido => {
+      pedido.itens.forEach(item => {
+        if (item.nome === p.nome) qtdVendida += item.qtd;
+      });
+    });
+    const vendido = qtdVendida > 0;
+
+    return `
     <div class="meu-produto-card">
       <img src="${p.img}" alt="${p.nome}" class="meu-produto-card__img" onerror="this.src='../img/quadrinhos/batman.png'">
       <div class="meu-produto-card__info">
@@ -1642,9 +2309,97 @@ function renderizarMeusProdutos() {
         <span>${p.descricao || ""}</span>
       </div>
       <span class="meu-produto-card__categoria">${p.categoria}</span>
+      <span class="produto-status ${vendido ? "produto-status--vendido" : "produto-status--ativo"}">${vendido ? "Vendido " + qtdVendida + "x" : "Ativo"}</span>
       <span class="meu-produto-card__preco">R$ ${parseFloat(p.preco).toFixed(2).replace(".", ",")}</span>
       <button class="btn-remover-produto" onclick="removerMeuProduto(${p.id})" title="Remover">✕</button>
+    </div>`;
+  }).join("");
+}
+
+function mostrarAbaVender(aba) {
+  document.getElementById("aba-anuncios").style.display = aba === "anuncios" ? "block" : "none";
+  document.getElementById("aba-vendas").style.display   = aba === "vendas"   ? "block" : "none";
+  document.getElementById("tab-anuncios").classList.toggle("ativo", aba === "anuncios");
+  document.getElementById("tab-vendas").classList.toggle("ativo",   aba === "vendas");
+
+  const btnNovo = document.getElementById("btn-novo-produto");
+  if (btnNovo) btnNovo.style.display = aba === "anuncios" ? "" : "none";
+
+  const formBox = document.getElementById("form-produto-box");
+  if (aba === "vendas" && formBox) formBox.style.display = "none";
+
+  if (aba === "vendas") renderizarMinhasVendas();
+}
+
+function renderizarMinhasVendas() {
+  const lista = document.getElementById("lista-minhas-vendas");
+  if (!lista) return;
+
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const todosProdutos = JSON.parse(localStorage.getItem("produtosVendedores")) || [];
+  const meusProdutos  = todosProdutos.filter(p => p.vendedorEmail === usuarioLogado?.email);
+
+  if (meusProdutos.length === 0) {
+    lista.innerHTML = `<div class="vender-vazio">Você não tem produtos anunciados ainda.<br>Vá até "Meus Anúncios" e cadastre seu primeiro produto.</div>`;
+    return;
+  }
+
+  const todosPedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+  const vendas = meusProdutos.map(p => {
+    let qtdVendida = 0;
+    let receita = 0;
+    todosPedidos.forEach(pedido => {
+      pedido.itens.forEach(item => {
+        if (item.nome === p.nome) {
+          qtdVendida += item.qtd;
+          receita    += item.preco * item.qtd;
+        }
+      });
+    });
+    return { ...p, qtdVendida, receita };
+  });
+
+  const totalAnunciados = vendas.length;
+  const totalVendidos   = vendas.reduce((s, v) => s + v.qtdVendida, 0);
+  const totalReceita    = vendas.reduce((s, v) => s + v.receita, 0);
+
+  const resumoHtml = `
+    <div class="vendas-resumo">
+      <div class="vendas-resumo__item">
+        <span class="vendas-resumo__label">Anunciados</span>
+        <span class="vendas-resumo__valor">${totalAnunciados}</span>
+      </div>
+      <div class="vendas-resumo__item">
+        <span class="vendas-resumo__label">Unidades Vendidas</span>
+        <span class="vendas-resumo__valor">${totalVendidos}</span>
+      </div>
+      <div class="vendas-resumo__item">
+        <span class="vendas-resumo__label">Receita Total</span>
+        <span class="vendas-resumo__valor">R$ ${totalReceita.toFixed(2).replace(".", ",")}</span>
+      </div>
+    </div>`;
+
+  const vendasHtml = vendas.map(v => `
+    <div class="venda-card">
+      <img src="${v.img}" alt="${v.nome}" class="venda-card__img" onerror="this.src='../img/quadrinhos/batman.png'">
+      <div class="venda-card__info">
+        <h3>${v.nome}</h3>
+        <span>${v.categoria} &bull; R$ ${parseFloat(v.preco).toFixed(2).replace(".", ",")}</span>
+      </div>
+      <div class="venda-card__qtd">
+        <div class="venda-card__qtd-label">Vendido</div>
+        <div class="venda-card__qtd-valor">${v.qtdVendida} un.</div>
+      </div>
+      <div class="venda-card__receita ${v.qtdVendida === 0 ? "venda-card__receita--zero" : ""}">
+        ${v.qtdVendida > 0 ? "R$ " + v.receita.toFixed(2).replace(".", ",") : "—"}
+      </div>
+      <span class="produto-status ${v.qtdVendida > 0 ? "produto-status--vendido" : "produto-status--ativo"}">
+        ${v.qtdVendida > 0 ? "Vendido" : "Ativo"}
+      </span>
     </div>`).join("");
+
+  lista.innerHTML = resumoHtml + vendasHtml;
 }
 
 function removerMeuProduto(id) {
@@ -1739,42 +2494,344 @@ function inicializarPerfil() {
       };
     }
 
-    // Senha — só altera se preencheu a senha atual
-    const senhaAtual    = document.getElementById("perfil-senha-atual").value;
-    const senhaNova     = document.getElementById("perfil-senha-nova").value;
-    const senhaConfirm  = document.getElementById("perfil-senha-confirmar").value;
-
-    const salvarDados = () => {
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      localStorage.setItem("usuarioLogado", JSON.stringify({
-        nome: novoNome, email: novoEmail, tipo: usuarios[idx].tipo
-      }));
-      document.getElementById("perfil-hero-nome").textContent = novoNome;
-      document.getElementById("perfil-avatar").textContent    = novoNome.charAt(0).toUpperCase();
-      mostrarMensagem("Alterações salvas com sucesso!");
-    };
-
-    if (senhaAtual) {
-      if (senhaNova.length < 6) {
-        mostrarMensagem("A nova senha deve ter ao menos 6 caracteres!", "erro"); return;
-      }
-      if (senhaNova !== senhaConfirm) {
-        mostrarMensagem("As senhas não coincidem!", "erro"); return;
-      }
-      hashSenha(senhaAtual).then(hashAtual => {
-        if (usuarios[idx].senha !== hashAtual) {
-          mostrarMensagem("Senha atual incorreta!", "erro"); return;
-        }
-        hashSenha(senhaNova).then(hashNova => {
-          usuarios[idx].senha = hashNova;
-          salvarDados();
-        });
-      });
-    } else {
-      salvarDados();
-    }
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    localStorage.setItem("usuarioLogado", JSON.stringify({
+      nome: novoNome, email: novoEmail, tipo: usuarios[idx].tipo
+    }));
+    document.getElementById("perfil-hero-nome").textContent = novoNome;
+    document.getElementById("perfil-avatar").textContent    = novoNome.charAt(0).toUpperCase();
+    mostrarMensagem("Alterações salvas com sucesso!");
   });
 }
+
+// =========================
+// REDEFINIÇÃO DE SENHA — MODAL 2 ETAPAS
+// =========================
+let _resetEmailAtual = null;
+
+function _injetarModalReset() {
+  if (document.getElementById("modal-reset-senha")) return;
+  const modal = document.createElement("div");
+  modal.id = "modal-reset-senha";
+  modal.className = "modal-esqueci-overlay";
+  modal.style.display = "none";
+  modal.innerHTML = `
+    <div class="modal-esqueci-box" id="modal-reset-box">
+      <button class="modal-esqueci-fechar" onclick="fecharModalResetSenha()">&times;</button>
+
+      <!-- Etapa 1: e-mail -->
+      <div id="reset-step-1">
+        <h2 class="modal-esqueci-titulo">Redefinir Senha</h2>
+        <p class="modal-esqueci-desc">Informe o e-mail cadastrado para continuar.</p>
+        <form id="form-reset-email" onsubmit="confirmarEmailReset(event)">
+          <label class="modal-esqueci-label">E-mail</label>
+          <input type="email" id="reset-input-email" class="modal-esqueci-input" placeholder="seu@email.com" required autocomplete="email">
+          <button type="submit" class="modal-esqueci-btn">Enviar</button>
+        </form>
+      </div>
+
+      <!-- Etapa 2: nova senha -->
+      <div id="reset-step-2" style="display:none">
+        <h2 class="modal-esqueci-titulo">Nova Senha</h2>
+        <p class="modal-esqueci-desc reset-email-confirmado"></p>
+        <form id="form-reset-nova-senha" onsubmit="salvarNovaSenhaReset(event)">
+          <label class="modal-esqueci-label">Nova senha</label>
+          <input type="password" id="reset-nova-senha" class="modal-esqueci-input" placeholder="Mínimo 6 caracteres" required minlength="6">
+          <label class="modal-esqueci-label" style="margin-top:12px">Confirmar senha</label>
+          <input type="password" id="reset-confirmar-senha" class="modal-esqueci-input" placeholder="Repita a nova senha" required>
+          <button type="submit" class="modal-esqueci-btn" style="margin-top:16px">Salvar nova senha</button>
+        </form>
+      </div>
+
+      <!-- Etapa 3: sucesso -->
+      <div id="reset-step-3" style="display:none;text-align:center">
+        <div style="font-size:52px;margin-bottom:14px">✅</div>
+        <h2 class="modal-esqueci-titulo">Senha redefinida!</h2>
+        <p class="modal-esqueci-desc">Sua senha foi atualizada com sucesso.</p>
+        <button class="modal-esqueci-btn" onclick="fecharModalResetSenha()">Fechar</button>
+      </div>
+    </div>
+  `;
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) fecharModalResetSenha();
+  });
+  document.body.appendChild(modal);
+}
+
+function abrirModalResetSenha(emailInicial) {
+  _injetarModalReset();
+  const modal = document.getElementById("modal-reset-senha");
+  modal.style.display = "flex";
+  document.getElementById("reset-step-1").style.display = "";
+  document.getElementById("reset-step-2").style.display = "none";
+  document.getElementById("reset-step-3").style.display = "none";
+  document.getElementById("form-reset-email").reset();
+  document.getElementById("form-reset-nova-senha").reset();
+  _resetEmailAtual = null;
+  if (emailInicial) {
+    document.getElementById("reset-input-email").value = emailInicial;
+  }
+}
+
+function fecharModalResetSenha() {
+  const modal = document.getElementById("modal-reset-senha");
+  if (modal) modal.style.display = "none";
+}
+
+function confirmarEmailReset(e) {
+  e.preventDefault();
+  const email = document.getElementById("reset-input-email").value.trim().toLowerCase();
+  const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+  const usuario = usuarios.find(u => u.email === email);
+
+  if (!usuario) {
+    mostrarMensagem("E-mail não encontrado. Verifique e tente novamente.", "erro");
+    return;
+  }
+
+  _resetEmailAtual = email;
+  document.getElementById("reset-step-1").style.display = "none";
+  const desc = document.querySelector(".reset-email-confirmado");
+  if (desc) desc.textContent = "E-mail verificado: " + email + ". Crie sua nova senha abaixo.";
+  document.getElementById("reset-step-2").style.display = "";
+  document.getElementById("reset-nova-senha").focus();
+}
+
+function salvarNovaSenhaReset(e) {
+  e.preventDefault();
+  const nova     = document.getElementById("reset-nova-senha").value;
+  const confirma = document.getElementById("reset-confirmar-senha").value;
+  if (nova.length < 6) { mostrarMensagem("A senha deve ter pelo menos 6 caracteres!", "erro"); return; }
+  if (nova !== confirma) { mostrarMensagem("As senhas não coincidem!", "erro"); return; }
+
+  hashSenha(nova).then(hash => {
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+    const idx = usuarios.findIndex(u => u.email === _resetEmailAtual);
+    if (idx === -1) { mostrarMensagem("Usuário não encontrado!", "erro"); return; }
+    usuarios[idx].senha = hash;
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    document.getElementById("reset-step-2").style.display = "none";
+    document.getElementById("reset-step-3").style.display = "";
+    _resetEmailAtual = null;
+  });
+}
+
+function solicitarResetSenhaPerfil() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  abrirModalResetSenha(usuarioLogado ? usuarioLogado.email : "");
+}
+
+// =========================
+// SINCRONIZAÇÃO ENTRE ABAS (storage event)
+// =========================
+window.addEventListener("storage", function (e) {
+  if (e.key !== "usuarioLogado") return;
+
+  // Atualiza o header imediatamente em todas as abas abertas
+  inicializarHeader();
+
+  // Se estiver na página de vendas, re-verifica o acesso
+  if (document.getElementById("lista-meus-produtos")) {
+    inicializarVender();
+  }
+});
+
+// =========================
+// BANNER SLIDER
+// =========================
+(function () {
+  let slideAtual = 0;
+  let autoplayTimer = null;
+  const INTERVALO = 4500;
+
+  function _slides() {
+    return document.querySelectorAll(".banner-slide");
+  }
+  function _dots() {
+    return document.querySelectorAll(".banner-dot");
+  }
+
+  function irParaSlide(idx) {
+    const slides = _slides();
+    const dots   = _dots();
+    if (!slides.length) return;
+
+    slides[slideAtual].classList.remove("ativo");
+    dots[slideAtual]?.classList.remove("ativo");
+
+    slideAtual = (idx + slides.length) % slides.length;
+
+    slides[slideAtual].classList.add("ativo");
+    dots[slideAtual]?.classList.add("ativo");
+  }
+
+  function moverSlide(delta) {
+    reiniciarAutoplay();
+    irParaSlide(slideAtual + delta);
+  }
+
+  function reiniciarAutoplay() {
+    clearInterval(autoplayTimer);
+    autoplayTimer = setInterval(() => irParaSlide(slideAtual + 1), INTERVALO);
+  }
+
+  // Expor funções globalmente para os onclicks no HTML
+  window.irParaSlide  = function(i) { reiniciarAutoplay(); irParaSlide(i); };
+  window.moverSlide   = moverSlide;
+
+  // Inicializar só se o slider existir na página
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!document.getElementById("banner-slider")) return;
+    reiniciarAutoplay();
+
+    // Pausar ao passar o mouse
+    const slider = document.getElementById("banner-slider");
+    slider.addEventListener("mouseenter", () => clearInterval(autoplayTimer));
+    slider.addEventListener("mouseleave", reiniciarAutoplay);
+
+    // Suporte a swipe no celular
+    let touchStartX = 0;
+    slider.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener("touchend", e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) moverSlide(diff > 0 ? 1 : -1);
+    }, { passive: true });
+  });
+})();
+
+// =========================
+// BADGES E PARCELAS DOS CARDS
+// =========================
+(function () {
+  function formatarPreco(val) {
+    return "R$" + parseFloat(val).toFixed(2).replace(".", ",");
+  }
+
+  function processarCard(card) {
+    if (card.dataset.badgesOk) return;
+    card.dataset.badgesOk = "1";
+
+    var imgBox   = card.querySelector(".card-produto__imagem");
+    var precoBox = card.querySelector(".card-produto__preco");
+    if (!imgBox || !precoBox) return;
+
+    var h3 = precoBox.querySelector("h3");
+    var h2 = precoBox.querySelector("h2");
+
+    // Badge de promoção + % quando há desconto
+    if (h3 && h2) {
+      var original = parseFloat(h3.textContent.replace("R$", "").replace(",", ".").trim());
+      var final    = parseFloat(h2.textContent.replace("R$", "").replace(",", ".").trim());
+
+      if (original > final && original > 0 && final > 0) {
+        var pct = Math.round((1 - final / original) * 100);
+
+        var badgePromo = document.createElement("span");
+        badgePromo.className = "card-badge-promo";
+        badgePromo.textContent = "Promoção";
+        imgBox.appendChild(badgePromo);
+
+        var badgePct = document.createElement("span");
+        badgePct.className = "card-badge-pct-off";
+        badgePct.innerHTML = pct + "%<br>OFF";
+        imgBox.appendChild(badgePct);
+      }
+    }
+
+    // Texto de parcela embaixo do preço
+    var precoFinal = h2 ? parseFloat(h2.textContent.replace("R$", "").replace(",", ".").trim()) : 0;
+    if (precoFinal > 0) {
+      var btn = card.querySelector(".card-produto__btn");
+      var parcela = document.createElement("p");
+      parcela.className = "card-produto__parcela";
+      parcela.textContent = "1X de " + formatarPreco(precoFinal) + " sem juros";
+      if (btn) card.insertBefore(parcela, btn);
+      else card.appendChild(parcela);
+    }
+  }
+
+  function inicializarBadgesCards() {
+    document.querySelectorAll(".card-produto").forEach(processarCard);
+  }
+
+  document.addEventListener("DOMContentLoaded", inicializarBadgesCards);
+  window._reinicializarBadgesCards = inicializarBadgesCards;
+})();
+
+// =========================
+// SCROLL HORIZONTAL DE PRODUTOS
+// =========================
+(function () {
+  var SCROLL_PX = 620;
+
+  function criarScrollHorizontal(lista) {
+    if (!lista) return;
+    if (lista.parentElement && lista.parentElement.classList.contains("secao-scroll-wrapper")) return;
+
+    var wrapper = document.createElement("div");
+    wrapper.className = "secao-scroll-wrapper";
+    lista.parentNode.insertBefore(wrapper, lista);
+    wrapper.appendChild(lista);
+
+    var btnPrev = document.createElement("button");
+    btnPrev.type = "button";
+    btnPrev.className = "secao-scroll__btn secao-scroll__btn--prev oculto";
+    btnPrev.innerHTML = "&#8249;";
+    btnPrev.setAttribute("aria-label", "Rolar para a esquerda");
+
+    var btnNext = document.createElement("button");
+    btnNext.type = "button";
+    btnNext.className = "secao-scroll__btn secao-scroll__btn--next";
+    btnNext.innerHTML = "&#8250;";
+    btnNext.setAttribute("aria-label", "Rolar para a direita");
+
+    wrapper.appendChild(btnPrev);
+    wrapper.appendChild(btnNext);
+
+    function atualizar() {
+      var atInicio = lista.scrollLeft <= 2;
+      var atFim    = lista.scrollLeft >= lista.scrollWidth - lista.clientWidth - 2;
+      btnPrev.classList.toggle("oculto", atInicio);
+      btnNext.classList.toggle("oculto", atFim || lista.scrollWidth <= lista.clientWidth);
+    }
+
+    btnPrev.addEventListener("click", function () {
+      lista.scrollBy({ left: -SCROLL_PX, behavior: "smooth" });
+    });
+
+    btnNext.addEventListener("click", function () {
+      lista.scrollBy({ left: SCROLL_PX, behavior: "smooth" });
+    });
+
+    lista.addEventListener("scroll", atualizar, { passive: true });
+    window.addEventListener("resize", atualizar, { passive: true });
+
+    // Swipe no celular
+    var touchStartX = 0;
+    lista.addEventListener("touchstart", function (e) {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    lista.addEventListener("touchend", function (e) {
+      var diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        lista.scrollBy({ left: diff > 0 ? SCROLL_PX : -SCROLL_PX, behavior: "smooth" });
+      }
+    }, { passive: true });
+
+    atualizar();
+  }
+
+  function inicializarScrollProdutos() {
+    document.querySelectorAll(".lista-cards").forEach(criarScrollHorizontal);
+  }
+
+  document.addEventListener("DOMContentLoaded", inicializarScrollProdutos);
+
+  // Exposto para re-chamar quando produtos de vendedor/admin são renderizados dinamicamente
+  window._reinicializarScrollProdutos = function () {
+    document.querySelectorAll(".lista-cards").forEach(criarScrollHorizontal);
+  };
+})();
 
 // =========================
 // INICIALIZAÇÃO
@@ -1783,7 +2840,6 @@ inicializarHeader();
 atualizarBadgeCarrinho();
 inicializarFiltros();
 inicializarPesquisa();
-inicializarBotoesCarrinho();
 inicializarCadastro();
 
 if (document.getElementById("carrinho-lista")) {
@@ -1797,8 +2853,8 @@ if (document.getElementById("pedidos-lista")) {
 if (document.getElementById("lista-vendedores")) {
   renderizarProdutosVendedores();
   renderizarProdutosAdmin();
-  inicializarBotoesCarrinho();
 }
+inicializarBotoesCarrinho();
 
 if (document.getElementById("lista-meus-produtos")) {
   inicializarVender();
@@ -1807,6 +2863,7 @@ if (document.getElementById("lista-meus-produtos")) {
 if (document.getElementById("form-perfil")) {
   inicializarPerfil();
 }
+
 
 // Admin
 const formAdminProduto = document.getElementById("form-admin-produto");
